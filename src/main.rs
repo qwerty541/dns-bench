@@ -12,6 +12,8 @@ use tabled::Tabled;
 use tabled::Table;
 use std::time::Duration;
 use std::fmt;
+use indicatif::ProgressBar;
+use indicatif::ProgressStyle;
 
 #[derive(Debug, Clone)]
 struct DnsEntry {
@@ -57,6 +59,14 @@ struct ResultEntry {
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut result_entries: Vec<ResultEntry> = Vec::new();
 
+    // Create a progress bar with the desired style
+    let pb = ProgressBar::new(DNS_ENTRIES.len() as u64);
+    pb.set_style(
+        ProgressStyle::default_bar()
+            .template("[{bar:60.cyan/blue}] {pos}/{len} ({eta})")?
+            .progress_chars("#>-"),
+    );
+
     'dns_bench: for dns_entry in DNS_ENTRIES.iter() {
         let mut resolver_config = ResolverConfig::new();
         resolver_config.add_name_server(NameServerConfig { 
@@ -79,6 +89,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 time: TimeResult::Failed(String::from("Failed to resolve")),
             };
             result_entries.push(result_entry);
+            pb.inc(1);
             continue 'dns_bench;
         };
 
@@ -93,7 +104,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             time: TimeResult::Succeeded(elapsed_time),
         };
         result_entries.push(result_entry);
+        pb.inc(1);
     }
+
+    pb.finish();
 
     // Sort result entries by time
     result_entries.sort_by(|a, b| {
