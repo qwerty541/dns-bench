@@ -15,6 +15,8 @@ use std::fmt;
 use indicatif::ProgressBar;
 use indicatif::ProgressStyle;
 
+const TEST_DOMAIN: &str = "google.com";
+
 #[derive(Debug, Clone)]
 struct DnsEntry {
     name: String,
@@ -59,6 +61,8 @@ struct ResultEntry {
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut result_entries: Vec<ResultEntry> = Vec::new();
 
+    println!("Starting DNS benchmark with test domain: {}", TEST_DOMAIN);
+
     // Create a progress bar with the desired style
     let pb = ProgressBar::new(DNS_ENTRIES.len() as u64);
     pb.set_style(
@@ -81,7 +85,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         // Measure the DNS resolution time
         let start_time = Instant::now();
-        let Ok(response) = resolver.lookup_ip("google.com") else {
+        let Ok(response) = resolver.lookup_ip(TEST_DOMAIN) else {
             let result_entry = ResultEntry {
                 name: dns_entry.name.clone(),
                 ip: dns_entry.socker_addr.ip(),
