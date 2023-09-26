@@ -7,3 +7,5 @@ edition = "2021"
 
 [dependencies]
 trust-dns-resolver = "0.23.0"
+tabled = "0.14.0"
+lazy_static = "1.4.0"
