@@ -32,6 +32,8 @@ lazy_static::lazy_static! {
         DnsEntry { name: String::from("Quad9"), socker_addr: SocketAddr::new(IpAddr::V4(Ipv4Addr::new(9, 9, 9, 9)), 53) },
         DnsEntry { name: String::from("Quad9 2"), socker_addr: SocketAddr::new(IpAddr::V4(Ipv4Addr::new(149, 112, 112, 112)), 53) },
         DnsEntry { name: String::from("Local"), socker_addr: SocketAddr::new(IpAddr::V4(Ipv4Addr::new(192, 168, 0, 1)), 53) },
+        DnsEntry { name: String::from("Control D"), socker_addr: SocketAddr::new(IpAddr::V4(Ipv4Addr::new(76, 76, 2, 0)), 53) },
+        DnsEntry { name: String::from("COntrol D"), socker_addr: SocketAddr::new(IpAddr::V4(Ipv4Addr::new(76, 76, 10, 0)), 53) },
     ];
 }
 
