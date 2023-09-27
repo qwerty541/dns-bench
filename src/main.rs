@@ -115,7 +115,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         pb.inc(1);
     }
 
-    pb.finish();
+    pb.finish_and_clear();
 
     // Sort result entries by time
     result_entries.sort_by(|a, b| {
