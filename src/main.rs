@@ -65,7 +65,7 @@ struct ResultEntry {
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut result_entries: Vec<ResultEntry> = Vec::new();
 
-    println!("Starting DNS benchmark with test domain: {}", TEST_DOMAIN);
+    println!("Starting DNS benchmark with test domain: {}...", TEST_DOMAIN);
 
     // Create a progress bar with the desired style
     let pb = ProgressBar::new(DNS_ENTRIES.len() as u64);
