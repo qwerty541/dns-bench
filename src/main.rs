@@ -1,3 +1,4 @@
+use clap::Parser;
 use indicatif::ProgressBar;
 use indicatif::ProgressStyle;
 use std::convert::From;
@@ -14,6 +15,12 @@ use trust_dns_resolver::config::Protocol;
 use trust_dns_resolver::config::ResolverConfig;
 use trust_dns_resolver::config::ResolverOpts;
 use trust_dns_resolver::Resolver;
+
+#[derive(Debug, Clone, Parser)]
+#[command(next_line_help = true)]
+#[command(author, version, about, long_about = None)]
+
+struct Arguments {}
 
 const TEST_DOMAIN: &str = "google.com";
 
@@ -63,6 +70,7 @@ struct ResultEntry {
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let _arguments = Arguments::parse();
     let mut result_entries: Vec<ResultEntry> = Vec::new();
 
     println!(
