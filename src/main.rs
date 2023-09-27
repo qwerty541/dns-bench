@@ -1,19 +1,19 @@
-use std::time::Instant;
-use trust_dns_resolver::config::ResolverConfig;
-use trust_dns_resolver::config::ResolverOpts;
-use trust_dns_resolver::config::NameServerConfig;
-use trust_dns_resolver::Resolver;
-use trust_dns_resolver::config::Protocol;
-use std::net::SocketAddr;
-use std::net::IpAddr;
-use std::net::Ipv4Addr;
-use std::convert::From;
-use tabled::Tabled;
-use tabled::Table;
-use std::time::Duration;
-use std::fmt;
 use indicatif::ProgressBar;
 use indicatif::ProgressStyle;
+use std::convert::From;
+use std::fmt;
+use std::net::IpAddr;
+use std::net::Ipv4Addr;
+use std::net::SocketAddr;
+use std::time::Duration;
+use std::time::Instant;
+use tabled::Table;
+use tabled::Tabled;
+use trust_dns_resolver::config::NameServerConfig;
+use trust_dns_resolver::config::Protocol;
+use trust_dns_resolver::config::ResolverConfig;
+use trust_dns_resolver::config::ResolverOpts;
+use trust_dns_resolver::Resolver;
 
 const TEST_DOMAIN: &str = "google.com";
 
@@ -65,7 +65,10 @@ struct ResultEntry {
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut result_entries: Vec<ResultEntry> = Vec::new();
 
-    println!("Starting DNS benchmark with test domain: {}...", TEST_DOMAIN);
+    println!(
+        "Starting DNS benchmark with test domain: {}...",
+        TEST_DOMAIN
+    );
 
     // Create a progress bar with the desired style
     let pb = ProgressBar::new(DNS_ENTRIES.len() as u64);
@@ -77,12 +80,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     'dns_bench: for dns_entry in DNS_ENTRIES.iter() {
         let mut resolver_config = ResolverConfig::new();
-        resolver_config.add_name_server(NameServerConfig { 
+        resolver_config.add_name_server(NameServerConfig {
             socket_addr: dns_entry.socker_addr,
             protocol: Protocol::Udp,
             tls_dns_name: None,
             trust_negative_responses: false,
-            bind_addr: None
+            bind_addr: None,
         });
         let resolver_opts = ResolverOpts::default();
         let resolver = Resolver::new(resolver_config, resolver_opts)?;
@@ -118,13 +121,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     pb.finish_and_clear();
 
     // Sort result entries by time
-    result_entries.sort_by(|a, b| {
-        match (a.time.clone(), b.time.clone()) {
-            (TimeResult::Succeeded(a), TimeResult::Succeeded(b)) => a.cmp(&b),
-            (TimeResult::Succeeded(_), TimeResult::Failed(_)) => std::cmp::Ordering::Less,
-            (TimeResult::Failed(_), TimeResult::Succeeded(_)) => std::cmp::Ordering::Greater,
-            (TimeResult::Failed(_), TimeResult::Failed(_)) => std::cmp::Ordering::Equal,
-        }
+    result_entries.sort_by(|a, b| match (a.time.clone(), b.time.clone()) {
+        (TimeResult::Succeeded(a), TimeResult::Succeeded(b)) => a.cmp(&b),
+        (TimeResult::Succeeded(_), TimeResult::Failed(_)) => std::cmp::Ordering::Less,
+        (TimeResult::Failed(_), TimeResult::Succeeded(_)) => std::cmp::Ordering::Greater,
+        (TimeResult::Failed(_), TimeResult::Failed(_)) => std::cmp::Ordering::Equal,
     });
 
     // Print the result
