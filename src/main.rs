@@ -20,9 +20,10 @@ use trust_dns_resolver::Resolver;
 #[command(next_line_help = true)]
 #[command(author, version, about, long_about = None)]
 
-struct Arguments {}
-
-const TEST_DOMAIN: &str = "google.com";
+struct Arguments {
+    #[arg(long, default_value = "google.com")]
+    domain: String,
+}
 
 #[derive(Debug, Clone)]
 struct DnsEntry {
@@ -70,12 +71,12 @@ struct ResultEntry {
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let _arguments = Arguments::parse();
+    let arguments = Arguments::parse();
     let mut result_entries: Vec<ResultEntry> = Vec::new();
 
     println!(
         "Starting DNS benchmark with test domain: {}...",
-        TEST_DOMAIN
+        arguments.domain
     );
 
     // Create a progress bar with the desired style
@@ -100,7 +101,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         // Measure the DNS resolution time
         let start_time = Instant::now();
-        let Ok(response) = resolver.lookup_ip(TEST_DOMAIN) else {
+        let Ok(response) = resolver.lookup_ip(arguments.domain.clone()) else {
             let result_entry = ResultEntry {
                 name: dns_entry.name.clone(),
                 ip: dns_entry.socker_addr.ip(),
