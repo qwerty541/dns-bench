@@ -1,0 +1,45 @@
+name: check
+
+on:
+    push:
+        branches:
+            - master
+    pull_request:
+        branches:
+            - master
+    workflow_dispatch: {}
+
+jobs:
+    build_and_test:
+        name: Build and test
+        runs-on: ubuntu-latest
+
+        strategy:
+            matrix:
+                rust: [stable, beta, nightly]
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Install rust (${{ matrix.rust }})
+              uses: dtolnay/rust-toolchain@master
+              with:
+                  toolchain: ${{ matrix.rust }}
+
+            - name: Cache
+              uses: actions/cache@v3
+              with:
+                  path: |
+                      ~/.cargo
+                      target
+                  key: ${{ runner.os }}-${{ matrix.rust }}-${{ hashFiles('Cargo.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-${{ matrix.rust }}-${{ hashFiles('Cargo.lock') }}
+                      ${{ runner.os }}-${{ matrix.rust }}-
+
+            - name: Build
+              run: cargo build --all-targets
+
+            - name: Tests
+              run: cargo test
