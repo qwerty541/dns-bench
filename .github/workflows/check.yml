@@ -62,3 +62,26 @@ jobs:
 
             - name: Tests
               run: cargo test
+
+    msrv:
+        name: Check minimal supported rust version (MSRV).
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Install rust (stable)
+              uses: dtolnay/rust-toolchain@stable
+
+            - name: Cache
+              uses: actions/cache@v3
+              with:
+                  path: ~/.cargo
+                  key: ${{ runner.os }}-msrv
+
+            - name: Install cargo-msrv
+              run: cargo install cargo-msrv
+
+            - name: Check msrv
+              run: cargo msrv
