@@ -48,6 +48,8 @@ lazy_static::lazy_static! {
         DnsEntry { name: String::from("CleanBrowsing"), socker_addr: SocketAddr::new(IpAddr::V4(Ipv4Addr::new(185, 228, 169, 9)), 53) },
         DnsEntry { name: String::from("Alternate DNS"), socker_addr: SocketAddr::new(IpAddr::V4(Ipv4Addr::new(76, 76, 19, 19)), 53) },
         DnsEntry { name: String::from("Alternate DNS"), socker_addr: SocketAddr::new(IpAddr::V4(Ipv4Addr::new(76, 223, 122, 150)), 53) },
+        DnsEntry { name: String::from("AdGuard DNS"), socker_addr: SocketAddr::new(IpAddr::V4(Ipv4Addr::new(94, 140, 14, 14)), 53) },
+        DnsEntry { name: String::from("AdGuard DNS"), socker_addr: SocketAddr::new(IpAddr::V4(Ipv4Addr::new(94, 140, 15, 15)), 53) },
     ];
 }
 
