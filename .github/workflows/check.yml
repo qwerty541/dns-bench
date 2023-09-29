@@ -10,6 +10,25 @@ on:
     workflow_dispatch: {}
 
 jobs:
+    lints:
+        name: Rustfmt and clippy
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Install rust (stable)
+              uses: dtolnay/rust-toolchain@stable
+              with:
+                  components: clippy, rustfmt
+
+            - name: Run rustfmt
+              run: cargo fmt --check
+
+            - name: Run clippy
+              run: cargo clippy --all-features -- -D warnings
+
     build_and_test:
         name: Build and test
         runs-on: ubuntu-latest
