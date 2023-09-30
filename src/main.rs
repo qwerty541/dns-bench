@@ -31,25 +31,37 @@ struct DnsEntry {
     socker_addr: SocketAddr,
 }
 
+macro_rules! dns_entry {
+    ($name:expr, $ip:expr, $port:expr) => {
+        DnsEntry {
+            name: String::from($name),
+            socker_addr: SocketAddr::new(
+                IpAddr::V4(Ipv4Addr::new($ip.0, $ip.1, $ip.2, $ip.3)),
+                $port,
+            ),
+        }
+    };
+}
+
 lazy_static::lazy_static! {
     static ref DNS_ENTRIES: Vec<DnsEntry> = vec![
-        DnsEntry { name: String::from("Google"), socker_addr: SocketAddr::new(IpAddr::V4(Ipv4Addr::new(8, 8, 8, 8)), 53) },
-        DnsEntry { name: String::from("Google"), socker_addr: SocketAddr::new(IpAddr::V4(Ipv4Addr::new(8, 8, 4, 4)), 53) },
-        DnsEntry { name: String::from("Cloudflare"), socker_addr: SocketAddr::new(IpAddr::V4(Ipv4Addr::new(1, 1, 1, 1)), 53) },
-        DnsEntry { name: String::from("Cloudflare"), socker_addr: SocketAddr::new(IpAddr::V4(Ipv4Addr::new(1, 0, 0, 1)), 53) },
-        DnsEntry { name: String::from("Quad9"), socker_addr: SocketAddr::new(IpAddr::V4(Ipv4Addr::new(9, 9, 9, 9)), 53) },
-        DnsEntry { name: String::from("Quad9"), socker_addr: SocketAddr::new(IpAddr::V4(Ipv4Addr::new(149, 112, 112, 112)), 53) },
-        DnsEntry { name: String::from("Provider"), socker_addr: SocketAddr::new(IpAddr::V4(Ipv4Addr::new(192, 168, 0, 1)), 53) },
-        DnsEntry { name: String::from("Control D"), socker_addr: SocketAddr::new(IpAddr::V4(Ipv4Addr::new(76, 76, 2, 0)), 53) },
-        DnsEntry { name: String::from("Control D"), socker_addr: SocketAddr::new(IpAddr::V4(Ipv4Addr::new(76, 76, 10, 0)), 53) },
-        DnsEntry { name: String::from("OpenDNS Home"), socker_addr: SocketAddr::new(IpAddr::V4(Ipv4Addr::new(208, 67, 222, 222)), 53) },
-        DnsEntry { name: String::from("OpenDNS Home"), socker_addr: SocketAddr::new(IpAddr::V4(Ipv4Addr::new(208, 67, 220, 220)), 53) },
-        DnsEntry { name: String::from("CleanBrowsing"), socker_addr: SocketAddr::new(IpAddr::V4(Ipv4Addr::new(185, 228, 168, 9)), 53) },
-        DnsEntry { name: String::from("CleanBrowsing"), socker_addr: SocketAddr::new(IpAddr::V4(Ipv4Addr::new(185, 228, 169, 9)), 53) },
-        DnsEntry { name: String::from("Alternate DNS"), socker_addr: SocketAddr::new(IpAddr::V4(Ipv4Addr::new(76, 76, 19, 19)), 53) },
-        DnsEntry { name: String::from("Alternate DNS"), socker_addr: SocketAddr::new(IpAddr::V4(Ipv4Addr::new(76, 223, 122, 150)), 53) },
-        DnsEntry { name: String::from("AdGuard DNS"), socker_addr: SocketAddr::new(IpAddr::V4(Ipv4Addr::new(94, 140, 14, 14)), 53) },
-        DnsEntry { name: String::from("AdGuard DNS"), socker_addr: SocketAddr::new(IpAddr::V4(Ipv4Addr::new(94, 140, 15, 15)), 53) },
+        dns_entry!("Google", (8, 8, 8, 8), 53),
+        dns_entry!("Google", (8, 8, 4, 4), 53),
+        dns_entry!("Cloudflare", (1, 1, 1, 1), 53),
+        dns_entry!("Cloudflare", (1, 0, 0, 1), 53),
+        dns_entry!("Quad9", (9, 9, 9, 9), 53),
+        dns_entry!("Quad9", (149, 112, 112, 112), 53),
+        dns_entry!("Provider", (192, 168, 0, 1), 53),
+        dns_entry!("Control D", (76, 76, 2, 0), 53),
+        dns_entry!("Control D", (76, 76, 10, 0), 53),
+        dns_entry!("OpenDNS Home", (208, 67, 222, 222), 53),
+        dns_entry!("OpenDNS Home", (208, 67, 220, 220), 53),
+        dns_entry!("CleanBrowsing", (185, 228, 168, 9), 53),
+        dns_entry!("CleanBrowsing", (185, 228, 169, 9), 53),
+        dns_entry!("Alternate DNS", (76, 76, 19, 19), 53),
+        dns_entry!("Alternate DNS", (76, 223, 122, 150), 53),
+        dns_entry!("AdGuard DNS", (94, 140, 14, 14), 53),
+        dns_entry!("AdGuard DNS", (94, 140, 15, 15), 53),
     ];
 }
 
