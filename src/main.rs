@@ -58,8 +58,6 @@ lazy_static::lazy_static! {
         dns_entry!("OpenDNS Home", (208, 67, 220, 220), 53),
         dns_entry!("CleanBrowsing", (185, 228, 168, 9), 53),
         dns_entry!("CleanBrowsing", (185, 228, 169, 9), 53),
-        dns_entry!("Alternate DNS", (76, 76, 19, 19), 53),
-        dns_entry!("Alternate DNS", (76, 223, 122, 150), 53),
         dns_entry!("AdGuard DNS", (94, 140, 14, 14), 53),
         dns_entry!("AdGuard DNS", (94, 140, 15, 15), 53),
     ];
