@@ -3,6 +3,7 @@
 [![Workflow Status][workflow-badge]][actions-url]
 
 [workflow-badge]: https://github.com/qwerty541/dns-bench/workflows/check/badge.svg
+[actions-url]: https://github.com/qwerty541/dns-bench/actions
 
 ## Description
 
