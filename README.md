@@ -9,6 +9,25 @@
 
 This repository provides DNS benchmarking command line tool written on Rust. It iterates through prepared list of public DNS servers, measures their response time and print table with sorted results in console.
 
+## Options
+
+Below is a list of currently supported options.
+
+```
+$ ./target/debug/dns-bench --help
+Determine the fastest DNS for yourself using simple command line tool.
+
+Usage: dns-bench [OPTIONS]
+
+Options:
+      --domain <DOMAIN>
+          [default: google.com]
+  -h, --help
+          Print help
+  -V, --version
+          Print version
+```
+
 ## License
 
 Licensed under either of
