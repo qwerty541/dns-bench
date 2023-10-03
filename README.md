@@ -9,6 +9,26 @@
 
 This repository provides DNS benchmarking command line tool written on Rust. It iterates through prepared list of public DNS servers, measures their response time and print table with sorted results in console.
 
+## Installation
+
+At first clone project using the following command:
+
+```sh
+$ git clone git@github.com:qwerty541/dns-bench.git
+```
+
+Than you need to compile crate by running the following command in project directory:
+
+```sh
+$ cargo build
+```
+
+Now you can run compiled binary:
+
+```sh
+$ ./target/debug/dns-bench
+```
+
 ## Options
 
 Below is a list of currently supported options.
