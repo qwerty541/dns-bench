@@ -1,0 +1,2 @@
+-   Add Comodo Secure DNS to list
+-   README improvements
