@@ -60,6 +60,8 @@ lazy_static::lazy_static! {
         dns_entry!("CleanBrowsing", (185, 228, 169, 9), 53),
         dns_entry!("AdGuard DNS", (94, 140, 14, 14), 53),
         dns_entry!("AdGuard DNS", (94, 140, 15, 15), 53),
+        dns_entry!("Comodo Secure DNS", (8, 26, 56, 26), 53),
+        dns_entry!("Comodo Secure DNS", (8, 20, 247, 20), 53),
     ];
 }
 
