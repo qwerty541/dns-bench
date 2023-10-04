@@ -43,7 +43,7 @@ $ ./target/debug/dns-bench
 Below is a list of currently supported options.
 
 ```
-$ ./target/debug/dns-bench --help
+$ dns-bench --help
 Determine the fastest DNS for yourself using simple command line tool.
 
 Usage: dns-bench [OPTIONS]
