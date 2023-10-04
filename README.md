@@ -1,10 +1,12 @@
 # dns-bench
 
 [![Crates.io][crates-badge]][crates-url]
+![License][license-badge]
 [![Workflow Status][workflow-badge]][actions-url]
 
 [crates-badge]: https://img.shields.io/crates/v/dns-bench.svg
 [crates-url]: https://crates.io/crates/dns-bench
+[license-badge]: https://img.shields.io/crates/l/dns-bench.svg
 [workflow-badge]: https://github.com/qwerty541/dns-bench/workflows/check/badge.svg
 [actions-url]: https://github.com/qwerty541/dns-bench/actions
 
