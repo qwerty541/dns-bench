@@ -1,6 +1,6 @@
 [package]
 name = "dns-bench"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 authors = ["Alexandr Garbuzov <qwerty541zxc@gmail.com>"]
 description = "Determine the fastest DNS for yourself using simple command line tool."
