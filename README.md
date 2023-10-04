@@ -1,6 +1,7 @@
 # dns-bench
 
 [![Crates.io][crates-badge]][crates-url]
+![Rust version][rust-version]
 ![License][license-badge]
 [![Workflow Status][workflow-badge]][actions-url]
 
@@ -9,6 +10,7 @@
 [license-badge]: https://img.shields.io/crates/l/dns-bench.svg
 [workflow-badge]: https://github.com/qwerty541/dns-bench/workflows/check/badge.svg
 [actions-url]: https://github.com/qwerty541/dns-bench/actions
+[rust-version]: https://img.shields.io/badge/rust-1.70.0%2B-lightgrey.svg?logo=rust
 
 ## Description
 
