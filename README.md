@@ -20,6 +20,22 @@ This repository provides DNS benchmarking command line tool written on Rust. It 
 
 ## Installation
 
+### From crates.io (Recommended)
+
+Run the following command and wait until the crate is compiled:
+
+```sh
+$ cargo install dns-bench
+```
+
+Now you can run compiled binary:
+
+```sh
+$ dns-bench
+```
+
+### From git repository
+
 At first clone project using the following command:
 
 ```sh
