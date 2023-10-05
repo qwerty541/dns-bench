@@ -4,6 +4,7 @@ version = "0.1.1"
 edition = "2021"
 authors = ["Alexandr Garbuzov <qwerty541zxc@gmail.com>"]
 description = "Determine the fastest DNS for yourself using simple command line tool."
+keywords = ["dns", "dns-benchmark", "cli", "benchmark", "rust"]
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/qwerty541/dns-bench"
 homepage = "https://github.com/qwerty541/dns-bench"
