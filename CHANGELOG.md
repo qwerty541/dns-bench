@@ -1,3 +1,5 @@
+## v0.1.2 (05.10.2023)
+
 - Add keywords and categories fields into Cargo.toml
 
 ## v0.1.1 (04.10.2023)
