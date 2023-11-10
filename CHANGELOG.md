@@ -1,3 +1,5 @@
+## v0.1.3 (10.11.2023)
+
 -   Add Level3 DNS to list
 -   README improvements
 -   Updated dependencies:
