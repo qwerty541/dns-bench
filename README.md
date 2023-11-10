@@ -16,7 +16,21 @@
 
 This repository provides DNS benchmarking command line tool written on Rust. It iterates through prepared list of public DNS servers, measures their response time and print table with sorted results in console. It can be used to determine the fastest DNS for yourself. An example of output is shown below.
 
+### Example
+
 ![Example](./example.png)
+
+### Supported DNS servers list
+
+- Google Public DNS
+- Cloudflare
+- Quad9
+- ControlD
+- OpenDNS
+- CleanBrowsing
+- AdGuard DNS
+- Comodo Secure DNS
+- Level3
 
 ## Installation
 
