@@ -62,6 +62,8 @@ lazy_static::lazy_static! {
         dns_entry!("AdGuard DNS", (94, 140, 15, 15), 53),
         dns_entry!("Comodo Secure DNS", (8, 26, 56, 26), 53),
         dns_entry!("Comodo Secure DNS", (8, 20, 247, 20), 53),
+        dns_entry!("Level3", (209, 244, 0, 3), 53),
+        dns_entry!("Level3", (209, 244, 0, 4), 53),
     ];
 }
 
