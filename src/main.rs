@@ -6,11 +6,14 @@ use hickory_resolver::config::ResolverOpts;
 use hickory_resolver::Resolver;
 use indicatif::ProgressBar;
 use indicatif::ProgressStyle;
+use std::collections;
 use std::convert::From;
 use std::fmt;
 use std::net::IpAddr;
 use std::net::Ipv4Addr;
 use std::net::SocketAddr;
+use std::sync;
+use std::thread;
 use std::time::Duration;
 use std::time::Instant;
 use tabled::Table;
@@ -23,6 +26,8 @@ use tabled::Tabled;
 struct Arguments {
     #[arg(long, default_value = "google.com")]
     domain: String,
+    #[arg(long, default_value = "8")]
+    threads: usize,
 }
 
 #[derive(Debug, Clone)]
@@ -92,7 +97,6 @@ struct ResultEntry {
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let arguments = Arguments::parse();
-    let mut result_entries: Vec<ResultEntry> = Vec::new();
 
     println!(
         "Starting DNS benchmark with test domain: {}...",
@@ -107,51 +111,78 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             .progress_chars("#>-"),
     );
 
+    let dns_entries = sync::Arc::new(sync::Mutex::new(collections::VecDeque::from(
+        DNS_ENTRIES.clone(),
+    )));
+    let result_entries = sync::Arc::new(sync::Mutex::new(Vec::new()));
+    let mut handles = Vec::new();
     let bench_start_time = Instant::now();
 
-    'dns_bench: for dns_entry in DNS_ENTRIES.iter() {
-        let mut resolver_config = ResolverConfig::new();
-        resolver_config.add_name_server(NameServerConfig {
-            socket_addr: dns_entry.socker_addr,
-            protocol: Protocol::Udp,
-            tls_dns_name: None,
-            trust_negative_responses: false,
-            bind_addr: None,
-        });
-        let resolver_opts = ResolverOpts::default();
-        let resolver = Resolver::new(resolver_config, resolver_opts)?;
+    for _ in 0..arguments.threads {
+        let dns_entries_clone = dns_entries.clone();
+        let result_entries_clone = result_entries.clone();
+        let arguments_clone = arguments.clone();
+        let pb_clone = pb.clone();
 
-        // Measure the DNS resolution time
-        let start_time = Instant::now();
-        let Ok(response) = resolver.lookup_ip(arguments.domain.clone()) else {
-            let result_entry = ResultEntry {
-                name: dns_entry.name.clone(),
-                ip: dns_entry.socker_addr.ip(),
-                resolved_ip: IpAddr::V4(Ipv4Addr::new(0, 0, 0, 0)),
-                time: TimeResult::Failed(String::from("Failed to resolve")),
+        handles.push(thread::spawn(move || loop {
+            let dns_entry = {
+                let mut dns_entries_clone = dns_entries_clone.lock().unwrap();
+                dns_entries_clone.pop_front()
             };
-            result_entries.push(result_entry);
-            pb.inc(1);
-            continue 'dns_bench;
-        };
 
-        // Calculate the elapsed time
-        let elapsed_time = start_time.elapsed();
+            if let Some(dns_entry) = dns_entry {
+                let mut resolver_config = ResolverConfig::new();
+                resolver_config.add_name_server(NameServerConfig {
+                    socket_addr: dns_entry.socker_addr,
+                    protocol: Protocol::Udp,
+                    tls_dns_name: None,
+                    trust_negative_responses: false,
+                    bind_addr: None,
+                });
+                let resolver_opts = ResolverOpts::default();
+                let resolver = Resolver::new(resolver_config, resolver_opts).unwrap();
 
-        // Create the result entry
-        let result_entry = ResultEntry {
-            name: dns_entry.name.clone(),
-            ip: dns_entry.socker_addr.ip(),
-            resolved_ip: response.iter().next().unwrap(),
-            time: TimeResult::Succeeded(elapsed_time),
-        };
-        result_entries.push(result_entry);
-        pb.inc(1);
+                // Measure the DNS resolution time
+                let start_time = Instant::now();
+                let Ok(response) = resolver.lookup_ip(arguments_clone.domain.clone()) else {
+                    let result_entry = ResultEntry {
+                        name: dns_entry.name.clone(),
+                        ip: dns_entry.socker_addr.ip(),
+                        resolved_ip: IpAddr::V4(Ipv4Addr::new(0, 0, 0, 0)),
+                        time: TimeResult::Failed(String::from("Failed to resolve")),
+                    };
+                    result_entries_clone.lock().unwrap().push(result_entry);
+                    pb_clone.inc(1);
+                    continue;
+                };
+
+                // Calculate the elapsed time
+                let elapsed_time = start_time.elapsed();
+
+                // Create the result entry
+                let result_entry = ResultEntry {
+                    name: dns_entry.name.clone(),
+                    ip: dns_entry.socker_addr.ip(),
+                    resolved_ip: response.iter().next().unwrap(),
+                    time: TimeResult::Succeeded(elapsed_time),
+                };
+                result_entries_clone.lock().unwrap().push(result_entry);
+                pb_clone.inc(1);
+            } else {
+                break;
+            }
+        }));
+    }
+
+    // Wait for all threads to finish
+    for handle in handles {
+        handle.join().unwrap();
     }
 
     pb.finish_and_clear();
 
     // Sort result entries by time
+    let mut result_entries = result_entries.lock().unwrap();
     result_entries.sort_by(|a, b| match (a.time.clone(), b.time.clone()) {
         (TimeResult::Succeeded(a), TimeResult::Succeeded(b)) => a.cmp(&b),
         (TimeResult::Succeeded(_), TimeResult::Failed(_)) => std::cmp::Ordering::Less,
@@ -160,7 +191,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     });
 
     // Print the result
-    let table = Table::new(&result_entries).to_string();
+    let table = Table::new(&*result_entries).to_string();
     println!("{}", table);
 
     // Print the benchmark time
