@@ -1,4 +1,9 @@
 use clap::Parser;
+use hickory_resolver::config::NameServerConfig;
+use hickory_resolver::config::Protocol;
+use hickory_resolver::config::ResolverConfig;
+use hickory_resolver::config::ResolverOpts;
+use hickory_resolver::Resolver;
 use indicatif::ProgressBar;
 use indicatif::ProgressStyle;
 use std::convert::From;
@@ -10,11 +15,6 @@ use std::time::Duration;
 use std::time::Instant;
 use tabled::Table;
 use tabled::Tabled;
-use trust_dns_resolver::config::NameServerConfig;
-use trust_dns_resolver::config::Protocol;
-use trust_dns_resolver::config::ResolverConfig;
-use trust_dns_resolver::config::ResolverOpts;
-use trust_dns_resolver::Resolver;
 
 #[derive(Debug, Clone, Parser)]
 #[command(next_line_help = true)]
