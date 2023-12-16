@@ -107,6 +107,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             .progress_chars("#>-"),
     );
 
+    let bench_start_time = Instant::now();
+
     'dns_bench: for dns_entry in DNS_ENTRIES.iter() {
         let mut resolver_config = ResolverConfig::new();
         resolver_config.add_name_server(NameServerConfig {
@@ -160,6 +162,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Print the result
     let table = Table::new(&result_entries).to_string();
     println!("{}", table);
+
+    // Print the benchmark time
+    let bench_elapsed_time = bench_start_time.elapsed();
+    println!("Benchmark completed in {bench_elapsed_time:?}",);
 
     Ok(())
 }
