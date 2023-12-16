@@ -24,8 +24,10 @@ use tabled::Tabled;
 #[command(author, version, about, long_about = None)]
 
 struct Arguments {
+    /// The domain to resolve.
     #[arg(long, default_value = "google.com")]
     domain: String,
+    /// The number of threads to use.
     #[arg(long, default_value = "8")]
     threads: usize,
 }
