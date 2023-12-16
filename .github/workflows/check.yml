@@ -60,8 +60,11 @@ jobs:
             - name: Build
               run: cargo build --all-targets
 
-            - name: Tests
+            - name: Run tests
               run: cargo test
+
+            - name: Perform test application run
+              run: cargo run
 
     msrv:
         name: Check minimal supported rust version (MSRV).
