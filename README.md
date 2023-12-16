@@ -80,9 +80,9 @@ Usage: dns-bench [OPTIONS]
 
 Options:
       --domain <DOMAIN>
-          [default: google.com]
+          The domain to resolve [default: google.com]
       --threads <THREADS>
-          [default: 8]
+          The number of threads to use [default: 8]
   -h, --help
           Print help
   -V, --version
