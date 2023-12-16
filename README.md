@@ -81,6 +81,8 @@ Usage: dns-bench [OPTIONS]
 Options:
       --domain <DOMAIN>
           [default: google.com]
+      --threads <THREADS>
+          [default: 8]
   -h, --help
           Print help
   -V, --version
