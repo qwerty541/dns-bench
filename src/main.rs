@@ -115,6 +115,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             .progress_chars("#>-"),
     );
 
+    // Create the shared DNS entries and result entries
     let dns_entries = sync::Arc::new(sync::Mutex::new(collections::VecDeque::from(
         DNS_ENTRIES.clone(),
     )));
@@ -122,6 +123,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut handles = Vec::new();
     let bench_start_time = Instant::now();
 
+    // Create the threads
     for _ in 0..arguments.threads {
         let dns_entries_clone = dns_entries.clone();
         let result_entries_clone = result_entries.clone();
