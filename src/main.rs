@@ -101,8 +101,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let arguments = Arguments::parse();
 
     println!(
-        "Starting DNS benchmark with test domain: {}...",
-        arguments.domain
+        "Starting DNS benchmark with the following parameters:\n\
+        Domain: {}\n\
+        Threads: {}",
+        arguments.domain, arguments.threads
     );
 
     // Create a progress bar with the desired style
