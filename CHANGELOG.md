@@ -1,3 +1,10 @@
+-   Boosted performance 5x times by multi thread implementation (now by default 8 threads).
+-   Added `--threads` option to specify custom number of threads.
+-   Added output of total benchmark time.
+-   Updated dependencies:
+    - `clap` from 4.4.7 to 4.4.11
+    - Replaced `trust-dns-resolver` with `hickory-resolver`
+
 ## v0.1.3 (10.11.2023)
 
 -   Add Level3 DNS to list
