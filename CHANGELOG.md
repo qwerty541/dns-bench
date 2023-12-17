@@ -1,3 +1,5 @@
+## v0.2.0 (17.12.2023)
+
 -   Boosted performance 5x times by multi thread implementation (now by default 8 threads).
 -   Added `--threads` option to specify custom number of threads.
 -   Added output of total benchmark time.
