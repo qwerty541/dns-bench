@@ -149,30 +149,25 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 let resolver = Resolver::new(resolver_config, resolver_opts).unwrap();
 
                 // Measure the DNS resolution time
-                let result_entry: ResultEntry;
                 let start_time = Instant::now();
-                match resolver.lookup_ip(arguments_clone.domain.clone()) {
-                    Ok(response) => {
-                        // Calculate the elapsed time
-                        let elapsed_time = start_time.elapsed();
-
-                        // Create the result entry
-                        result_entry = ResultEntry {
-                            name: dns_entry.name.clone(),
-                            ip: dns_entry.socker_addr.ip(),
-                            resolved_ip: response.iter().next().unwrap(),
-                            time: TimeResult::Succeeded(elapsed_time),
-                        };
-                    }
-                    Err(e) => {
-                        result_entry = ResultEntry {
+                let result_entry: ResultEntry =
+                    match resolver.lookup_ip(arguments_clone.domain.clone()) {
+                        Ok(response) => {
+                            let elapsed_time = start_time.elapsed();
+                            ResultEntry {
+                                name: dns_entry.name.clone(),
+                                ip: dns_entry.socker_addr.ip(),
+                                resolved_ip: response.iter().next().unwrap(),
+                                time: TimeResult::Succeeded(elapsed_time),
+                            }
+                        }
+                        Err(e) => ResultEntry {
                             name: dns_entry.name.clone(),
                             ip: dns_entry.socker_addr.ip(),
                             resolved_ip: IpAddr::V4(Ipv4Addr::new(0, 0, 0, 0)),
                             time: TimeResult::Failed(e.to_string()),
-                        };
-                    }
-                };
+                        },
+                    };
                 result_entries_clone.lock().unwrap().push(result_entry);
                 pb_clone.inc(1);
             } else {
