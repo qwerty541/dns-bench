@@ -244,16 +244,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     pb.finish_and_clear();
 
-    // Sort result entries by average duration
+    // Sort result entries by average duration, failed entries are at the end.
     let mut result_entries = result_entries.lock().unwrap();
     result_entries.sort_by(|a, b| {
         let a = match a.average_duration {
             TimeResult::Succeeded(duration) => duration,
-            TimeResult::Failed(_) => Duration::new(0, 0),
+            TimeResult::Failed(_) => Duration::new(u64::MAX, 0),
         };
         let b = match b.average_duration {
             TimeResult::Succeeded(duration) => duration,
-            TimeResult::Failed(_) => Duration::new(0, 0),
+            TimeResult::Failed(_) => Duration::new(u64::MAX, 0),
         };
         a.cmp(&b)
     });
