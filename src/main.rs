@@ -137,7 +137,7 @@ impl From<Vec<MeasureResult>> for ResultEntry {
 
         ResultEntry {
             name: value[0].name.clone(),
-            ip: value[0].ip.clone(),
+            ip: value[0].ip,
             last_resolved_ip,
             successfull_requests: format!(
                 "{}/{} ({:.2}%)",
