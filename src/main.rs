@@ -8,6 +8,7 @@ use indicatif::ProgressBar;
 use indicatif::ProgressStyle;
 use std::collections;
 use std::convert::From;
+use std::convert::Into;
 use std::fmt;
 use std::net::IpAddr;
 use std::net::Ipv4Addr;
@@ -30,6 +31,9 @@ struct Arguments {
     /// The number of threads to use.
     #[arg(long, default_value = "8")]
     threads: usize,
+    /// The number of requests to make.
+    #[arg(long, default_value = "3")]
+    requests: usize,
 }
 
 #[derive(Debug, Clone)]
@@ -89,12 +93,62 @@ impl fmt::Display for TimeResult {
     }
 }
 
-#[derive(Debug, Clone, Tabled)]
-struct ResultEntry {
+#[derive(Debug, Clone)]
+struct MeasureResult {
     name: String,
     ip: IpAddr,
     resolved_ip: IpAddr,
     time: TimeResult,
+}
+
+#[derive(Debug, Clone, Tabled)]
+struct ResultEntry {
+    name: String,
+    ip: IpAddr,
+    last_resolved_ip: IpAddr,
+    /// String with the following format: "successfull_requests/total_requests (success_rate))"
+    successfull_requests: String,
+    first_duration: TimeResult,
+    average_duration: TimeResult,
+}
+
+impl From<Vec<MeasureResult>> for ResultEntry {
+    fn from(value: Vec<MeasureResult>) -> Self {
+        let mut successfull_requests = 0;
+        let mut total_time = Duration::new(0, 0);
+        let mut last_resolved_ip = IpAddr::V4(Ipv4Addr::new(0, 0, 0, 0));
+
+        for measure_result in &value {
+            match measure_result.time {
+                TimeResult::Succeeded(duration) => {
+                    successfull_requests += 1;
+                    total_time += duration;
+                    last_resolved_ip = measure_result.resolved_ip;
+                }
+                TimeResult::Failed(_) => {}
+            }
+        }
+
+        let average_duration = if successfull_requests > 0 {
+            TimeResult::Succeeded(total_time / successfull_requests as u32)
+        } else {
+            TimeResult::Failed(String::from("No successfull requests"))
+        };
+
+        ResultEntry {
+            name: value[0].name.clone(),
+            ip: value[0].ip.clone(),
+            last_resolved_ip,
+            successfull_requests: format!(
+                "{}/{} ({:.2}%)",
+                successfull_requests,
+                value.len(),
+                successfull_requests as f32 / value.len() as f32 * 100.0
+            ),
+            first_duration: value[0].time.clone(),
+            average_duration,
+        }
+    }
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -103,12 +157,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!(
         "Starting DNS benchmark with the following parameters:\n\
         Domain: {}\n\
-        Threads: {}",
-        arguments.domain, arguments.threads
+        Threads: {}\n\
+        Requests: {}",
+        arguments.domain, arguments.threads, arguments.requests
     );
 
     // Create a progress bar with the desired style
-    let pb = ProgressBar::new(DNS_ENTRIES.len() as u64);
+    let pb = ProgressBar::new((DNS_ENTRIES.len() * arguments.requests) as u64);
     pb.set_style(
         ProgressStyle::default_bar()
             .template("[{bar:60.cyan/blue}] {pos}/{len} ({eta})")?
@@ -137,39 +192,45 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             };
 
             if let Some(dns_entry) = dns_entry {
-                let mut resolver_config = ResolverConfig::new();
-                resolver_config.add_name_server(NameServerConfig {
-                    socket_addr: dns_entry.socker_addr,
-                    protocol: Protocol::Udp,
-                    tls_dns_name: None,
-                    trust_negative_responses: false,
-                    bind_addr: None,
-                });
-                let resolver_opts = ResolverOpts::default();
-                let resolver = Resolver::new(resolver_config, resolver_opts).unwrap();
+                let mut measure_results = Vec::new();
 
                 // Measure the DNS resolution time
-                let start_time = Instant::now();
-                let result_entry: ResultEntry =
-                    match resolver.lookup_ip(arguments_clone.domain.clone()) {
-                        Ok(response) => {
-                            let elapsed_time = start_time.elapsed();
-                            ResultEntry {
+                for _ in 0..arguments_clone.requests {
+                    let mut resolver_config = ResolverConfig::new();
+                    resolver_config.add_name_server(NameServerConfig {
+                        socket_addr: dns_entry.socker_addr,
+                        protocol: Protocol::Udp,
+                        tls_dns_name: None,
+                        trust_negative_responses: false,
+                        bind_addr: None,
+                    });
+                    let resolver_opts = ResolverOpts::default();
+                    let resolver = Resolver::new(resolver_config, resolver_opts).unwrap();
+
+                    let start_time = Instant::now();
+                    let result_entry: MeasureResult =
+                        match resolver.lookup_ip(arguments_clone.domain.clone()) {
+                            Ok(response) => {
+                                let elapsed_time = start_time.elapsed();
+                                MeasureResult {
+                                    name: dns_entry.name.clone(),
+                                    ip: dns_entry.socker_addr.ip(),
+                                    resolved_ip: response.iter().next().unwrap(),
+                                    time: TimeResult::Succeeded(elapsed_time),
+                                }
+                            }
+                            Err(e) => MeasureResult {
                                 name: dns_entry.name.clone(),
                                 ip: dns_entry.socker_addr.ip(),
-                                resolved_ip: response.iter().next().unwrap(),
-                                time: TimeResult::Succeeded(elapsed_time),
-                            }
-                        }
-                        Err(e) => ResultEntry {
-                            name: dns_entry.name.clone(),
-                            ip: dns_entry.socker_addr.ip(),
-                            resolved_ip: IpAddr::V4(Ipv4Addr::new(0, 0, 0, 0)),
-                            time: TimeResult::Failed(e.to_string()),
-                        },
-                    };
+                                resolved_ip: IpAddr::V4(Ipv4Addr::new(0, 0, 0, 0)),
+                                time: TimeResult::Failed(e.to_string()),
+                            },
+                        };
+                    measure_results.push(result_entry);
+                    pb_clone.inc(1);
+                }
+                let result_entry: ResultEntry = measure_results.into();
                 result_entries_clone.lock().unwrap().push(result_entry);
-                pb_clone.inc(1);
             } else {
                 break;
             }
@@ -183,13 +244,18 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     pb.finish_and_clear();
 
-    // Sort result entries by time
+    // Sort result entries by average duration
     let mut result_entries = result_entries.lock().unwrap();
-    result_entries.sort_by(|a, b| match (a.time.clone(), b.time.clone()) {
-        (TimeResult::Succeeded(a), TimeResult::Succeeded(b)) => a.cmp(&b),
-        (TimeResult::Succeeded(_), TimeResult::Failed(_)) => std::cmp::Ordering::Less,
-        (TimeResult::Failed(_), TimeResult::Succeeded(_)) => std::cmp::Ordering::Greater,
-        (TimeResult::Failed(_), TimeResult::Failed(_)) => std::cmp::Ordering::Equal,
+    result_entries.sort_by(|a, b| {
+        let a = match a.average_duration {
+            TimeResult::Succeeded(duration) => duration,
+            TimeResult::Failed(_) => Duration::new(0, 0),
+        };
+        let b = match b.average_duration {
+            TimeResult::Succeeded(duration) => duration,
+            TimeResult::Failed(_) => Duration::new(0, 0),
+        };
+        a.cmp(&b)
     });
 
     // Print the result
