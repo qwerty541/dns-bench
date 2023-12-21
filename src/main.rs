@@ -149,28 +149,29 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 let resolver = Resolver::new(resolver_config, resolver_opts).unwrap();
 
                 // Measure the DNS resolution time
+                let result_entry: ResultEntry;
                 let start_time = Instant::now();
-                let Ok(response) = resolver.lookup_ip(arguments_clone.domain.clone()) else {
-                    let result_entry = ResultEntry {
-                        name: dns_entry.name.clone(),
-                        ip: dns_entry.socker_addr.ip(),
-                        resolved_ip: IpAddr::V4(Ipv4Addr::new(0, 0, 0, 0)),
-                        time: TimeResult::Failed(String::from("Failed to resolve")),
-                    };
-                    result_entries_clone.lock().unwrap().push(result_entry);
-                    pb_clone.inc(1);
-                    continue;
-                };
+                match resolver.lookup_ip(arguments_clone.domain.clone()) {
+                    Ok(response) => {
+                        // Calculate the elapsed time
+                        let elapsed_time = start_time.elapsed();
 
-                // Calculate the elapsed time
-                let elapsed_time = start_time.elapsed();
-
-                // Create the result entry
-                let result_entry = ResultEntry {
-                    name: dns_entry.name.clone(),
-                    ip: dns_entry.socker_addr.ip(),
-                    resolved_ip: response.iter().next().unwrap(),
-                    time: TimeResult::Succeeded(elapsed_time),
+                        // Create the result entry
+                        result_entry = ResultEntry {
+                            name: dns_entry.name.clone(),
+                            ip: dns_entry.socker_addr.ip(),
+                            resolved_ip: response.iter().next().unwrap(),
+                            time: TimeResult::Succeeded(elapsed_time),
+                        };
+                    }
+                    Err(e) => {
+                        result_entry = ResultEntry {
+                            name: dns_entry.name.clone(),
+                            ip: dns_entry.socker_addr.ip(),
+                            resolved_ip: IpAddr::V4(Ipv4Addr::new(0, 0, 0, 0)),
+                            time: TimeResult::Failed(e.to_string()),
+                        };
+                    }
                 };
                 result_entries_clone.lock().unwrap().push(result_entry);
                 pb_clone.inc(1);
