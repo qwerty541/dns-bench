@@ -75,6 +75,8 @@ lazy_static::lazy_static! {
         dns_entry!("Comodo Secure DNS", (8, 20, 247, 20), 53),
         dns_entry!("Level3", (209, 244, 0, 3), 53),
         dns_entry!("Level3", (209, 244, 0, 4), 53),
+        dns_entry!("Verisign", (64, 6, 64, 6), 53),
+        dns_entry!("Verisign", (64, 6, 65, 6), 53),
     ];
 }
 
