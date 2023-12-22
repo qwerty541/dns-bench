@@ -206,7 +206,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                         trust_negative_responses: false,
                         bind_addr: None,
                     });
-                    let resolver_opts = ResolverOpts::default();
+                    let mut resolver_opts = ResolverOpts::default();
+                    resolver_opts.attempts = 1;
                     let resolver = Resolver::new(resolver_config, resolver_opts).unwrap();
 
                     // Measure the time it takes to resolve the domain
