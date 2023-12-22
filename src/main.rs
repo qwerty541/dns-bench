@@ -166,7 +166,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let pb = ProgressBar::new((DNS_ENTRIES.len() * arguments.requests) as u64);
     pb.set_style(
         ProgressStyle::default_bar()
-            .template("[{bar:60.cyan/blue}] {pos}/{len} ({eta})")?
+            .template("{spinner:.bold.green} [{elapsed}] [{bar:80.cyan/blue}] {pos}/{len} ({eta})")?
             .progress_chars("#>-"),
     );
 
