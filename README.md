@@ -83,6 +83,8 @@ Options:
           The domain to resolve [default: google.com]
       --threads <THREADS>
           The number of threads to use [default: 8]
+      --requests <REQUESTS>
+          The number of requests to make [default: 3]
   -h, --help
           Print help
   -V, --version
