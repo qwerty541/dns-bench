@@ -34,6 +34,9 @@ struct Arguments {
     /// The number of requests to make.
     #[arg(long, default_value = "3")]
     requests: usize,
+    /// The timeout in seconds.
+    #[arg(long, default_value = "3")]
+    timeout_secs: u64,
 }
 
 #[derive(Debug, Clone)]
@@ -208,6 +211,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     });
                     let mut resolver_opts = ResolverOpts::default();
                     resolver_opts.attempts = 1;
+                    resolver_opts.timeout = Duration::from_secs(arguments_clone.timeout_secs);
                     let resolver = Resolver::new(resolver_config, resolver_opts).unwrap();
 
                     // Measure the time it takes to resolve the domain
