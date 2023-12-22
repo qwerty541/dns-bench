@@ -86,6 +86,8 @@ Options:
           The number of threads to use [default: 8]
       --requests <REQUESTS>
           The number of requests to make [default: 3]
+      --timeout <TIMEOUT>
+          The timeout in seconds [default: 3]
   -h, --help
           Print help
   -V, --version
