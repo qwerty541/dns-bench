@@ -194,8 +194,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             if let Some(dns_entry) = dns_entry {
                 let mut measure_results = Vec::new();
 
-                // Measure the DNS resolution time
                 for _ in 0..arguments_clone.requests {
+                    // Create a new resolver for each request to avoid caching
                     let mut resolver_config = ResolverConfig::new();
                     resolver_config.add_name_server(NameServerConfig {
                         socket_addr: dns_entry.socker_addr,
@@ -207,6 +207,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     let resolver_opts = ResolverOpts::default();
                     let resolver = Resolver::new(resolver_config, resolver_opts).unwrap();
 
+                    // Measure the time it takes to resolve the domain
                     let start_time = Instant::now();
                     let result_entry: MeasureResult =
                         match resolver.lookup_ip(arguments_clone.domain.clone()) {
