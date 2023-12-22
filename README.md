@@ -31,6 +31,7 @@ This repository provides DNS benchmarking command line tool written on Rust. It 
 - AdGuard DNS
 - Comodo Secure DNS
 - Level3
+- Verisign
 
 ## Installation
 
