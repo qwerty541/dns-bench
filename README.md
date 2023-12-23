@@ -14,13 +14,13 @@
 
 ## Description
 
-This repository provides DNS benchmarking command line tool written in Rust. It iterates through prepared list of public DNS servers, measures their response time and print table with sorted results in console. It can be used to find the fastest DNS in your location. An example of output is shown below.
+This repository provides DNS benchmarking command line tool written in Rust. It iterates through built-in list of public DNS servers, measures their response time and print table with sorted results in console. It can be used to find the fastest DNS in your location. An example of output is shown below.
 
 ### Example
 
 ![Example](./example.png)
 
-### Supported DNS servers list
+### List of built-in DNS servers
 
 - Google Public DNS
 - Cloudflare
