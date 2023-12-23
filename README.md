@@ -83,7 +83,7 @@ Below is a list of currently supported options.
 
 ```
 $ dns-bench --help
-Determine the fastest DNS for yourself using simple command line tool.
+Find the fastest DNS in your location using simple command line tool.
 
 Usage: dns-bench [OPTIONS]
 
