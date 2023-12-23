@@ -1,3 +1,12 @@
+-   Added `--requests` option to specify custom number of requests to each DNS server.
+-   Added `--timeout` option to specify custom timeout in seconds.
+-   Added Verisign public DNS to built-in list.
+-   Fixed tabled sorting, now failed DNS entries are always at the end of the table.
+-   Fixed error handling, now it shows actual error descriptions instead of static "Failed to resolve" message.
+-   Fixed sending extra requests on fails, `hickory-resolver` got default retries count of 2.
+-   Improved progress bar appearance.
+-   Improved documentation.
+
 ## v0.2.0 (17.12.2023)
 
 -   Boosted performance 5x times by multi thread implementation (now by default 8 threads).
