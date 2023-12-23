@@ -210,7 +210,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                         bind_addr: None,
                     });
                     let mut resolver_opts = ResolverOpts::default();
-                    resolver_opts.attempts = 1;
+                    resolver_opts.attempts = 0;
                     resolver_opts.timeout = Duration::from_secs(arguments_clone.timeout);
                     let resolver = Resolver::new(resolver_config, resolver_opts).unwrap();
 
