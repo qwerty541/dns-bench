@@ -20,6 +20,14 @@ This repository provides DNS benchmarking command line tool written in Rust. It 
 
 ![Example](./example.gif)
 
+### Features
+
+- Built-in list of public DNS servers.
+- Requests count configuration. By default, 3 requests are made to each DNS server.
+- Threads count configuration. By default, 8 threads are used.
+- Timeout configuration. By default, 3 seconds timeout is used.
+- Domain configuration. By default, google.com domain is used.
+
 ### List of built-in DNS servers
 
 - Google Public DNS
