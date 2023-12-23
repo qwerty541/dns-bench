@@ -1,3 +1,5 @@
+## v0.3.0 (23.12.2023)
+
 -   Added `--requests` option to specify custom number of requests to each DNS server.
 -   Added `--timeout` option to specify custom timeout in seconds.
 -   Added Verisign public DNS to built-in list.
