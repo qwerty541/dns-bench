@@ -1,6 +1,8 @@
+use clap::builder::PossibleValue;
 use clap::Parser;
+use clap::ValueEnum;
 use hickory_resolver::config::NameServerConfig;
-use hickory_resolver::config::Protocol;
+use hickory_resolver::config::Protocol as ResolverProtocol;
 use hickory_resolver::config::ResolverConfig;
 use hickory_resolver::config::ResolverOpts;
 use hickory_resolver::Resolver;
@@ -13,12 +15,63 @@ use std::fmt;
 use std::net::IpAddr;
 use std::net::Ipv4Addr;
 use std::net::SocketAddr;
+use std::str::FromStr;
 use std::sync;
 use std::thread;
 use std::time::Duration;
 use std::time::Instant;
 use tabled::Table;
 use tabled::Tabled;
+
+#[derive(Debug, Clone, Copy)]
+enum Protocol {
+    Tcp,
+    Udp,
+}
+
+impl From<Protocol> for ResolverProtocol {
+    fn from(val: Protocol) -> Self {
+        match val {
+            Protocol::Tcp => ResolverProtocol::Tcp,
+            Protocol::Udp => ResolverProtocol::Udp,
+        }
+    }
+}
+
+impl ValueEnum for Protocol {
+    fn value_variants<'a>() -> &'a [Self] {
+        &[Self::Tcp, Self::Udp]
+    }
+
+    fn to_possible_value(&self) -> Option<PossibleValue> {
+        Some(match self {
+            Self::Tcp => PossibleValue::new("tcp"),
+            Self::Udp => PossibleValue::new("udp"),
+        })
+    }
+}
+
+impl FromStr for Protocol {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        for variant in Self::value_variants() {
+            if variant.to_possible_value().unwrap().matches(s, false) {
+                return Ok(*variant);
+            }
+        }
+        Err(format!("Invalid variant: {}", s))
+    }
+}
+
+impl fmt::Display for Protocol {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        self.to_possible_value()
+            .expect("no values are skipped")
+            .get_name()
+            .fmt(f)
+    }
+}
 
 #[derive(Debug, Clone, Parser)]
 #[command(next_line_help = true)]
@@ -36,6 +89,9 @@ struct Arguments {
     /// The timeout in seconds.
     #[arg(long, default_value = "3")]
     timeout: u64,
+    /// The protocol to use.
+    #[arg(long, default_value = "udp")]
+    protocol: Protocol,
 }
 
 #[derive(Debug, Clone)]
@@ -162,8 +218,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         "Starting DNS benchmark with the following parameters:\n\
         Domain: {}\n\
         Threads: {}\n\
-        Requests: {}",
-        arguments.domain, arguments.threads, arguments.requests
+        Requests: {}\n\
+        Protocol: {}",
+        arguments.domain, arguments.threads, arguments.requests, arguments.protocol
     );
 
     // Create a progress bar with the desired style
@@ -203,7 +260,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     let mut resolver_config = ResolverConfig::new();
                     resolver_config.add_name_server(NameServerConfig {
                         socket_addr: dns_entry.socker_addr,
-                        protocol: Protocol::Udp,
+                        protocol: arguments_clone.protocol.into(),
                         tls_dns_name: None,
                         trust_negative_responses: false,
                         bind_addr: None,
