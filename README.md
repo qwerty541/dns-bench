@@ -27,6 +27,7 @@ This repository provides DNS benchmarking command line tool written in Rust. It 
 - Threads count configuration. By default, 8 threads are used.
 - Timeout configuration. By default, 3 seconds timeout is used.
 - Domain configuration. By default, google.com domain is used.
+- Protocol configuration, either TCP or UDP. By default, UDP is used.
 
 ### List of built-in DNS servers
 
