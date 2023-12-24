@@ -23,7 +23,6 @@ use tabled::Tabled;
 #[derive(Debug, Clone, Parser)]
 #[command(next_line_help = true)]
 #[command(author, version, about, long_about = None)]
-
 struct Arguments {
     /// The domain to resolve.
     #[arg(long, default_value = "google.com")]
