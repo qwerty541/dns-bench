@@ -96,6 +96,8 @@ Options:
           The number of requests to make [default: 3]
       --timeout <TIMEOUT>
           The timeout in seconds [default: 3]
+      --protocol <PROTOCOL>
+          The protocol to use [default: udp] [possible values: tcp, udp]
   -h, --help
           Print help
   -V, --version
