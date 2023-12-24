@@ -1,8 +1,9 @@
-use clap::builder::PossibleValue;
+mod args;
+
+use args::Arguments;
+
 use clap::Parser;
-use clap::ValueEnum;
 use hickory_resolver::config::NameServerConfig;
-use hickory_resolver::config::Protocol as ResolverProtocol;
 use hickory_resolver::config::ResolverConfig;
 use hickory_resolver::config::ResolverOpts;
 use hickory_resolver::Resolver;
@@ -15,84 +16,12 @@ use std::fmt;
 use std::net::IpAddr;
 use std::net::Ipv4Addr;
 use std::net::SocketAddr;
-use std::str::FromStr;
 use std::sync;
 use std::thread;
 use std::time::Duration;
 use std::time::Instant;
 use tabled::Table;
 use tabled::Tabled;
-
-#[derive(Debug, Clone, Copy)]
-enum Protocol {
-    Tcp,
-    Udp,
-}
-
-impl From<Protocol> for ResolverProtocol {
-    fn from(val: Protocol) -> Self {
-        match val {
-            Protocol::Tcp => ResolverProtocol::Tcp,
-            Protocol::Udp => ResolverProtocol::Udp,
-        }
-    }
-}
-
-impl ValueEnum for Protocol {
-    fn value_variants<'a>() -> &'a [Self] {
-        &[Self::Tcp, Self::Udp]
-    }
-
-    fn to_possible_value(&self) -> Option<PossibleValue> {
-        Some(match self {
-            Self::Tcp => PossibleValue::new("tcp"),
-            Self::Udp => PossibleValue::new("udp"),
-        })
-    }
-}
-
-impl FromStr for Protocol {
-    type Err = String;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        for variant in Self::value_variants() {
-            if variant.to_possible_value().unwrap().matches(s, false) {
-                return Ok(*variant);
-            }
-        }
-        Err(format!("Invalid variant: {}", s))
-    }
-}
-
-impl fmt::Display for Protocol {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        self.to_possible_value()
-            .expect("no values are skipped")
-            .get_name()
-            .fmt(f)
-    }
-}
-
-#[derive(Debug, Clone, Parser)]
-#[command(next_line_help = true)]
-#[command(author, version, about, long_about = None)]
-struct Arguments {
-    /// The domain to resolve.
-    #[arg(long, default_value = "google.com")]
-    domain: String,
-    /// The number of threads to use.
-    #[arg(long, default_value = "8")]
-    threads: usize,
-    /// The number of requests to make.
-    #[arg(long, default_value = "3")]
-    requests: usize,
-    /// The timeout in seconds.
-    #[arg(long, default_value = "3")]
-    timeout: u64,
-    /// The protocol to use.
-    #[arg(long, default_value = "udp")]
-    protocol: Protocol,
-}
 
 #[derive(Debug, Clone)]
 struct DnsEntry {
