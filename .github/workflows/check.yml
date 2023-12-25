@@ -63,8 +63,11 @@ jobs:
             - name: Run tests
               run: cargo test
 
-            - name: Perform test application run
-              run: cargo run
+            - name: Perform test application run (IPv4)
+              run: cargo run -- --name-servers-ip v4 --lookup-ip v4
+
+            - name: Perform test application run (IPv6)
+              run: cargo run -- --name-servers-ip v6 --lookup-ip v6
 
     msrv:
         name: Check minimal supported rust version (MSRV).
