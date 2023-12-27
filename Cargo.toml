@@ -17,5 +17,5 @@ exclude = [".github", ".vscode", ".gitignore"]
 clap = { version = "4.4.11", features = ["std", "derive"] }
 indicatif = "0.17.7"
 hickory-resolver = "0.24.0"
-tabled = "0.14.0"
+tabled = "0.15.0"
 lazy_static = "1.4.0"
