@@ -60,22 +60,18 @@ $ dns-bench
 
 ### From git repository
 
-At first clone project using the following command:
+Run the following command and wait until the crate is compiled:
 
 ```sh
-$ git clone git@github.com:qwerty541/dns-bench.git
+$ cargo install --git https://github.com/qwerty541/dns-bench.git --tag v0.3.0 dns-bench
 ```
 
-Than you need to compile crate by running the following command in project directory:
-
-```sh
-$ cargo build
-```
+Also you can remove tag option to install the latest development version.
 
 Now you can run compiled binary:
 
 ```sh
-$ ./target/debug/dns-bench
+$ dns-bench
 ```
 
 ## Options
