@@ -83,7 +83,6 @@ jobs:
                   path: |
                       ~/.cargo
                       target
-                      Cargo.lock
                   key: ${{ runner.os }}-msrv
 
             - name: Install cargo-msrv
