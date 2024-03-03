@@ -22,6 +22,7 @@ jobs:
               uses: dtolnay/rust-toolchain@d76c2a93c593483c9892fd8d2538734f73ed8588
               with:
                   components: clippy, rustfmt
+                  toolchain: stable
 
             - name: Run rustfmt
               run: cargo fmt --check
@@ -76,6 +77,8 @@ jobs:
 
             - name: Install rust (stable)
               uses: dtolnay/rust-toolchain@d76c2a93c593483c9892fd8d2538734f73ed8588
+              with:
+                  toolchain: stable
 
             - name: Cache
               uses: actions/cache@13aacd865c20de90d75de3b17ebe84f7a17d57d2 # v4.0.0
