@@ -19,7 +19,7 @@ jobs:
               uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
             - name: Install rust (stable)
-              uses: dtolnay/rust-toolchain@d76c2a93c593483c9892fd8d2538734f73ed8588
+              uses: dtolnay/rust-toolchain@be73d7920c329f220ce78e0234b8f96b7ae60248
               with:
                   components: clippy, rustfmt
                   toolchain: stable
@@ -43,7 +43,7 @@ jobs:
               uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
             - name: Install rust (${{ matrix.rust }})
-              uses: dtolnay/rust-toolchain@d76c2a93c593483c9892fd8d2538734f73ed8588
+              uses: dtolnay/rust-toolchain@be73d7920c329f220ce78e0234b8f96b7ae60248
               with:
                   toolchain: ${{ matrix.rust }}
 
@@ -76,7 +76,7 @@ jobs:
               uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
             - name: Install rust (stable)
-              uses: dtolnay/rust-toolchain@d76c2a93c593483c9892fd8d2538734f73ed8588
+              uses: dtolnay/rust-toolchain@be73d7920c329f220ce78e0234b8f96b7ae60248
               with:
                   toolchain: stable
 
