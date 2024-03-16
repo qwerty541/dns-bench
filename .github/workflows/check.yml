@@ -10,8 +10,29 @@ on:
     workflow_dispatch: {}
 
 jobs:
-    lints:
-        name: Rustfmt and clippy
+    clippy:
+        name: Clippy
+        runs-on: ubuntu-latest
+
+        strategy:
+            matrix:
+                rust: [stable, beta, nightly]
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
+            - name: Install rust (${{ matrix.rust }})
+              uses: dtolnay/rust-toolchain@be73d7920c329f220ce78e0234b8f96b7ae60248
+              with:
+                  components: clippy
+                  toolchain: ${{ matrix.rust }}
+
+            - name: Run clippy
+              run: cargo clippy --all-features -- -D warnings
+
+    fmt:
+        name: Formatting
         runs-on: ubuntu-latest
 
         steps:
@@ -21,14 +42,11 @@ jobs:
             - name: Install rust (stable)
               uses: dtolnay/rust-toolchain@be73d7920c329f220ce78e0234b8f96b7ae60248
               with:
-                  components: clippy, rustfmt
+                  components: rustfmt
                   toolchain: stable
 
             - name: Run rustfmt
               run: cargo fmt --check
-
-            - name: Run clippy
-              run: cargo clippy --all-features -- -D warnings
 
     build_and_test:
         name: Build and test
