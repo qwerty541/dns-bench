@@ -14,7 +14,7 @@ rust-version = "1.74.1"
 exclude = [".github", ".vscode", ".gitignore"]
 
 [dependencies]
-clap = { version = "4.5.2", features = ["std", "derive"] }
+clap = { version = "4.5.3", features = ["std", "derive"] }
 indicatif = "0.17.8"
 hickory-resolver = "0.24.0"
 tabled = "0.15.0"
