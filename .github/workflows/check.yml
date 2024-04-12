@@ -50,10 +50,11 @@ jobs:
 
     build_and_test:
         name: Build and test
-        runs-on: ubuntu-latest
+        runs-on: ${{ matrix.os }}-latest
 
         strategy:
             matrix:
+                os: [ubuntu, macos, windows]
                 rust: [stable, beta, nightly]
 
         steps:
@@ -71,10 +72,10 @@ jobs:
                   path: |
                       ~/.cargo
                       target
-                  key: ${{ runner.os }}-${{ matrix.rust }}-${{ hashFiles('Cargo.lock') }}
+                  key: ${{ matrix.os }}-${{ matrix.rust }}-${{ hashFiles('Cargo.lock') }}
                   restore-keys: |
-                      ${{ runner.os }}-${{ matrix.rust }}-${{ hashFiles('Cargo.lock') }}
-                      ${{ runner.os }}-${{ matrix.rust }}-
+                      ${{ matrix.os }}-${{ matrix.rust }}-${{ hashFiles('Cargo.lock') }}
+                      ${{ matrix.os }}-${{ matrix.rust }}-
 
             - name: Build
               run: cargo build --all-targets
