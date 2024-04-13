@@ -3,7 +3,6 @@ use clap::Parser;
 use clap::ValueEnum;
 use hickory_resolver::config::LookupIpStrategy;
 use hickory_resolver::config::Protocol as ResolverProtocol;
-use std::convert::From;
 use std::fmt;
 use std::str::FromStr;
 
