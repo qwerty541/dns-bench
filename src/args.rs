@@ -28,28 +28,28 @@ pub struct Arguments {
     pub protocol: Protocol,
     /// The IP version to use for the name servers.
     #[arg(long, default_value = "v4")]
-    pub name_servers_ip: Ip,
+    pub name_servers_ip: IpAddr,
     /// The IP version to use for the lookup.
     #[arg(long, default_value = "v4")]
-    pub lookup_ip: Ip,
+    pub lookup_ip: IpAddr,
 }
 
 #[derive(Debug, Clone, Copy)]
-pub enum Ip {
+pub enum IpAddr {
     V4,
     V6,
 }
 
-impl From<Ip> for LookupIpStrategy {
-    fn from(val: Ip) -> Self {
+impl From<IpAddr> for LookupIpStrategy {
+    fn from(val: IpAddr) -> Self {
         match val {
-            Ip::V4 => LookupIpStrategy::Ipv4Only,
-            Ip::V6 => LookupIpStrategy::Ipv6Only,
+            IpAddr::V4 => LookupIpStrategy::Ipv4Only,
+            IpAddr::V6 => LookupIpStrategy::Ipv6Only,
         }
     }
 }
 
-impl ValueEnum for Ip {
+impl ValueEnum for IpAddr {
     fn value_variants<'a>() -> &'a [Self] {
         &[Self::V4, Self::V6]
     }
@@ -62,7 +62,7 @@ impl ValueEnum for Ip {
     }
 }
 
-impl FromStr for Ip {
+impl FromStr for IpAddr {
     type Err = String;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
@@ -75,7 +75,7 @@ impl FromStr for Ip {
     }
 }
 
-impl fmt::Display for Ip {
+impl fmt::Display for IpAddr {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         self.to_possible_value()
             .expect("no values are skipped")

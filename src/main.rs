@@ -195,8 +195,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Create a progress bar with the desired style
     let pb = ProgressBar::new(match arguments.name_servers_ip {
-        args::Ip::V4 => IPV4_DNS_ENTRIES.len() * arguments.requests,
-        args::Ip::V6 => IPV6_DNS_ENTRIES.len() * arguments.requests,
+        args::IpAddr::V4 => IPV4_DNS_ENTRIES.len() * arguments.requests,
+        args::IpAddr::V6 => IPV6_DNS_ENTRIES.len() * arguments.requests,
     } as u64);
     pb.set_style(
         ProgressStyle::default_bar()
@@ -207,8 +207,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Create the shared DNS entries and result entries
     let dns_entries = sync::Arc::new(sync::Mutex::new(collections::VecDeque::from(
         match arguments.name_servers_ip {
-            args::Ip::V4 => IPV4_DNS_ENTRIES.clone(),
-            args::Ip::V6 => IPV6_DNS_ENTRIES.clone(),
+            args::IpAddr::V4 => IPV4_DNS_ENTRIES.clone(),
+            args::IpAddr::V6 => IPV6_DNS_ENTRIES.clone(),
         },
     )));
     let result_entries = sync::Arc::new(sync::Mutex::new(Vec::new()));
@@ -264,8 +264,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                                 name: dns_entry.name.clone(),
                                 ip: dns_entry.socker_addr.ip(),
                                 resolved_ip: match arguments_clone.lookup_ip {
-                                    args::Ip::V4 => IpAddr::V4(Ipv4Addr::UNSPECIFIED),
-                                    args::Ip::V6 => IpAddr::V6(Ipv6Addr::UNSPECIFIED),
+                                    args::IpAddr::V4 => IpAddr::V4(Ipv4Addr::UNSPECIFIED),
+                                    args::IpAddr::V6 => IpAddr::V6(Ipv6Addr::UNSPECIFIED),
                                 },
                                 time: TimeResult::Failed(e.to_string()),
                             },
