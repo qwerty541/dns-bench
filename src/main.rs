@@ -10,8 +10,6 @@ use hickory_resolver::Resolver;
 use indicatif::ProgressBar;
 use indicatif::ProgressStyle;
 use std::collections;
-use std::convert::From;
-use std::convert::Into;
 use std::fmt;
 use std::net::IpAddr;
 use std::net::Ipv4Addr;

@@ -10,7 +10,7 @@
 [license-badge]: https://img.shields.io/crates/l/dns-bench.svg
 [workflow-badge]: https://github.com/qwerty541/dns-bench/workflows/check/badge.svg
 [actions-url]: https://github.com/qwerty541/dns-bench/actions
-[rust-version]: https://img.shields.io/badge/rust-1.70.0%2B-lightgrey.svg?logo=rust
+[rust-version]: https://img.shields.io/badge/rust-1.74.1%2B-lightgrey.svg?logo=rust
 
 ## Description
 
@@ -60,22 +60,18 @@ $ dns-bench
 
 ### From git repository
 
-At first clone project using the following command:
+Run the following command and wait until the crate is compiled:
 
 ```sh
-$ git clone git@github.com:qwerty541/dns-bench.git
+$ cargo install --git https://github.com/qwerty541/dns-bench.git --tag v0.3.0 dns-bench
 ```
 
-Than you need to compile crate by running the following command in project directory:
-
-```sh
-$ cargo build
-```
+Also you can remove tag option to install the latest development version.
 
 Now you can run compiled binary:
 
 ```sh
-$ ./target/debug/dns-bench
+$ dns-bench
 ```
 
 ## Options

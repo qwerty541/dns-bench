@@ -10,24 +10,43 @@ on:
     workflow_dispatch: {}
 
 jobs:
-    lints:
-        name: Rustfmt and clippy
+    clippy:
+        name: Clippy
+        runs-on: ubuntu-latest
+
+        strategy:
+            matrix:
+                rust: [stable, beta, nightly]
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.2
+
+            - name: Install rust (${{ matrix.rust }})
+              uses: dtolnay/rust-toolchain@dc6353516c68da0f06325f42ad880f76a5e77ec9
+              with:
+                  components: clippy
+                  toolchain: ${{ matrix.rust }}
+
+            - name: Run clippy
+              run: cargo clippy --all-features -- -D warnings
+
+    fmt:
+        name: Formatting
         runs-on: ubuntu-latest
 
         steps:
             - name: Checkout
-              uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+              uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.2
 
             - name: Install rust (stable)
-              uses: dtolnay/rust-toolchain@d76c2a93c593483c9892fd8d2538734f73ed8588
+              uses: dtolnay/rust-toolchain@dc6353516c68da0f06325f42ad880f76a5e77ec9
               with:
-                  components: clippy, rustfmt
+                  components: rustfmt
+                  toolchain: stable
 
             - name: Run rustfmt
               run: cargo fmt --check
-
-            - name: Run clippy
-              run: cargo clippy --all-features -- -D warnings
 
     build_and_test:
         name: Build and test
@@ -39,15 +58,15 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+              uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.2
 
             - name: Install rust (${{ matrix.rust }})
-              uses: dtolnay/rust-toolchain@d76c2a93c593483c9892fd8d2538734f73ed8588
+              uses: dtolnay/rust-toolchain@dc6353516c68da0f06325f42ad880f76a5e77ec9
               with:
                   toolchain: ${{ matrix.rust }}
 
             - name: Cache
-              uses: actions/cache@704facf57e6136b1bc63b828d79edcd491f0ee84 # v3.3.2
+              uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4.0.2
               with:
                   path: |
                       ~/.cargo
@@ -75,15 +94,19 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+              uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.2
 
             - name: Install rust (stable)
-              uses: dtolnay/rust-toolchain@d76c2a93c593483c9892fd8d2538734f73ed8588
+              uses: dtolnay/rust-toolchain@dc6353516c68da0f06325f42ad880f76a5e77ec9
+              with:
+                  toolchain: stable
 
             - name: Cache
-              uses: actions/cache@704facf57e6136b1bc63b828d79edcd491f0ee84 # v3.3.2
+              uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4.0.2
               with:
-                  path: ~/.cargo
+                  path: |
+                      ~/.cargo
+                      target
                   key: ${{ runner.os }}-msrv
 
             - name: Install cargo-msrv
