@@ -97,6 +97,10 @@ Options:
           The timeout in seconds [default: 3]
       --protocol <PROTOCOL>
           The protocol to use [default: udp] [possible values: tcp, udp]
+      --name-servers-ip <NAME_SERVERS_IP>
+          The IP version to use for the name servers [default: v4] [possible values: v4, v6]
+      --lookup-ip <LOOKUP_IP>
+          The IP version to use for the lookup [default: v4] [possible values: v4, v6]
   -h, --help
           Print help
   -V, --version
