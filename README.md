@@ -57,7 +57,7 @@ $ cargo install dns-bench
 Now you can run compiled binary:
 
 ```sh
-$ dns-bench
+$ dns-bench [OPTIONS]
 ```
 
 ### From git repository
@@ -73,7 +73,7 @@ Also you can remove tag option to install the latest development version.
 Now you can run compiled binary:
 
 ```sh
-$ dns-bench
+$ dns-bench [OPTIONS]
 ```
 
 ## Options
