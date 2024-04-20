@@ -1,6 +1,9 @@
 mod args;
+mod servers;
 
 use args::Arguments;
+use servers::IPV4_DNS_ENTRIES;
+use servers::IPV6_DNS_ENTRIES;
 
 use clap::Parser;
 use hickory_resolver::config::NameServerConfig;
@@ -14,93 +17,12 @@ use std::fmt;
 use std::net::IpAddr;
 use std::net::Ipv4Addr;
 use std::net::Ipv6Addr;
-use std::net::SocketAddr;
 use std::sync;
 use std::thread;
 use std::time::Duration;
 use std::time::Instant;
 use tabled::Table;
 use tabled::Tabled;
-
-#[derive(Debug, Clone)]
-struct DnsEntry {
-    name: String,
-    socker_addr: SocketAddr,
-}
-
-macro_rules! ipv4_dns_entry {
-    ($name:expr, $ip:expr, $port:expr) => {
-        DnsEntry {
-            name: String::from($name),
-            socker_addr: SocketAddr::new(
-                IpAddr::V4(Ipv4Addr::new($ip.0, $ip.1, $ip.2, $ip.3)),
-                $port,
-            ),
-        }
-    };
-}
-
-macro_rules! ipv6_dns_entry {
-    ($name:expr, $ip:expr, $port:expr) => {
-        DnsEntry {
-            name: String::from($name),
-            socker_addr: SocketAddr::new(
-                IpAddr::V6(Ipv6Addr::new(
-                    $ip.0, $ip.1, $ip.2, $ip.3, $ip.4, $ip.5, $ip.6, $ip.7,
-                )),
-                $port,
-            ),
-        }
-    };
-}
-
-lazy_static::lazy_static! {
-    static ref IPV4_DNS_ENTRIES: Vec<DnsEntry> = vec![
-        ipv4_dns_entry!("Google", (8, 8, 8, 8), 53),
-        ipv4_dns_entry!("Google", (8, 8, 4, 4), 53),
-        ipv4_dns_entry!("Cloudflare", (1, 1, 1, 1), 53),
-        ipv4_dns_entry!("Cloudflare", (1, 0, 0, 1), 53),
-        ipv4_dns_entry!("Quad9", (9, 9, 9, 9), 53),
-        ipv4_dns_entry!("Quad9", (149, 112, 112, 112), 53),
-        ipv4_dns_entry!("Provider", (192, 168, 0, 1), 53),
-        ipv4_dns_entry!("Control D", (76, 76, 2, 0), 53),
-        ipv4_dns_entry!("Control D", (76, 76, 10, 0), 53),
-        ipv4_dns_entry!("OpenDNS Home", (208, 67, 222, 222), 53),
-        ipv4_dns_entry!("OpenDNS Home", (208, 67, 220, 220), 53),
-        ipv4_dns_entry!("CleanBrowsing", (185, 228, 168, 9), 53),
-        ipv4_dns_entry!("CleanBrowsing", (185, 228, 169, 9), 53),
-        ipv4_dns_entry!("AdGuard DNS", (94, 140, 14, 14), 53),
-        ipv4_dns_entry!("AdGuard DNS", (94, 140, 15, 15), 53),
-        ipv4_dns_entry!("Comodo Secure DNS", (8, 26, 56, 26), 53),
-        ipv4_dns_entry!("Comodo Secure DNS", (8, 20, 247, 20), 53),
-        ipv4_dns_entry!("Level3", (209, 244, 0, 3), 53),
-        ipv4_dns_entry!("Level3", (209, 244, 0, 4), 53),
-        ipv4_dns_entry!("Verisign", (64, 6, 64, 6), 53),
-        ipv4_dns_entry!("Verisign", (64, 6, 65, 6), 53),
-    ];
-}
-
-lazy_static::lazy_static! {
-    static ref IPV6_DNS_ENTRIES: Vec<DnsEntry> = vec![
-        ipv6_dns_entry!("Google", (0x2001, 0x4860, 0x4860, 0, 0, 0, 0, 0x8888), 53),
-        ipv6_dns_entry!("Google", (0x2001, 0x4860, 0x4860, 0, 0, 0, 0, 0x8844), 53),
-        ipv6_dns_entry!("Cloudflare", (0x2606, 0x4700, 0x4700, 0, 0, 0, 0, 0x1111), 53),
-        ipv6_dns_entry!("Cloudflare", (0x2606, 0x4700, 0x4700, 0, 0, 0, 0, 0x1001), 53),
-        ipv6_dns_entry!("Quad9", (0x2620, 0x00fe, 0, 0, 0, 0, 0, 0x00fe), 53),
-        ipv6_dns_entry!("Quad9", (0x2620, 0x00fe, 0, 0, 0, 0, 0, 0x0009), 53),
-        ipv6_dns_entry!("Provider", (0xfe80, 0, 0, 0, 0, 0, 0, 0x0001), 53),
-        ipv6_dns_entry!("Control D", (0x2606, 0x1a40, 0, 0, 0, 0, 0, 0), 53),
-        ipv6_dns_entry!("Control D", (0x2606, 0x1a40, 0x0001, 0, 0, 0, 0, 0), 53),
-        ipv6_dns_entry!("OpenDNS Home", (0x2620, 0x0119, 0x0035, 0, 0, 0, 0, 0x0035), 53),
-        ipv6_dns_entry!("OpenDNS Home", (0x2620, 0x0119, 0x0053, 0, 0, 0, 0, 0x0053), 53),
-        ipv6_dns_entry!("CleanBrowsing", (0x2a0d, 0x2a00, 0x0001, 0, 0, 0, 0, 0x0002), 53),
-        ipv6_dns_entry!("CleanBrowsing", (0x2a0d, 0x2a00, 0x0002, 0, 0, 0, 0, 0x0002), 53),
-        ipv6_dns_entry!("AdGuard DNS", (0x2a10, 0x50c0, 0, 0, 0, 0, 0x0ad1, 0x00ff), 53),
-        ipv6_dns_entry!("AdGuard DNS", (0x2a10, 0x50c0, 0, 0, 0, 0, 0x0ad2, 0x00ff), 53),
-        ipv6_dns_entry!("Verisign", (0x2620, 0x0074, 0x001b, 0, 0, 0, 0x0001, 0x0001), 53),
-        ipv6_dns_entry!("Verisign", (0x2620, 0x0074, 0x001c, 0, 0, 0, 0x0002, 0x0002), 53),
-    ];
-}
 
 #[derive(Debug, Clone)]
 enum TimeResult {
