@@ -1,3 +1,21 @@
+## Unreleased
+
+### Added
+
+-  Added `--protocol` option to specify protocol (either TCP or UDP).
+-  Added `--lookup-ip` option to specify lookup IP version (either IPv4 or IPv6).
+-  Added `--name-servers-ip` option to specify IP version used to establish connection (either IPv4 or IPv6).
+-  Various minor documentation improvements.
+
+### Changed
+
+- Changed MSRV from 1.70.0 to 1.74.1
+
+### Dependencies
+
+- Updated `tabled` from 0.14.0 to 0.15.0
+- Updated `clap` from 4.4.11 to 4.5.4
+
 ## v0.3.0 (23.12.2023)
 
 -   Added `--requests` option to specify custom number of requests to each DNS server.
