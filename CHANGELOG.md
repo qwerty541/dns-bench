@@ -5,6 +5,7 @@
 -  Added `--protocol` option to specify protocol (either TCP or UDP).
 -  Added `--lookup-ip` option to specify lookup IP version (either IPv4 or IPv6).
 -  Added `--name-servers-ip` option to specify IP version used to establish connection (either IPv4 or IPv6).
+-  Significant code refactoring.
 -  Various minor documentation improvements.
 
 ### Changed
