@@ -11,7 +11,13 @@ repository = "https://github.com/qwerty541/dns-bench"
 homepage = "https://github.com/qwerty541/dns-bench"
 readme = "README.md"
 rust-version = "1.74.1"
-exclude = [".github", ".vscode", ".gitignore"]
+exclude = [
+    ".github",
+    ".vscode",
+    ".gitignore",
+    "CODE_OF_CONDUCT.md",
+    "RELEASE-CHECKLIST.md"
+]
 
 [dependencies]
 clap = { version = "4.5.4", features = ["std", "derive"] }
