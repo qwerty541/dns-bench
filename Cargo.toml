@@ -22,6 +22,6 @@ exclude = [
 [dependencies]
 clap = { version = "4.5.4", features = ["std", "derive"] }
 indicatif = "0.17.8"
-hickory-resolver = "0.24.0"
+hickory-resolver = "0.24.1"
 tabled = "0.15.0"
 lazy_static = "1.4.0"
