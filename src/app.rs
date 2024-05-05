@@ -68,12 +68,8 @@ impl DnsBenchApplication {
     fn print_arguments_summary(&self) {
         println!(
             "Starting DNS benchmark with the following parameters:\n\
-            Domain: {}\n\
-            Threads: {}\n\
-            Requests: {}\n\
-            Protocol: {}\n\
-            Name servers: IP{}; Lookup: IP{}\n\
-            Style: {}",
+            Domain: {}; Threads: {}; Requests: {}; Protocol: {}\n\
+            Name servers: IP{}; Lookup: IP{}; Style: {}",
             self.arguments.domain,
             self.arguments.threads,
             self.arguments.requests,
