@@ -31,9 +31,12 @@ pub struct Arguments {
     /// The IP version to use for the lookup.
     #[arg(long, default_value = "v4")]
     pub lookup_ip: IpAddr,
+    /// The style to use for the table.
+    #[arg(long, default_value = "ascii")]
+    pub style: Style,
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, Eq, PartialEq)]
 pub enum IpAddr {
     V4,
     V6,
@@ -83,7 +86,7 @@ impl fmt::Display for IpAddr {
     }
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, Eq, PartialEq)]
 pub enum Protocol {
     Tcp,
     Udp,
@@ -125,6 +128,83 @@ impl FromStr for Protocol {
 }
 
 impl fmt::Display for Protocol {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        self.to_possible_value()
+            .expect("no values are skipped")
+            .get_name()
+            .fmt(f)
+    }
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq)]
+pub enum Style {
+    Empty,
+    Blank,
+    Ascii,
+    Psql,
+    Markdown,
+    Modern,
+    Sharp,
+    Rounded,
+    ModernRounded,
+    Extended,
+    Dots,
+    ReStructuredText,
+    AsciiRounded,
+}
+
+impl ValueEnum for Style {
+    fn value_variants<'a>() -> &'a [Self] {
+        &[
+            Self::Empty,
+            Self::Blank,
+            Self::Ascii,
+            Self::Psql,
+            Self::Markdown,
+            Self::Modern,
+            Self::Sharp,
+            Self::Rounded,
+            Self::ModernRounded,
+            Self::Extended,
+            Self::Dots,
+            Self::ReStructuredText,
+            Self::AsciiRounded,
+        ]
+    }
+
+    fn to_possible_value(&self) -> Option<PossibleValue> {
+        Some(match self {
+            Self::Empty => PossibleValue::new("empty"),
+            Self::Blank => PossibleValue::new("blank"),
+            Self::Ascii => PossibleValue::new("ascii"),
+            Self::Psql => PossibleValue::new("psql"),
+            Self::Markdown => PossibleValue::new("markdown"),
+            Self::Modern => PossibleValue::new("modern"),
+            Self::Sharp => PossibleValue::new("sharp"),
+            Self::Rounded => PossibleValue::new("rounded"),
+            Self::ModernRounded => PossibleValue::new("modern_rounded"),
+            Self::Extended => PossibleValue::new("extended"),
+            Self::Dots => PossibleValue::new("dots"),
+            Self::ReStructuredText => PossibleValue::new("re_structured_text"),
+            Self::AsciiRounded => PossibleValue::new("ascii_rounded"),
+        })
+    }
+}
+
+impl FromStr for Style {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        for variant in Self::value_variants() {
+            if variant.to_possible_value().unwrap().matches(s, false) {
+                return Ok(*variant);
+            }
+        }
+        Err(format!("Invalid variant: {}", s))
+    }
+}
+
+impl fmt::Display for Style {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         self.to_possible_value()
             .expect("no values are skipped")

@@ -18,6 +18,7 @@ use std::sync;
 use std::thread;
 use std::time::Duration;
 use std::time::Instant;
+use tabled::settings::Style as TableStyle;
 use tabled::Table;
 
 /// The main application.
@@ -71,13 +72,15 @@ impl DnsBenchApplication {
             Threads: {}\n\
             Requests: {}\n\
             Protocol: {}\n\
-            Name servers: IP{}; Lookup: IP{}",
+            Name servers: IP{}; Lookup: IP{}\n\
+            Style: {}",
             self.arguments.domain,
             self.arguments.threads,
             self.arguments.requests,
             self.arguments.protocol,
             self.arguments.name_servers_ip,
             self.arguments.lookup_ip,
+            self.arguments.style,
         );
     }
 
@@ -210,7 +213,36 @@ impl DnsBenchApplication {
 
     /// Print the result.
     fn print_result(&self) {
-        let table = Table::new(&*self.result_entries.lock().unwrap()).to_string();
+        let mut table = Table::new(&*self.result_entries.lock().unwrap());
+
+        if self.arguments.style == args::Style::Empty {
+            table.with(TableStyle::empty());
+        } else if self.arguments.style == args::Style::Blank {
+            table.with(TableStyle::blank());
+        } else if self.arguments.style == args::Style::Ascii {
+            table.with(TableStyle::ascii());
+        } else if self.arguments.style == args::Style::Psql {
+            table.with(TableStyle::psql());
+        } else if self.arguments.style == args::Style::Markdown {
+            table.with(TableStyle::markdown());
+        } else if self.arguments.style == args::Style::Modern {
+            table.with(TableStyle::modern());
+        } else if self.arguments.style == args::Style::Sharp {
+            table.with(TableStyle::sharp());
+        } else if self.arguments.style == args::Style::Rounded {
+            table.with(TableStyle::rounded());
+        } else if self.arguments.style == args::Style::ModernRounded {
+            table.with(TableStyle::modern_rounded());
+        } else if self.arguments.style == args::Style::Extended {
+            table.with(TableStyle::extended());
+        } else if self.arguments.style == args::Style::Dots {
+            table.with(TableStyle::dots());
+        } else if self.arguments.style == args::Style::ReStructuredText {
+            table.with(TableStyle::re_structured_text());
+        } else if self.arguments.style == args::Style::AsciiRounded {
+            table.with(TableStyle::ascii_rounded());
+        }
+
         println!("{}", table);
     }
 
