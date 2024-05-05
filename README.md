@@ -101,6 +101,8 @@ Options:
           The IP version to use for the name servers [default: v4] [possible values: v4, v6]
       --lookup-ip <LOOKUP_IP>
           The IP version to use for the lookup [default: v4] [possible values: v4, v6]
+      --style <STYLE>
+          The style to use for the table [default: ascii] [possible values: empty, blank, ascii, psql, markdown, modern, sharp, rounded, modern_rounded, extended, dots, re_structured_text, ascii_rounded]
   -h, --help
           Print help
   -V, --version
