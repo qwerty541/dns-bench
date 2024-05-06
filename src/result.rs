@@ -29,12 +29,18 @@ pub struct MeasureResult {
 
 #[derive(Debug, Clone, Tabled)]
 pub struct ResultEntry {
+    #[tabled(rename = "Server name")]
     pub name: String,
+    #[tabled(rename = "IP address")]
     pub ip: IpAddr,
+    #[tabled(rename = "Last resolved IP")]
     pub last_resolved_ip: IpAddr,
     /// String with the following format: "successfull_requests/total_requests (success_rate))"
+    #[tabled(rename = "Success rate")]
     pub successfull_requests: String,
+    #[tabled(rename = "First duration")]
     pub first_duration: TimeResult,
+    #[tabled(rename = "Average duration")]
     pub average_duration: TimeResult,
 }
 
