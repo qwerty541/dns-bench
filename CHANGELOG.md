@@ -1,3 +1,9 @@
+## Unreleased
+
+### Added
+
+- Added `--style` option to configure table style. By default, ASCII style is used.
+
 ## v0.4.0 (25.04.2024)
 
 ### Added
