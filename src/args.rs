@@ -36,6 +36,36 @@ pub struct Arguments {
     pub style: Style,
 }
 
+macro_rules! argument_impl_from_str {
+    ($type:ty) => {
+        impl FromStr for $type {
+            type Err = String;
+
+            fn from_str(s: &str) -> Result<Self, Self::Err> {
+                for variant in Self::value_variants() {
+                    if variant.to_possible_value().unwrap().matches(s, false) {
+                        return Ok(*variant);
+                    }
+                }
+                Err(format!("Invalid variant: {}", s))
+            }
+        }
+    };
+}
+
+macro_rules! argument_impl_display {
+    ($type:ty) => {
+        impl fmt::Display for $type {
+            fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+                self.to_possible_value()
+                    .expect("no values are skipped")
+                    .get_name()
+                    .fmt(f)
+            }
+        }
+    };
+}
+
 #[derive(Debug, Clone, Copy, Eq, PartialEq)]
 pub enum IpAddr {
     V4,
@@ -64,27 +94,8 @@ impl ValueEnum for IpAddr {
     }
 }
 
-impl FromStr for IpAddr {
-    type Err = String;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        for variant in Self::value_variants() {
-            if variant.to_possible_value().unwrap().matches(s, false) {
-                return Ok(*variant);
-            }
-        }
-        Err(format!("Invalid variant: {}", s))
-    }
-}
-
-impl fmt::Display for IpAddr {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        self.to_possible_value()
-            .expect("no values are skipped")
-            .get_name()
-            .fmt(f)
-    }
-}
+argument_impl_from_str!(IpAddr);
+argument_impl_display!(IpAddr);
 
 #[derive(Debug, Clone, Copy, Eq, PartialEq)]
 pub enum Protocol {
@@ -114,27 +125,8 @@ impl ValueEnum for Protocol {
     }
 }
 
-impl FromStr for Protocol {
-    type Err = String;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        for variant in Self::value_variants() {
-            if variant.to_possible_value().unwrap().matches(s, false) {
-                return Ok(*variant);
-            }
-        }
-        Err(format!("Invalid variant: {}", s))
-    }
-}
-
-impl fmt::Display for Protocol {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        self.to_possible_value()
-            .expect("no values are skipped")
-            .get_name()
-            .fmt(f)
-    }
-}
+argument_impl_from_str!(Protocol);
+argument_impl_display!(Protocol);
 
 #[derive(Debug, Clone, Copy, Eq, PartialEq)]
 pub enum Style {
@@ -191,24 +183,5 @@ impl ValueEnum for Style {
     }
 }
 
-impl FromStr for Style {
-    type Err = String;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        for variant in Self::value_variants() {
-            if variant.to_possible_value().unwrap().matches(s, false) {
-                return Ok(*variant);
-            }
-        }
-        Err(format!("Invalid variant: {}", s))
-    }
-}
-
-impl fmt::Display for Style {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        self.to_possible_value()
-            .expect("no values are skipped")
-            .get_name()
-            .fmt(f)
-    }
-}
+argument_impl_from_str!(Style);
+argument_impl_display!(Style);
