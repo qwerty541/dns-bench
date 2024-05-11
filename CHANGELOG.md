@@ -4,6 +4,10 @@
 
 - Added `--style` option to configure table style. By default, ASCII style is used.
 
+### Changed
+
+- Changed arguments summary formatting to make it more compact.
+
 ### Dependencies
 
 - Updated `hickory-resolver` from 0.24.0 to 0.24.1
