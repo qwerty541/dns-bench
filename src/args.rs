@@ -1,4 +1,3 @@
-use clap::builder::PossibleValue;
 use clap::Parser;
 use clap::ValueEnum;
 use hickory_resolver::config::LookupIpStrategy;
@@ -66,7 +65,7 @@ macro_rules! argument_impl_display {
     };
 }
 
-#[derive(Debug, Clone, Copy, Eq, PartialEq)]
+#[derive(Debug, Clone, Copy, Eq, PartialEq, ValueEnum)]
 pub enum IpAddr {
     V4,
     V6,
@@ -81,23 +80,10 @@ impl From<IpAddr> for LookupIpStrategy {
     }
 }
 
-impl ValueEnum for IpAddr {
-    fn value_variants<'a>() -> &'a [Self] {
-        &[Self::V4, Self::V6]
-    }
-
-    fn to_possible_value(&self) -> Option<PossibleValue> {
-        Some(match self {
-            Self::V4 => PossibleValue::new("v4"),
-            Self::V6 => PossibleValue::new("v6"),
-        })
-    }
-}
-
 argument_impl_from_str!(IpAddr);
 argument_impl_display!(IpAddr);
 
-#[derive(Debug, Clone, Copy, Eq, PartialEq)]
+#[derive(Debug, Clone, Copy, Eq, PartialEq, ValueEnum)]
 pub enum Protocol {
     Tcp,
     Udp,
@@ -112,23 +98,10 @@ impl From<Protocol> for ResolverProtocol {
     }
 }
 
-impl ValueEnum for Protocol {
-    fn value_variants<'a>() -> &'a [Self] {
-        &[Self::Tcp, Self::Udp]
-    }
-
-    fn to_possible_value(&self) -> Option<PossibleValue> {
-        Some(match self {
-            Self::Tcp => PossibleValue::new("tcp"),
-            Self::Udp => PossibleValue::new("udp"),
-        })
-    }
-}
-
 argument_impl_from_str!(Protocol);
 argument_impl_display!(Protocol);
 
-#[derive(Debug, Clone, Copy, Eq, PartialEq)]
+#[derive(Debug, Clone, Copy, Eq, PartialEq, ValueEnum)]
 pub enum Style {
     Empty,
     Blank,
@@ -143,44 +116,6 @@ pub enum Style {
     Dots,
     ReStructuredText,
     AsciiRounded,
-}
-
-impl ValueEnum for Style {
-    fn value_variants<'a>() -> &'a [Self] {
-        &[
-            Self::Empty,
-            Self::Blank,
-            Self::Ascii,
-            Self::Psql,
-            Self::Markdown,
-            Self::Modern,
-            Self::Sharp,
-            Self::Rounded,
-            Self::ModernRounded,
-            Self::Extended,
-            Self::Dots,
-            Self::ReStructuredText,
-            Self::AsciiRounded,
-        ]
-    }
-
-    fn to_possible_value(&self) -> Option<PossibleValue> {
-        Some(match self {
-            Self::Empty => PossibleValue::new("empty"),
-            Self::Blank => PossibleValue::new("blank"),
-            Self::Ascii => PossibleValue::new("ascii"),
-            Self::Psql => PossibleValue::new("psql"),
-            Self::Markdown => PossibleValue::new("markdown"),
-            Self::Modern => PossibleValue::new("modern"),
-            Self::Sharp => PossibleValue::new("sharp"),
-            Self::Rounded => PossibleValue::new("rounded"),
-            Self::ModernRounded => PossibleValue::new("modern_rounded"),
-            Self::Extended => PossibleValue::new("extended"),
-            Self::Dots => PossibleValue::new("dots"),
-            Self::ReStructuredText => PossibleValue::new("re_structured_text"),
-            Self::AsciiRounded => PossibleValue::new("ascii_rounded"),
-        })
-    }
 }
 
 argument_impl_from_str!(Style);
