@@ -7,6 +7,7 @@
 ### Changed
 
 - Changed arguments summary formatting to make it more compact.
+- Changed table columns names formatting to make to more comfortable to read (i.e. `server_name` => `Server name`, `last_resolved_ip` => `Last resolved IP`).
 
 ### Dependencies
 
