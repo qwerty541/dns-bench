@@ -44,7 +44,7 @@ impl Default for DnsBenchConfig {
 impl DnsBenchConfig {
     pub fn resolve_args(&mut self, args: &Arguments) {
         if let Some(domain) = &args.domain {
-            self.domain = domain.clone();
+            self.domain.clone_from(domain);
         }
         if let Some(threads) = args.threads {
             self.threads = threads;
