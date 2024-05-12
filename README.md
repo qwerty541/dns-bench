@@ -82,34 +82,70 @@ $ dns-bench [OPTIONS]
 
 Below is a list of currently supported options.
 
-```
-$ dns-bench --help
-Find the fastest DNS in your location using simple command line tool.
-
-Usage: dns-bench [OPTIONS]
-
-Options:
-      --domain <DOMAIN>
-          The domain to resolve [default: google.com]
-      --threads <THREADS>
-          The number of threads to use [default: 8]
-      --requests <REQUESTS>
-          The number of requests to make [default: 3]
-      --timeout <TIMEOUT>
-          The timeout in seconds [default: 3]
-      --protocol <PROTOCOL>
-          The protocol to use [default: udp] [possible values: tcp, udp]
-      --name-servers-ip <NAME_SERVERS_IP>
-          The IP version to use for the name servers [default: v4] [possible values: v4, v6]
-      --lookup-ip <LOOKUP_IP>
-          The IP version to use for the lookup [default: v4] [possible values: v4, v6]
-      --style <STYLE>
-          The style to use for the table [default: ascii] [possible values: empty, blank, ascii, psql, markdown, modern, sharp, rounded, modern_rounded, extended, dots, re_structured_text, ascii_rounded]
-  -h, --help
-          Print help
-  -V, --version
-          Print version
-```
+<table>
+    <thead>
+        <td><b>Option</b></td>
+        <td><b>Description</b></td>
+        <td><b>Default value</b></td>
+        <td><b>Possible values</b></td>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>--domain</code></td>
+            <td>Domain to resolve.</td>
+            <td>google.com</td>
+            <td>Any domain</td>
+        </tr>
+         <tr>
+            <td><code>--threads</code></td>
+            <td>Number of threads to use.</td>
+            <td>8</td>
+            <td>Any positive integer</td>
+        </tr>
+        <tr>
+            <td><code>--requests</code></td>
+            <td>Number of requests to each DNS server.</td>
+            <td>3</td>
+            <td>Any positive integer</td>
+        </tr>
+        <tr>
+            <td><code>--timeout</code></td>
+            <td>Timeout in seconds.</td>
+            <td>3</td>
+            <td>Any positive integer</td>
+        </tr>
+        <tr>
+            <td><code>--protocol</code></td>
+            <td>Protocol to use.</td>
+            <td>udp</td>
+            <td>tcp, udp</td>
+        </tr>
+        <tr>
+            <td><code>--name-servers-ip</code></td>
+            <td>IP version to use for establishing connection.</td>
+            <td>v4</td>
+            <td>v4, v6</td>
+        </tr>
+        <tr>
+            <td><code>--lookup-ip</code></td>
+            <td>IP version to use for lookup.</td>
+            <td>v4</td>
+            <td>v4, v6</td>
+        </tr>
+        <tr>
+            <td><code>--style</code></td>
+            <td>Table style to use.</td>
+            <td>ascii</td>
+            <td>empty, blank, ascii, psql, markdown, modern, sharp, rounded, modern_rounded, extended, dots, re_structured_text, ascii_rounded</td>
+        </tr>
+        <tr>
+            <td><code>--save-config</code></td>
+            <td>Save the configurations to a file in users home directory.</td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
 
 ## License
 
