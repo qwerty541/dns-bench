@@ -1,4 +1,5 @@
 use crate::args;
+use crate::config;
 use crate::result::MeasureResult;
 use crate::result::ResultEntry;
 use crate::result::TimeResult;
@@ -25,6 +26,8 @@ use tabled::Table;
 pub struct DnsBenchApplication {
     /// The arguments.
     arguments: args::Arguments,
+    /// The configuration.
+    config: config::DnsBenchConfig,
     /// The DNS entries.
     dns_entries: sync::Arc<sync::Mutex<collections::VecDeque<servers::DnsEntry>>>,
     /// The result entries.
@@ -40,8 +43,12 @@ pub struct DnsBenchApplication {
 impl DnsBenchApplication {
     /// Create a new instance of the application.
     pub fn new(arguments: args::Arguments) -> Self {
+        let mut config = Self::load_config();
+        config.resolve_args(&arguments);
+
         Self {
             arguments,
+            config,
             dns_entries: sync::Arc::new(sync::Mutex::new(collections::VecDeque::default())),
             result_entries: sync::Arc::new(sync::Mutex::new(Vec::new())),
             threads: Vec::new(),
@@ -50,9 +57,25 @@ impl DnsBenchApplication {
         }
     }
 
+    fn load_config() -> config::DnsBenchConfig {
+        match config::DnsBenchConfig::try_load_from_file() {
+            config::LoadConfigResult::Loaded(c) => c,
+            config::LoadConfigResult::FileDoesNotExist => config::DnsBenchConfig::default(),
+            config::LoadConfigResult::Error(e) => {
+                eprintln!(
+                    "Failed to load config: {:?}\n\
+                    Proceeding with default parameters...",
+                    e
+                );
+                config::DnsBenchConfig::default()
+            }
+        }
+    }
+
     /// Run the application.
     pub fn run(&mut self) {
-        self.print_arguments_summary();
+        self.print_config_summary();
+        self.save_config();
         self.init_progress_bar();
         self.fill_dns_entries();
         self.bench_start_time();
@@ -64,27 +87,37 @@ impl DnsBenchApplication {
         self.print_bench_elapsed_time();
     }
 
-    /// Print the arguments summary.
-    fn print_arguments_summary(&self) {
+    /// Save the configuration to a file.
+    fn save_config(&self) {
+        if self.arguments.save_config {
+            match self.config.write_into_file() {
+                Ok(_) => println!("Configuration saved successfully."),
+                Err(e) => eprintln!("Failed to save configuration: {:?}", e),
+            }
+        }
+    }
+
+    /// Print the configuration summary.
+    fn print_config_summary(&self) {
         println!(
             "Starting DNS benchmark with the following parameters:\n\
             Domain: {}; Threads: {}; Requests: {}; Protocol: {}\n\
             Name servers: IP{}; Lookup: IP{}; Style: {}",
-            self.arguments.domain,
-            self.arguments.threads,
-            self.arguments.requests,
-            self.arguments.protocol,
-            self.arguments.name_servers_ip,
-            self.arguments.lookup_ip,
-            self.arguments.style,
+            self.config.domain,
+            self.config.threads,
+            self.config.requests,
+            self.config.protocol,
+            self.config.name_servers_ip,
+            self.config.lookup_ip,
+            self.config.style,
         );
     }
 
     /// Create a progress bar with the desired style.
     fn init_progress_bar(&mut self) {
-        let pb = ProgressBar::new(match self.arguments.name_servers_ip {
-            args::IpAddr::V4 => servers::IPV4_DNS_ENTRIES.len() * self.arguments.requests,
-            args::IpAddr::V6 => servers::IPV6_DNS_ENTRIES.len() * self.arguments.requests,
+        let pb = ProgressBar::new(match self.config.name_servers_ip {
+            args::IpAddr::V4 => servers::IPV4_DNS_ENTRIES.len() * self.config.requests,
+            args::IpAddr::V6 => servers::IPV6_DNS_ENTRIES.len() * self.config.requests,
         } as u64);
         pb.set_style(
             ProgressStyle::default_bar()
@@ -99,7 +132,7 @@ impl DnsBenchApplication {
 
     /// Fill the DNS entries with the desired IP version.
     fn fill_dns_entries(&mut self) {
-        let dns_entries = match self.arguments.name_servers_ip {
+        let dns_entries = match self.config.name_servers_ip {
             args::IpAddr::V4 => servers::IPV4_DNS_ENTRIES.clone(),
             args::IpAddr::V6 => servers::IPV6_DNS_ENTRIES.clone(),
         };
@@ -113,10 +146,10 @@ impl DnsBenchApplication {
 
     /// Spawn the threads.
     fn spawn_threads(&mut self) {
-        for _ in 0..self.arguments.threads {
+        for _ in 0..self.config.threads {
             let dns_entries = self.dns_entries.clone();
             let result_entries = self.result_entries.clone();
-            let arguments = self.arguments.clone();
+            let config = self.config.clone();
             let pb = self.progress_bar.as_ref().unwrap().clone();
 
             self.threads.push(thread::spawn(move || loop {
@@ -128,26 +161,26 @@ impl DnsBenchApplication {
                 if let Some(dns_entry) = dns_entry {
                     let mut measure_results = Vec::new();
 
-                    for _ in 0..arguments.requests {
+                    for _ in 0..config.requests {
                         // Create a new resolver for each request to avoid caching.
                         let mut resolver_config = ResolverConfig::new();
                         resolver_config.add_name_server(NameServerConfig {
                             socket_addr: dns_entry.socker_addr,
-                            protocol: arguments.protocol.into(),
+                            protocol: config.protocol.into(),
                             tls_dns_name: None,
                             trust_negative_responses: false,
                             bind_addr: None,
                         });
                         let mut resolver_opts = ResolverOpts::default();
                         resolver_opts.attempts = 0;
-                        resolver_opts.timeout = Duration::from_secs(arguments.timeout);
-                        resolver_opts.ip_strategy = arguments.lookup_ip.into();
+                        resolver_opts.timeout = Duration::from_secs(config.timeout);
+                        resolver_opts.ip_strategy = config.lookup_ip.into();
                         let resolver = Resolver::new(resolver_config, resolver_opts).unwrap();
 
                         // Measure the time it takes to resolve the domain.
                         let start_time = Instant::now();
                         let result_entry: MeasureResult =
-                            match resolver.lookup_ip(arguments.domain.clone()) {
+                            match resolver.lookup_ip(config.domain.clone()) {
                                 Ok(response) => {
                                     let elapsed_time = start_time.elapsed();
                                     MeasureResult {
@@ -160,7 +193,7 @@ impl DnsBenchApplication {
                                 Err(e) => MeasureResult {
                                     name: dns_entry.name.clone(),
                                     ip: dns_entry.socker_addr.ip(),
-                                    resolved_ip: match arguments.lookup_ip {
+                                    resolved_ip: match config.lookup_ip {
                                         args::IpAddr::V4 => IpAddr::V4(Ipv4Addr::UNSPECIFIED),
                                         args::IpAddr::V6 => IpAddr::V6(Ipv6Addr::UNSPECIFIED),
                                     },
@@ -211,31 +244,31 @@ impl DnsBenchApplication {
     fn print_result(&self) {
         let mut table = Table::new(&*self.result_entries.lock().unwrap());
 
-        if self.arguments.style == args::Style::Empty {
+        if self.config.style == args::Style::Empty {
             table.with(TableStyle::empty());
-        } else if self.arguments.style == args::Style::Blank {
+        } else if self.config.style == args::Style::Blank {
             table.with(TableStyle::blank());
-        } else if self.arguments.style == args::Style::Ascii {
+        } else if self.config.style == args::Style::Ascii {
             table.with(TableStyle::ascii());
-        } else if self.arguments.style == args::Style::Psql {
+        } else if self.config.style == args::Style::Psql {
             table.with(TableStyle::psql());
-        } else if self.arguments.style == args::Style::Markdown {
+        } else if self.config.style == args::Style::Markdown {
             table.with(TableStyle::markdown());
-        } else if self.arguments.style == args::Style::Modern {
+        } else if self.config.style == args::Style::Modern {
             table.with(TableStyle::modern());
-        } else if self.arguments.style == args::Style::Sharp {
+        } else if self.config.style == args::Style::Sharp {
             table.with(TableStyle::sharp());
-        } else if self.arguments.style == args::Style::Rounded {
+        } else if self.config.style == args::Style::Rounded {
             table.with(TableStyle::rounded());
-        } else if self.arguments.style == args::Style::ModernRounded {
+        } else if self.config.style == args::Style::ModernRounded {
             table.with(TableStyle::modern_rounded());
-        } else if self.arguments.style == args::Style::Extended {
+        } else if self.config.style == args::Style::Extended {
             table.with(TableStyle::extended());
-        } else if self.arguments.style == args::Style::Dots {
+        } else if self.config.style == args::Style::Dots {
             table.with(TableStyle::dots());
-        } else if self.arguments.style == args::Style::ReStructuredText {
+        } else if self.config.style == args::Style::ReStructuredText {
             table.with(TableStyle::re_structured_text());
-        } else if self.arguments.style == args::Style::AsciiRounded {
+        } else if self.config.style == args::Style::AsciiRounded {
             table.with(TableStyle::ascii_rounded());
         }
 

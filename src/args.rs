@@ -10,29 +10,32 @@ use std::str::FromStr;
 #[command(author, version, about, long_about = None)]
 pub struct Arguments {
     /// The domain to resolve.
-    #[arg(long, default_value = "google.com")]
-    pub domain: String,
+    #[arg(long)]
+    pub domain: Option<String>,
     /// The number of threads to use.
-    #[arg(long, default_value = "8")]
-    pub threads: usize,
+    #[arg(long)]
+    pub threads: Option<usize>,
     /// The number of requests to make.
-    #[arg(long, default_value = "3")]
-    pub requests: usize,
+    #[arg(long)]
+    pub requests: Option<usize>,
     /// The timeout in seconds.
-    #[arg(long, default_value = "3")]
-    pub timeout: u64,
+    #[arg(long)]
+    pub timeout: Option<u64>,
     /// The protocol to use.
-    #[arg(long, default_value = "udp")]
-    pub protocol: Protocol,
+    #[arg(long)]
+    pub protocol: Option<Protocol>,
     /// The IP version to use for the name servers.
-    #[arg(long, default_value = "v4")]
-    pub name_servers_ip: IpAddr,
+    #[arg(long)]
+    pub name_servers_ip: Option<IpAddr>,
     /// The IP version to use for the lookup.
-    #[arg(long, default_value = "v4")]
-    pub lookup_ip: IpAddr,
+    #[arg(long)]
+    pub lookup_ip: Option<IpAddr>,
     /// The style to use for the table.
-    #[arg(long, default_value = "ascii")]
-    pub style: Style,
+    #[arg(long)]
+    pub style: Option<Style>,
+    /// Save the configurations to a file in users home directory.
+    #[arg(long)]
+    pub save_config: bool,
 }
 
 macro_rules! argument_impl_from_str {
@@ -65,7 +68,7 @@ macro_rules! argument_impl_display {
     };
 }
 
-#[derive(Debug, Clone, Copy, Eq, PartialEq, ValueEnum)]
+#[derive(Debug, Clone, Copy, Eq, PartialEq, ValueEnum, serde::Serialize, serde::Deserialize)]
 pub enum IpAddr {
     V4,
     V6,
@@ -83,7 +86,7 @@ impl From<IpAddr> for LookupIpStrategy {
 argument_impl_from_str!(IpAddr);
 argument_impl_display!(IpAddr);
 
-#[derive(Debug, Clone, Copy, Eq, PartialEq, ValueEnum)]
+#[derive(Debug, Clone, Copy, Eq, PartialEq, ValueEnum, serde::Serialize, serde::Deserialize)]
 pub enum Protocol {
     Tcp,
     Udp,
@@ -101,7 +104,7 @@ impl From<Protocol> for ResolverProtocol {
 argument_impl_from_str!(Protocol);
 argument_impl_display!(Protocol);
 
-#[derive(Debug, Clone, Copy, Eq, PartialEq, ValueEnum)]
+#[derive(Debug, Clone, Copy, Eq, PartialEq, ValueEnum, serde::Serialize, serde::Deserialize)]
 pub enum Style {
     Empty,
     Blank,

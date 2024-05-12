@@ -1,5 +1,6 @@
 mod app;
 mod args;
+mod config;
 mod result;
 mod servers;
 
