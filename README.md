@@ -135,7 +135,7 @@ Below is a list of currently supported options.
         <tr>
             <td><code>--style</code></td>
             <td>Table style to use.</td>
-            <td>ascii</td>
+            <td>rounded</td>
             <td>empty, blank, ascii, psql, markdown, modern, sharp, rounded, modern-rounded, extended, dots, re-structured-text, ascii-rounded</td>
         </tr>
         <tr>

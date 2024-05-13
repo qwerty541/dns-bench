@@ -36,7 +36,7 @@ impl Default for DnsBenchConfig {
             protocol: Protocol::Udp,
             name_servers_ip: IpAddr::V4,
             lookup_ip: IpAddr::V4,
-            style: Style::Ascii,
+            style: Style::Rounded,
         }
     }
 }
