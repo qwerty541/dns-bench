@@ -84,10 +84,10 @@ Below is a list of currently supported options.
 
 <table>
     <thead>
-        <td><b>Option</b></td>
-        <td><b>Description</b></td>
-        <td><b>Default value</b></td>
-        <td><b>Possible values</b></td>
+        <th>Option</th>
+        <th>Description</th>
+        <th>Default value</th>
+        <th>Possible values</th>
     </thead>
     <tbody>
         <tr>
