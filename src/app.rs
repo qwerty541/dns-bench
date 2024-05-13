@@ -57,6 +57,7 @@ impl DnsBenchApplication {
         }
     }
 
+    /// Load the configuration from a file.
     fn load_config() -> config::DnsBenchConfig {
         match config::DnsBenchConfig::try_load_from_file() {
             config::LoadConfigResult::Loaded(c) => c,
