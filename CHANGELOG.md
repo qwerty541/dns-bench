@@ -3,11 +3,15 @@
 ### Added
 
 - Added `--style` option to configure table style. By default, ASCII style is used.
+- Added `--save-config` option to save favorite configurations in a file inside user's home directory (`/home/user/.dns-bench/config.toml`) to avoid typing them every time.
 
 ### Changed
 
 - Changed arguments summary formatting to make it more compact.
 - Changed table columns names formatting to make to more comfortable to read (i.e. `server_name` => `Server name`, `last_resolved_ip` => `Last resolved IP`).
+- Changed default table style from `ascii` to `rounded`.
+- Changed default number of requests to each DNS server from `3` to `10`.
+- Changed description property inside Cargo.toml.
 
 ### Dependencies
 
