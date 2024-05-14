@@ -105,7 +105,7 @@ Below is a list of currently supported options.
         <tr>
             <td><code>--requests</code></td>
             <td>Number of requests to each DNS server.</td>
-            <td>3</td>
+            <td>10</td>
             <td>Any positive integer</td>
         </tr>
         <tr>
