@@ -5,6 +5,7 @@ use std::time::Duration;
 use tabled::Tabled;
 
 #[derive(Debug, Clone)]
+#[cfg_attr(test, derive(Eq, PartialEq))]
 pub enum TimeResult {
     Succeeded(Duration),
     Failed(String),
@@ -80,5 +81,52 @@ impl From<Vec<MeasureResult>> for ResultEntry {
             first_duration: value[0].time.clone(),
             average_duration,
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_result_entry_from() {
+        let measure_results = vec![
+            MeasureResult {
+                name: String::from("Google"),
+                ip: IpAddr::V4(Ipv4Addr::new(8, 8, 8, 8)),
+                resolved_ip: IpAddr::V4(Ipv4Addr::new(8, 8, 8, 8)),
+                time: TimeResult::Succeeded(Duration::new(0, 100)),
+            },
+            MeasureResult {
+                name: String::from("Google"),
+                ip: IpAddr::V4(Ipv4Addr::new(8, 8, 8, 8)),
+                resolved_ip: IpAddr::V4(Ipv4Addr::new(8, 8, 8, 8)),
+                time: TimeResult::Succeeded(Duration::new(0, 200)),
+            },
+            MeasureResult {
+                name: String::from("Google"),
+                ip: IpAddr::V4(Ipv4Addr::new(8, 8, 8, 8)),
+                resolved_ip: IpAddr::V4(Ipv4Addr::new(8, 8, 8, 8)),
+                time: TimeResult::Failed(String::from("Timeout")),
+            },
+        ];
+
+        let result_entry = ResultEntry::from(measure_results);
+
+        assert_eq!(result_entry.name, "Google");
+        assert_eq!(result_entry.ip, IpAddr::V4(Ipv4Addr::new(8, 8, 8, 8)));
+        assert_eq!(
+            result_entry.last_resolved_ip,
+            IpAddr::V4(Ipv4Addr::new(8, 8, 8, 8))
+        );
+        assert_eq!(result_entry.successfull_requests, "2/3 (66.67%)");
+        assert_eq!(
+            result_entry.first_duration,
+            TimeResult::Succeeded(Duration::new(0, 100))
+        );
+        assert_eq!(
+            result_entry.average_duration,
+            TimeResult::Succeeded(Duration::new(0, 150))
+        );
     }
 }
