@@ -18,7 +18,7 @@ This repository provides DNS benchmarking command line tool written in Rust. It 
 
 ### Example
 
-![Example](./example.gif)
+<img src="./example.gif" width="100%" alt="Example" />
 
 ### Features
 
