@@ -1,3 +1,20 @@
+## Unreleased
+
+### Added
+
+- Covered some code with tests.
+
+### Build
+
+- Removed redundant default features of `serde` crate.
+
+### Documentation
+
+- Fixed default requests count in features list.
+- Fixed default table style in features list.
+- Updated example gif-animation.
+- Make example gif-animation to take full page width.
+
 ## v0.5.0 (14.05.2024)
 
 ### Added
