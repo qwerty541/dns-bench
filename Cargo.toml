@@ -26,7 +26,7 @@ clap = { version = "4.5.4", features = ["std", "derive"] }
 directories = "5.0.1"
 indicatif = "0.17.8"
 hickory-resolver = "0.24.1"
-serde = { version = "1.0.201", features = ["derive"] }
+serde = { version = "1.0.201", features = ["derive"], default-features = false }
 tabled = "0.15.0"
 toml = "0.8.12"
 lazy_static = "1.4.0"
