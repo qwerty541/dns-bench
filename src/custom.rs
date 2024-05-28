@@ -37,3 +37,52 @@ fn parse_line(line: &str, ip: IpAddr) -> Option<(String, net::SocketAddr)> {
 
     Some((name, addr))
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_parse_line_ipv4() {
+        let line = "Google;8.8.8.8:53";
+        let (name, socker_addr) = parse_line(line, IpAddr::V4).unwrap();
+
+        assert_eq!(name, "Google");
+        assert_eq!(socker_addr, "8.8.8.8:53".parse().unwrap());
+    }
+
+    #[test]
+    fn test_parse_line_ipv6() {
+        let line = "Google;[2001:4860:4860:0:0:0:0:8888]:53";
+        let (name, socker_addr) = parse_line(line, IpAddr::V6).unwrap();
+
+        assert_eq!(name, "Google");
+        assert_eq!(
+            socker_addr,
+            "[2001:4860:4860:0:0:0:0:8888]:53".parse().unwrap()
+        );
+    }
+
+    #[test]
+    fn test_read_custom_servers_list_ipv4() {
+        let filepath = PathBuf::from("./ipv4-custom-servers-example.txt");
+        let entries = read_custom_servers_list(filepath, IpAddr::V4).unwrap();
+
+        assert_eq!(entries.len(), 21);
+        assert_eq!(entries[0].name, "Google");
+        assert_eq!(entries[0].socker_addr, "8.8.8.8:53".parse().unwrap());
+    }
+
+    #[test]
+    fn test_read_custom_servers_list_ipv6() {
+        let filepath = PathBuf::from("./ipv6-custom-servers-example.txt");
+        let entries = read_custom_servers_list(filepath, IpAddr::V6).unwrap();
+
+        assert_eq!(entries.len(), 17);
+        assert_eq!(entries[0].name, "Google");
+        assert_eq!(
+            entries[0].socker_addr,
+            "[2001:4860:4860:0:0:0:0:8888]:53".parse().unwrap()
+        );
+    }
+}
