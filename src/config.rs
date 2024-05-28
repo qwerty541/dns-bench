@@ -8,6 +8,7 @@ use std::error::Error;
 use std::fmt;
 use std::fs;
 use std::io;
+use std::path::PathBuf;
 
 const CONFIG_DIR_NAME: &str = ".dns-bench";
 const CONFIG_FILE_NAME: &str = "config.toml";
@@ -24,7 +25,7 @@ pub struct DnsBenchConfig {
     pub name_servers_ip: IpAddr,
     pub lookup_ip: IpAddr,
     pub style: Style,
-    pub custom_servers_file: Option<String>,
+    pub custom_servers_file: Option<PathBuf>,
 }
 
 impl Default for DnsBenchConfig {
@@ -70,9 +71,7 @@ impl DnsBenchConfig {
             self.style = style;
         }
         if let Some(custom_servers_file) = &args.custom_servers_file {
-            self.custom_servers_file = fs::canonicalize(custom_servers_file)
-                .ok()
-                .map(|p| p.to_string_lossy().to_string())
+            self.custom_servers_file = fs::canonicalize(custom_servers_file).ok()
         }
     }
 
