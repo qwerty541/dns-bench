@@ -16,6 +16,7 @@ use std::collections;
 use std::net::IpAddr;
 use std::net::Ipv4Addr;
 use std::net::Ipv6Addr;
+use std::path::PathBuf;
 use std::process;
 use std::sync;
 use std::thread;
@@ -118,16 +119,18 @@ impl DnsBenchApplication {
 
     /// Fill the DNS entries with the desired IP version.
     fn fill_dns_entries(&mut self) {
-        match self.arguments.custom_servers_file.clone() {
+        match self.config.custom_servers_file.clone() {
             Some(filepath) => {
-                let custom_entries =
-                    match custom::read_custom_servers_list(filepath, self.config.name_servers_ip) {
-                        Ok(entries) => entries,
-                        Err(e) => {
-                            eprintln!("Failed to read custom servers list: {:?}", e);
-                            process::exit(1);
-                        }
-                    };
+                let custom_entries = match custom::read_custom_servers_list(
+                    PathBuf::from(filepath),
+                    self.config.name_servers_ip,
+                ) {
+                    Ok(entries) => entries,
+                    Err(e) => {
+                        eprintln!("Failed to read custom servers list: {:?}", e);
+                        process::exit(1);
+                    }
+                };
                 println!("Using custom servers list.");
                 self.dns_entries.lock().unwrap().extend(custom_entries);
             }

@@ -24,6 +24,7 @@ pub struct DnsBenchConfig {
     pub name_servers_ip: IpAddr,
     pub lookup_ip: IpAddr,
     pub style: Style,
+    pub custom_servers_file: Option<String>,
 }
 
 impl Default for DnsBenchConfig {
@@ -37,6 +38,7 @@ impl Default for DnsBenchConfig {
             name_servers_ip: IpAddr::V4,
             lookup_ip: IpAddr::V4,
             style: Style::Rounded,
+            custom_servers_file: None,
         }
     }
 }
@@ -66,6 +68,11 @@ impl DnsBenchConfig {
         }
         if let Some(style) = args.style {
             self.style = style;
+        }
+        if let Some(custom_servers_file) = &args.custom_servers_file {
+            self.custom_servers_file = fs::canonicalize(custom_servers_file)
+                .ok()
+                .map(|p| p.to_string_lossy().to_string())
         }
     }
 
