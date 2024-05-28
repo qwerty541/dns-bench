@@ -1,5 +1,6 @@
 use crate::args;
 use crate::config;
+use crate::custom;
 use crate::result::MeasureResult;
 use crate::result::ResultEntry;
 use crate::result::TimeResult;
@@ -15,6 +16,7 @@ use std::collections;
 use std::net::IpAddr;
 use std::net::Ipv4Addr;
 use std::net::Ipv6Addr;
+use std::process;
 use std::sync;
 use std::thread;
 use std::time::Duration;
@@ -77,8 +79,8 @@ impl DnsBenchApplication {
     pub fn run(&mut self) {
         self.print_config_summary();
         self.save_config();
-        self.init_progress_bar();
         self.fill_dns_entries();
+        self.init_progress_bar();
         self.bench_start_time();
         self.spawn_threads();
         self.await_threads();
@@ -114,12 +116,36 @@ impl DnsBenchApplication {
         );
     }
 
+    /// Fill the DNS entries with the desired IP version.
+    fn fill_dns_entries(&mut self) {
+        match self.config.custom_servers_file.clone() {
+            Some(filepath) => {
+                let custom_entries =
+                    match custom::read_custom_servers_list(filepath, self.config.name_servers_ip) {
+                        Ok(entries) => entries,
+                        Err(e) => {
+                            eprintln!("Failed to read custom servers list: {:?}", e);
+                            process::exit(1);
+                        }
+                    };
+                println!("Using custom servers list.");
+                self.dns_entries.lock().unwrap().extend(custom_entries);
+            }
+            None => {
+                let dns_entries = match self.config.name_servers_ip {
+                    args::IpAddr::V4 => servers::IPV4_DNS_ENTRIES.clone(),
+                    args::IpAddr::V6 => servers::IPV6_DNS_ENTRIES.clone(),
+                };
+                self.dns_entries.lock().unwrap().extend(dns_entries);
+            }
+        }
+    }
+
     /// Create a progress bar with the desired style.
     fn init_progress_bar(&mut self) {
-        let pb = ProgressBar::new(match self.config.name_servers_ip {
-            args::IpAddr::V4 => servers::IPV4_DNS_ENTRIES.len() * self.config.requests,
-            args::IpAddr::V6 => servers::IPV6_DNS_ENTRIES.len() * self.config.requests,
-        } as u64);
+        let pb = ProgressBar::new(
+            (self.dns_entries.lock().unwrap().len() * self.config.requests) as u64,
+        );
         pb.set_style(
             ProgressStyle::default_bar()
                 .template(
@@ -129,15 +155,6 @@ impl DnsBenchApplication {
                 .progress_chars("#>-"),
         );
         self.progress_bar = Some(pb);
-    }
-
-    /// Fill the DNS entries with the desired IP version.
-    fn fill_dns_entries(&mut self) {
-        let dns_entries = match self.config.name_servers_ip {
-            args::IpAddr::V4 => servers::IPV4_DNS_ENTRIES.clone(),
-            args::IpAddr::V6 => servers::IPV6_DNS_ENTRIES.clone(),
-        };
-        self.dns_entries.lock().unwrap().extend(dns_entries);
     }
 
     /// Start the benchmark timer.

@@ -3,6 +3,7 @@ use clap::ValueEnum;
 use hickory_resolver::config::LookupIpStrategy;
 use hickory_resolver::config::Protocol as ResolverProtocol;
 use std::fmt;
+use std::path::PathBuf;
 use std::str::FromStr;
 
 #[derive(Debug, Clone, Parser)]
@@ -36,6 +37,9 @@ pub struct Arguments {
     /// Save the configurations to a file in users home directory.
     #[arg(long)]
     pub save_config: bool,
+    /// Provide a custom list of servers to use instead of the default ones.
+    #[arg(long)]
+    pub custom_servers_file: Option<PathBuf>,
 }
 
 macro_rules! argument_impl_from_str {
