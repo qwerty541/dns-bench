@@ -32,6 +32,7 @@ This repository provides DNS benchmarking command line tool written in Rust. It 
 - Configuration of IP version used to establish connection, either IPv4 or IPv6. By default, IPv4 is used.
 - Table style configuration. By default, rounded style is used.
 - Ability to save favorite configurations in a file inside user's home directory (`/home/user/.dns-bench/config.toml`) to avoid typing them every time.
+- Ability to provide custom servers list instead of built-in list.
 
 ### List of built-in DNS servers
 
