@@ -46,6 +46,7 @@ This repository provides DNS benchmarking command line tool written in Rust. It 
 - Comodo Secure DNS
 - Level3
 - Verisign
+- DNS.WATCH
 
 ## Installation
 
