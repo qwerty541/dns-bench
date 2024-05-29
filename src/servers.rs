@@ -55,6 +55,8 @@ lazy_static::lazy_static! {
         ipv4_dns_entry!("Level3", (209, 244, 0, 4), 53),
         ipv4_dns_entry!("Verisign", (64, 6, 64, 6), 53),
         ipv4_dns_entry!("Verisign", (64, 6, 65, 6), 53),
+        ipv4_dns_entry!("DNS.WATCH", (84, 200, 69, 80), 53),
+        ipv4_dns_entry!("DNS.WATCH", (84, 200, 70, 40), 53),
     ];
 }
 
@@ -77,5 +79,7 @@ lazy_static::lazy_static! {
         ipv6_dns_entry!("AdGuard DNS", (0x2a10, 0x50c0, 0, 0, 0, 0, 0x0ad2, 0x00ff), 53),
         ipv6_dns_entry!("Verisign", (0x2620, 0x0074, 0x001b, 0, 0, 0, 0x0001, 0x0001), 53),
         ipv6_dns_entry!("Verisign", (0x2620, 0x0074, 0x001c, 0, 0, 0, 0x0002, 0x0002), 53),
+        ipv6_dns_entry!("DNS.WATCH", (0x2001, 0x1608, 0x0010, 0x0025, 0, 0, 0x1c04, 0xb12f), 53),
+        ipv6_dns_entry!("DNS.WATCH", (0x2001, 0x1608, 0x0010, 0x0025, 0, 0, 0x9249, 0xd69b), 53),
     ];
 }
