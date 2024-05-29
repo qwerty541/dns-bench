@@ -13,10 +13,10 @@ pub fn read_custom_servers_list(filepath: PathBuf, ip: IpAddr) -> io::Result<Vec
 
     for line in reader.lines() {
         let line = line?;
-        let Some((name, socker_addr)) = parse_line(&line, ip) else {
+        let Some((name, socket_addr)) = parse_line(&line, ip) else {
             return Err(io::Error::new(io::ErrorKind::InvalidData, "Invalid line"));
         };
-        entries.push(DnsEntry { name, socker_addr });
+        entries.push(DnsEntry { name, socket_addr });
     }
 
     Ok(entries)
@@ -45,20 +45,20 @@ mod tests {
     #[test]
     fn test_parse_line_ipv4() {
         let line = "Google;8.8.8.8:53";
-        let (name, socker_addr) = parse_line(line, IpAddr::V4).unwrap();
+        let (name, socket_addr) = parse_line(line, IpAddr::V4).unwrap();
 
         assert_eq!(name, "Google");
-        assert_eq!(socker_addr, "8.8.8.8:53".parse().unwrap());
+        assert_eq!(socket_addr, "8.8.8.8:53".parse().unwrap());
     }
 
     #[test]
     fn test_parse_line_ipv6() {
         let line = "Google;[2001:4860:4860:0:0:0:0:8888]:53";
-        let (name, socker_addr) = parse_line(line, IpAddr::V6).unwrap();
+        let (name, socket_addr) = parse_line(line, IpAddr::V6).unwrap();
 
         assert_eq!(name, "Google");
         assert_eq!(
-            socker_addr,
+            socket_addr,
             "[2001:4860:4860:0:0:0:0:8888]:53".parse().unwrap()
         );
     }
@@ -70,7 +70,7 @@ mod tests {
 
         assert_eq!(entries.len(), 21);
         assert_eq!(entries[0].name, "Google");
-        assert_eq!(entries[0].socker_addr, "8.8.8.8:53".parse().unwrap());
+        assert_eq!(entries[0].socket_addr, "8.8.8.8:53".parse().unwrap());
     }
 
     #[test]
@@ -81,7 +81,7 @@ mod tests {
         assert_eq!(entries.len(), 17);
         assert_eq!(entries[0].name, "Google");
         assert_eq!(
-            entries[0].socker_addr,
+            entries[0].socket_addr,
             "[2001:4860:4860:0:0:0:0:8888]:53".parse().unwrap()
         );
     }

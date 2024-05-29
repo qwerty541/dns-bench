@@ -3,14 +3,14 @@ use std::net;
 #[derive(Debug, Clone)]
 pub struct DnsEntry {
     pub name: String,
-    pub socker_addr: net::SocketAddr,
+    pub socket_addr: net::SocketAddr,
 }
 
 macro_rules! ipv4_dns_entry {
     ($name:expr, $ip:expr, $port:expr) => {
         DnsEntry {
             name: String::from($name),
-            socker_addr: net::SocketAddr::new(
+            socket_addr: net::SocketAddr::new(
                 net::IpAddr::V4(net::Ipv4Addr::new($ip.0, $ip.1, $ip.2, $ip.3)),
                 $port,
             ),
@@ -22,7 +22,7 @@ macro_rules! ipv6_dns_entry {
     ($name:expr, $ip:expr, $port:expr) => {
         DnsEntry {
             name: String::from($name),
-            socker_addr: net::SocketAddr::new(
+            socket_addr: net::SocketAddr::new(
                 net::IpAddr::V6(net::Ipv6Addr::new(
                     $ip.0, $ip.1, $ip.2, $ip.3, $ip.4, $ip.5, $ip.6, $ip.7,
                 )),

@@ -183,7 +183,7 @@ impl DnsBenchApplication {
                         // Create a new resolver for each request to avoid caching.
                         let mut resolver_config = ResolverConfig::new();
                         resolver_config.add_name_server(NameServerConfig {
-                            socket_addr: dns_entry.socker_addr,
+                            socket_addr: dns_entry.socket_addr,
                             protocol: config.protocol.into(),
                             tls_dns_name: None,
                             trust_negative_responses: false,
@@ -203,14 +203,14 @@ impl DnsBenchApplication {
                                     let elapsed_time = start_time.elapsed();
                                     MeasureResult {
                                         name: dns_entry.name.clone(),
-                                        ip: dns_entry.socker_addr.ip(),
+                                        ip: dns_entry.socket_addr.ip(),
                                         resolved_ip: response.iter().next().unwrap(),
                                         time: TimeResult::Succeeded(elapsed_time),
                                     }
                                 }
                                 Err(e) => MeasureResult {
                                     name: dns_entry.name.clone(),
-                                    ip: dns_entry.socker_addr.ip(),
+                                    ip: dns_entry.socket_addr.ip(),
                                     resolved_ip: match config.lookup_ip {
                                         args::IpAddr::V4 => IpAddr::V4(Ipv4Addr::UNSPECIFIED),
                                         args::IpAddr::V6 => IpAddr::V6(Ipv6Addr::UNSPECIFIED),
