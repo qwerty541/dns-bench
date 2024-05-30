@@ -47,6 +47,7 @@ This repository provides DNS benchmarking command line tool written in Rust. It 
 - Level3
 - Verisign
 - DNS.WATCH
+- Norton ConnectSafe
 
 ## Installation
 
