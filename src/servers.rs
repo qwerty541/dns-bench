@@ -57,6 +57,8 @@ lazy_static::lazy_static! {
         ipv4_dns_entry!("Verisign", (64, 6, 65, 6), 53),
         ipv4_dns_entry!("DNS.WATCH", (84, 200, 69, 80), 53),
         ipv4_dns_entry!("DNS.WATCH", (84, 200, 70, 40), 53),
+        ipv4_dns_entry!("Norton ConnectSafe", (199, 85, 126, 10), 53),
+        ipv4_dns_entry!("Norton ConnectSafe", (199, 85, 127, 10), 53),
     ];
 }
 

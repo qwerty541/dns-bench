@@ -21,3 +21,5 @@ Verisign;64.6.64.6:53
 Verisign;64.6.65.6:53
 DNS.WATCH;84.200.69.80:53
 DNS.WATCH;84.200.70.40:53
+Norton ConnectSafe;199.85.126.10:53
+Norton ConnectSafe;199.85.127.10:53
