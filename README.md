@@ -51,7 +51,13 @@ This repository provides DNS benchmarking command line tool written in Rust. It 
 
 ## Installation
 
-### From crates.io (Recommended)
+### Which method to choose?
+
+- If you don't have Rust programming language environment installed on your machine, then [installation from Docker Hub](#from-docker-hub) will be the best option for you.
+- If you have Rust programming language environment installed on your machine, then you can choose between [installation from crates.io](#from-cratesio) or [installation from git repository](#from-git-repository).
+- Installation from git repository is suitable only when you want to use the development version instead of the stable one or the crates.io service is unavailable.
+
+### From crates.io
 
 Run the following command and wait until the crate is compiled:
 
@@ -79,6 +85,26 @@ Now you can run compiled binary:
 
 ```sh
 $ dns-bench [OPTIONS]
+```
+
+### From Docker Hub
+
+Run the following command to pull the image:
+
+```sh
+$ docker pull qwerty541/dns-bench:0.5.1
+```
+
+Now you can run this tool inside the container:
+
+```sh
+$ docker run --rm --name dns-bench qwerty541/dns-bench:0.5.1
+```
+
+If you want to pass some options, you can do it like this:
+
+```sh
+$ docker run --rm --name dns-bench qwerty541/dns-bench:0.5.1 /bin/bash -c "dns-bench --requests 20 --domain microsoft.com --style re-structured-text"
 ```
 
 ## Options
