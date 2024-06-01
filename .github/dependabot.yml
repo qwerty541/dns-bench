@@ -23,3 +23,15 @@ updates:
           prefix-development: "ci(deps-dev)"
       reviewers:
           - "qwerty541"
+
+    # Maintain dependencies for Docker
+    - package-ecosystem: docker
+      directory: "/docker/"
+      schedule:
+          interval: weekly
+      open-pull-requests-limit: 10
+      commit-message:
+          prefix: "build(deps)"
+          prefix-development: "build(deps-dev)"
+      reviewers:
+          - "qwerty541"
