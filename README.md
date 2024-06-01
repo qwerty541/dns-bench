@@ -81,7 +81,7 @@ Now you can run compiled binary:
 $ dns-bench [OPTIONS]
 ```
 
-## From Docker Hub
+### From Docker Hub
 
 Run the following command to pull the image:
 
