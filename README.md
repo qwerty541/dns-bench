@@ -51,7 +51,13 @@ This repository provides DNS benchmarking command line tool written in Rust. It 
 
 ## Installation
 
-### From crates.io (Recommended)
+### Which method to choose?
+
+- If you don't have Rust programming language environment installed on your machine, then [installation from Docker Hub](#from-docker-hub) will be the best option for you.
+- If you have Rust programming language environment installed on your machine, then you can choose between [installation from crates.io](#from-cratesio) or [installation from git repository](#from-git-repository).
+- Installation from git repository is suitable only when you want to use the development version instead of the stable one or the crates.io service is unavailable.
+
+### From crates.io
 
 Run the following command and wait until the crate is compiled:
 
