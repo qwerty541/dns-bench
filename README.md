@@ -81,6 +81,26 @@ Now you can run compiled binary:
 $ dns-bench [OPTIONS]
 ```
 
+## From Docker Hub
+
+Run the following command to pull the image:
+
+```sh
+$ docker pull qwerty541/dns-bench:0.5.1
+```
+
+Now you can run this tool inside the container:
+
+```sh
+$ docker run --rm --name dns-bench qwerty541/dns-bench:0.5.1
+```
+
+If you want to pass some options, you can do it like this:
+
+```sh
+$ docker run --rm --name dns-bench qwerty541/dns-bench:0.5.1 /bin/bash -c "dns-bench --requests 20 --domain microsoft.com --style re-structured-text"
+```
+
 ## Options
 
 Below is a list of currently supported options.
