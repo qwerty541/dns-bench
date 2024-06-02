@@ -1,3 +1,22 @@
+## Unreleased
+
+### Added
+
+- Added `--custom-servers-file` option to specify a custom file with DNS servers list to use instead of built-in list.
+- Added DNS.WATCH to built-in list.
+- Added Norton ConnectSafe to built-in list.
+- Added docker image and published it to Docker Hub for users who don't have Rust programming language environment installed on their machines.
+- Covered some code with tests.
+
+### Documentation
+
+- Added "Which method to choose?" article into installation section.
+
+### Dependencies
+
+- Updated `serde` from 1.0.201 to 1.0.203
+- Updated `toml` from 0.8.12 to 0.8.13
+
 ## v0.5.1 (16.05.2024)
 
 ### Added
