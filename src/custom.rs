@@ -65,7 +65,7 @@ mod tests {
 
     #[test]
     fn test_read_custom_servers_list_ipv4() {
-        let filepath = PathBuf::from("./ipv4-custom-servers-example.txt");
+        let filepath = PathBuf::from("./examples/ipv4-custom-servers-example.txt");
         let entries = read_custom_servers_list(filepath, IpAddr::V4).unwrap();
 
         assert_eq!(entries.len(), 25);
@@ -75,7 +75,7 @@ mod tests {
 
     #[test]
     fn test_read_custom_servers_list_ipv6() {
-        let filepath = PathBuf::from("./ipv6-custom-servers-example.txt");
+        let filepath = PathBuf::from("./examples/ipv6-custom-servers-example.txt");
         let entries = read_custom_servers_list(filepath, IpAddr::V6).unwrap();
 
         assert_eq!(entries.len(), 19);
