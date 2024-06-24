@@ -29,4 +29,4 @@ hickory-resolver = "0.24.1"
 serde = { version = "1.0.203", features = ["derive"], default-features = false }
 tabled = "0.15.0"
 toml = "0.8.14"
-lazy_static = "1.4.0"
+lazy_static = "1.5.0"
