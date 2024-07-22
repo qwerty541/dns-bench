@@ -94,9 +94,9 @@ impl From<Vec<MeasureResult>> for ResultEntry {
 
         let successfull_requests_percentage =
             successfull_requests as f32 / value.len() as f32 * 100.0;
-        let successfull_requests_color = if successfull_requests_percentage >= 90.0 {
+        let successfull_requests_color = if successfull_requests_percentage == 100.0 {
             tabled_settings::Color::FG_BRIGHT_GREEN
-        } else if successfull_requests_percentage >= 40.0 {
+        } else if successfull_requests_percentage >= 50.0 {
             tabled_settings::Color::FG_BRIGHT_YELLOW
         } else if successfull_requests_percentage >= 20.0 {
             tabled_settings::Color::FG_BRIGHT_RED
