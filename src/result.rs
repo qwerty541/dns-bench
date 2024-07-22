@@ -25,9 +25,7 @@ impl From<TimeResult> for tabled_settings::Color {
     fn from(value: TimeResult) -> Self {
         match value {
             TimeResult::Succeeded(duration) => {
-                if duration.as_millis() <= 10 {
-                    tabled_settings::Color::FG_GREEN
-                } else if duration.as_millis() <= 30 {
+                if duration.as_millis() <= 30 {
                     tabled_settings::Color::FG_BRIGHT_GREEN
                 } else if duration.as_millis() <= 80 {
                     tabled_settings::Color::FG_BRIGHT_YELLOW
@@ -96,12 +94,12 @@ impl From<Vec<MeasureResult>> for ResultEntry {
 
         let successfull_requests_percentage =
             successfull_requests as f32 / value.len() as f32 * 100.0;
-        let successfull_requests_color = if successfull_requests_percentage == 100.0 {
-            tabled_settings::Color::FG_GREEN
-        } else if successfull_requests_percentage >= 75.0 {
+        let successfull_requests_color = if successfull_requests_percentage >= 90.0 {
             tabled_settings::Color::FG_BRIGHT_GREEN
         } else if successfull_requests_percentage >= 40.0 {
             tabled_settings::Color::FG_BRIGHT_YELLOW
+        } else if successfull_requests_percentage >= 20.0 {
+            tabled_settings::Color::FG_BRIGHT_RED
         } else {
             tabled_settings::Color::FG_RED
         };
