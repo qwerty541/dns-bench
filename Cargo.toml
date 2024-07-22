@@ -22,11 +22,11 @@ include = [
 ]
 
 [dependencies]
-clap = { version = "4.5.7", features = ["std", "derive"] }
+clap = { version = "4.5.9", features = ["std", "derive"] }
 directories = "5.0.1"
 indicatif = "0.17.8"
 hickory-resolver = "0.24.1"
-serde = { version = "1.0.203", features = ["derive"], default-features = false }
+serde = { version = "1.0.204", features = ["derive"], default-features = false }
 tabled = "0.15.0"
 toml = "0.8.14"
-lazy_static = "1.4.0"
+lazy_static = "1.5.0"
