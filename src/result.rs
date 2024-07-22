@@ -2,6 +2,7 @@ use std::fmt;
 use std::net::IpAddr;
 use std::net::Ipv4Addr;
 use std::time::Duration;
+use tabled::settings as tabled_settings;
 use tabled::Tabled;
 
 #[derive(Debug, Clone)]
@@ -16,6 +17,23 @@ impl fmt::Display for TimeResult {
         match self {
             TimeResult::Succeeded(duration) => write!(f, "{:?}", duration),
             TimeResult::Failed(error) => write!(f, "{}", error),
+        }
+    }
+}
+
+impl From<TimeResult> for tabled_settings::Color {
+    fn from(value: TimeResult) -> Self {
+        match value {
+            TimeResult::Succeeded(duration) => {
+                if duration.as_millis() <= 30 {
+                    tabled_settings::Color::FG_BRIGHT_GREEN
+                } else if duration.as_millis() <= 80 {
+                    tabled_settings::Color::FG_BRIGHT_YELLOW
+                } else {
+                    tabled_settings::Color::FG_BRIGHT_RED
+                }
+            }
+            TimeResult::Failed(_) => tabled_settings::Color::FG_RED,
         }
     }
 }
@@ -39,10 +57,16 @@ pub struct ResultEntry {
     /// String with the following format: "successfull_requests/total_requests (success_rate))"
     #[tabled(rename = "Success rate")]
     pub successfull_requests: String,
+    #[tabled(skip)]
+    pub successfull_requests_color: tabled_settings::Color,
     #[tabled(rename = "First duration")]
     pub first_duration: TimeResult,
+    #[tabled(skip)]
+    pub first_duration_color: tabled_settings::Color,
     #[tabled(rename = "Average duration")]
     pub average_duration: TimeResult,
+    #[tabled(skip)]
+    pub average_duration_color: tabled_settings::Color,
 }
 
 impl From<Vec<MeasureResult>> for ResultEntry {
@@ -68,6 +92,18 @@ impl From<Vec<MeasureResult>> for ResultEntry {
             TimeResult::Failed(String::from("No successfull requests"))
         };
 
+        let successfull_requests_percentage =
+            successfull_requests as f32 / value.len() as f32 * 100.0;
+        let successfull_requests_color = if successfull_requests_percentage == 100.0 {
+            tabled_settings::Color::FG_BRIGHT_GREEN
+        } else if successfull_requests_percentage >= 50.0 {
+            tabled_settings::Color::FG_BRIGHT_YELLOW
+        } else if successfull_requests_percentage >= 20.0 {
+            tabled_settings::Color::FG_BRIGHT_RED
+        } else {
+            tabled_settings::Color::FG_RED
+        };
+
         ResultEntry {
             name: value[0].name.clone(),
             ip: value[0].ip,
@@ -76,10 +112,13 @@ impl From<Vec<MeasureResult>> for ResultEntry {
                 "{}/{} ({:.2}%)",
                 successfull_requests,
                 value.len(),
-                successfull_requests as f32 / value.len() as f32 * 100.0
+                successfull_requests_percentage
             ),
+            successfull_requests_color,
             first_duration: value[0].time.clone(),
-            average_duration,
+            first_duration_color: value[0].time.clone().into(),
+            average_duration: average_duration.clone(),
+            average_duration_color: average_duration.into(),
         }
     }
 }

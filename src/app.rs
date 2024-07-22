@@ -21,7 +21,7 @@ use std::sync;
 use std::thread;
 use std::time::Duration;
 use std::time::Instant;
-use tabled::settings::Style as TableStyle;
+use tabled::settings as tabled_settings;
 use tabled::Table;
 
 /// The main application.
@@ -260,34 +260,50 @@ impl DnsBenchApplication {
 
     /// Print the result.
     fn print_result(&self) {
-        let mut table = Table::new(&*self.result_entries.lock().unwrap());
+        let result_entries = self.result_entries.lock().unwrap();
+        let mut table = Table::new(&*result_entries);
 
         if self.config.style == args::Style::Empty {
-            table.with(TableStyle::empty());
+            table.with(tabled_settings::Style::empty());
         } else if self.config.style == args::Style::Blank {
-            table.with(TableStyle::blank());
+            table.with(tabled_settings::Style::blank());
         } else if self.config.style == args::Style::Ascii {
-            table.with(TableStyle::ascii());
+            table.with(tabled_settings::Style::ascii());
         } else if self.config.style == args::Style::Psql {
-            table.with(TableStyle::psql());
+            table.with(tabled_settings::Style::psql());
         } else if self.config.style == args::Style::Markdown {
-            table.with(TableStyle::markdown());
+            table.with(tabled_settings::Style::markdown());
         } else if self.config.style == args::Style::Modern {
-            table.with(TableStyle::modern());
+            table.with(tabled_settings::Style::modern());
         } else if self.config.style == args::Style::Sharp {
-            table.with(TableStyle::sharp());
+            table.with(tabled_settings::Style::sharp());
         } else if self.config.style == args::Style::Rounded {
-            table.with(TableStyle::rounded());
+            table.with(tabled_settings::Style::rounded());
         } else if self.config.style == args::Style::ModernRounded {
-            table.with(TableStyle::modern_rounded());
+            table.with(tabled_settings::Style::modern_rounded());
         } else if self.config.style == args::Style::Extended {
-            table.with(TableStyle::extended());
+            table.with(tabled_settings::Style::extended());
         } else if self.config.style == args::Style::Dots {
-            table.with(TableStyle::dots());
+            table.with(tabled_settings::Style::dots());
         } else if self.config.style == args::Style::ReStructuredText {
-            table.with(TableStyle::re_structured_text());
+            table.with(tabled_settings::Style::re_structured_text());
         } else if self.config.style == args::Style::AsciiRounded {
-            table.with(TableStyle::ascii_rounded());
+            table.with(tabled_settings::Style::ascii_rounded());
+        }
+
+        for (i, entry) in result_entries.iter().enumerate() {
+            table.with(
+                tabled_settings::Modify::new(tabled_settings::object::Cell::new(i + 1, 3))
+                    .with(entry.successfull_requests_color.clone()),
+            );
+            table.with(
+                tabled_settings::Modify::new(tabled_settings::object::Cell::new(i + 1, 4))
+                    .with(entry.first_duration_color.clone()),
+            );
+            table.with(
+                tabled_settings::Modify::new(tabled_settings::object::Cell::new(i + 1, 5))
+                    .with(entry.average_duration_color.clone()),
+            );
         }
 
         println!("{}", table);
