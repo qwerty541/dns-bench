@@ -115,4 +115,4 @@ jobs:
               run: cargo install cargo-msrv
 
             - name: Check msrv
-              run: cargo msrv find
+              run: cargo msrv find --log-target stdout --log-level info
