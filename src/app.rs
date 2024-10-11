@@ -10,6 +10,7 @@ use hickory_resolver::config::NameServerConfig;
 use hickory_resolver::config::ResolverConfig;
 use hickory_resolver::config::ResolverOpts;
 use hickory_resolver::Resolver;
+use indicatif::MultiProgress;
 use indicatif::ProgressBar;
 use indicatif::ProgressStyle;
 use std::collections;
@@ -37,7 +38,7 @@ pub struct DnsBenchApplication {
     /// The threads.
     threads: Vec<thread::JoinHandle<()>>,
     /// The progress bar.
-    progress_bar: Option<ProgressBar>,
+    multi_progress: Option<sync::Arc<MultiProgress>>,
     /// The benchmark start time.
     bench_start_time: Option<Instant>,
 }
@@ -54,7 +55,7 @@ impl DnsBenchApplication {
             dns_entries: sync::Arc::new(sync::Mutex::new(collections::VecDeque::default())),
             result_entries: sync::Arc::new(sync::Mutex::new(Vec::new())),
             threads: Vec::new(),
-            progress_bar: None,
+            multi_progress: None,
             bench_start_time: None,
         }
     }
@@ -80,11 +81,10 @@ impl DnsBenchApplication {
         self.print_config_summary();
         self.save_config();
         self.fill_dns_entries();
-        self.init_progress_bar();
+        self.init_multi_progress();
         self.bench_start_time();
         self.spawn_threads();
         self.await_threads();
-        self.clear_progress_bar();
         self.sort_result_entries();
         self.print_result();
         self.print_bench_elapsed_time();
@@ -141,20 +141,22 @@ impl DnsBenchApplication {
         }
     }
 
-    /// Create a progress bar with the desired style.
-    fn init_progress_bar(&mut self) {
-        let pb = ProgressBar::new(
-            (self.dns_entries.lock().unwrap().len() * self.config.requests) as u64,
-        );
-        pb.set_style(
-            ProgressStyle::default_bar()
-                .template(
-                    "{spinner:.bold.green} [{elapsed}] [{bar:80.cyan/blue}] {pos}/{len} ({eta})",
-                )
-                .unwrap()
-                .progress_chars("#>-"),
-        );
-        self.progress_bar = Some(pb);
+    /// Create a multi progress.
+    fn init_multi_progress(&mut self) {
+        let multi_progress = MultiProgress::new();
+        self.multi_progress = Some(sync::Arc::new(multi_progress));
+    }
+
+    fn init_progress_bar(requests_count: u64) -> ProgressBar {
+        let progress_bar = ProgressBar::new(requests_count);
+
+        let style = ProgressStyle::default_bar()
+            .template("{spinner:.bold.cyan} [{elapsed_precise}] {bar:40.cyan/blue} {pos:>7}/{len:7} {msg}")
+            .unwrap()
+            .progress_chars("##-");
+        progress_bar.set_style(style);
+
+        progress_bar
     }
 
     /// Start the benchmark timer.
@@ -168,7 +170,7 @@ impl DnsBenchApplication {
             let dns_entries = self.dns_entries.clone();
             let result_entries = self.result_entries.clone();
             let config = self.config.clone();
-            let pb = self.progress_bar.as_ref().unwrap().clone();
+            let multi_progress = self.multi_progress.as_ref().unwrap().clone();
 
             self.threads.push(thread::spawn(move || loop {
                 let dns_entry = {
@@ -177,6 +179,15 @@ impl DnsBenchApplication {
                 };
 
                 if let Some(dns_entry) = dns_entry {
+                    let progress_bar =
+                        multi_progress.add(Self::init_progress_bar(config.requests as u64));
+                    progress_bar.enable_steady_tick(Duration::from_millis(100));
+                    progress_bar.set_message(format!(
+                        "{} ({})",
+                        dns_entry.name,
+                        dns_entry.socket_addr.ip()
+                    ));
+
                     let mut measure_results = Vec::new();
 
                     for _ in 0..config.requests {
@@ -219,10 +230,14 @@ impl DnsBenchApplication {
                                 },
                             };
                         measure_results.push(result_entry);
-                        pb.inc(1);
+                        progress_bar.inc(1);
                     }
+
                     let result_entry: ResultEntry = measure_results.into();
                     result_entries.lock().unwrap().push(result_entry);
+
+                    progress_bar.finish_and_clear();
+                    multi_progress.remove(&progress_bar);
                 } else {
                     break;
                 }
@@ -235,11 +250,6 @@ impl DnsBenchApplication {
         for handle in self.threads.drain(..) {
             handle.join().unwrap();
         }
-    }
-
-    /// Finish and clear the progress bar.
-    fn clear_progress_bar(&mut self) {
-        self.progress_bar.as_ref().unwrap().finish_and_clear();
     }
 
     /// Sort result entries by average duration, failed entries are at the end.
