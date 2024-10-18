@@ -49,6 +49,7 @@ This repository provides DNS benchmarking command line tool written in Rust. It 
 - DNS.WATCH
 - Norton ConnectSafe
 - SafeDNS
+- NextDNS
 
 ## Installation
 
