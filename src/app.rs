@@ -38,7 +38,7 @@ pub struct DnsBenchApplication {
     /// The threads.
     threads: Vec<thread::JoinHandle<()>>,
     /// The progress bar.
-    multi_progress: Option<sync::Arc<MultiProgress>>,
+    multi_progress: Option<MultiProgress>,
     /// The benchmark start time.
     bench_start_time: Option<Instant>,
 }
@@ -144,7 +144,7 @@ impl DnsBenchApplication {
     /// Create a multi progress.
     fn init_multi_progress(&mut self) {
         let multi_progress = MultiProgress::new();
-        self.multi_progress = Some(sync::Arc::new(multi_progress));
+        self.multi_progress = Some(multi_progress);
     }
 
     fn init_progress_bar(requests_count: u64) -> ProgressBar {
