@@ -181,7 +181,7 @@ impl DnsBenchApplication {
                 if let Some(dns_entry) = dns_entry {
                     let progress_bar =
                         multi_progress.add(Self::init_progress_bar(config.requests as u64));
-                    progress_bar.enable_steady_tick(Duration::from_millis(100));
+                    progress_bar.enable_steady_tick(Duration::from_millis(50));
                     progress_bar.set_message(format!(
                         "{} ({})",
                         dns_entry.name,
