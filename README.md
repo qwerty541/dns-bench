@@ -49,6 +49,7 @@ This repository provides DNS benchmarking command line tool written in Rust. It 
 - DNS.WATCH
 - Norton ConnectSafe
 - SafeDNS
+- NextDNS
 
 ## Installation
 
@@ -99,13 +100,13 @@ $ docker pull qwerty541/dns-bench:0.6.0
 Now you can run this tool inside the container:
 
 ```sh
-$ docker run --rm --name dns-bench qwerty541/dns-bench:0.6.0
+$ docker run --rm -it --name dns-bench qwerty541/dns-bench:0.6.0
 ```
 
 If you want to pass some options, you can do it like this:
 
 ```sh
-$ docker run --rm --name dns-bench qwerty541/dns-bench:0.6.0 /bin/bash -c "dns-bench --requests 20 --domain microsoft.com --style re-structured-text"
+$ docker run --rm -it --name dns-bench qwerty541/dns-bench:0.6.0 /bin/bash -c "dns-bench --requests 20 --domain microsoft.com --style re-structured-text"
 ```
 
 ## Options
