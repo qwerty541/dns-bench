@@ -61,6 +61,8 @@ lazy_static::lazy_static! {
         ipv4_dns_entry!("Norton ConnectSafe", (199, 85, 127, 10), 53),
         ipv4_dns_entry!("SafeDNS", (195, 46, 39, 39), 53),
         ipv4_dns_entry!("SafeDNS", (195, 46, 39, 40), 53),
+        ipv4_dns_entry!("NextDNS", (45, 90, 28, 100), 53),
+        ipv4_dns_entry!("NextDNS", (45, 90, 30, 100), 53),
     ];
 }
 
@@ -85,5 +87,7 @@ lazy_static::lazy_static! {
         ipv6_dns_entry!("Verisign", (0x2620, 0x0074, 0x001c, 0, 0, 0, 0x0002, 0x0002), 53),
         ipv6_dns_entry!("DNS.WATCH", (0x2001, 0x1608, 0x0010, 0x0025, 0, 0, 0x1c04, 0xb12f), 53),
         ipv6_dns_entry!("DNS.WATCH", (0x2001, 0x1608, 0x0010, 0x0025, 0, 0, 0x9249, 0xd69b), 53),
+        ipv6_dns_entry!("NextDNS", (0x2a07, 0xa8c0, 0, 0, 0, 0, 0x006e, 0x3f39), 53),
+        ipv6_dns_entry!("NextDNS", (0x2a07, 0xa8c1, 0, 0, 0, 0, 0x006e, 0x3f39), 53),
     ];
 }
