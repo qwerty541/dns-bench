@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added `-it` arguments to Docker container usage command. Without this arguments, the progress bar will not be displayed and the stdout will be empty until the end of the benchmark.
 - Fixed broken links on the custom servers file example inside the Docker overview.
+- Updated the example gif-animation.
 
 ### Dependencies
 
