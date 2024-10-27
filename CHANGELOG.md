@@ -5,6 +5,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Added
+
+- Colorized the contents of the success rate and duration columns in the output table, depending on the values.
+- Add SafeDNS to the built-in servers list.
+- Add NextDNS to the built-in servers list.
+
+### Changed
+
+- Significantly modified the progress bar appearance; instead of a single progress bar, it now shows the progress of each DNS server separately.
+- Increased the frequency of progress bar updates.
+- Updated base image of Docker container from `rust:1.78.0` to `rust:1.81.0`
+- Changed default number of requests to each DNS server from `10` to `25` to make the benchmark more accurate.
+
+### Documentation
+
+- Added `-it` arguments to Docker container usage command. Without this arguments, the progress bar will not be displayed and the stdout will be empty until the end of the benchmark.
+- Fixed broken links on the custom servers file example inside the Docker overview.
+- Updated the example gif-animation.
+
+### Dependencies
+
+- Updated `clap` from 4.5.4 to 4.5.20
+- Updated `toml` from 0.8.13 to 0.8.19
+- Updated `lazy_static` from 1.4.0 to 1.5.0
+- Updated `serde` from 1.0.203 to 1.0.210
+- Updated `tabled` from 0.15.0 to 0.16.0
+
 ## v0.6.0 (02.06.2024)
 
 ### Added
