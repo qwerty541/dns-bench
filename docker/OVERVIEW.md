@@ -36,6 +36,7 @@ This repository provides DNS benchmarking command line tool written in Rust. It 
 - Verisign
 - DNS.WATCH
 - Norton ConnectSafe
+- SafeDNS
 - NextDNS
 
 # Usage
@@ -85,7 +86,7 @@ Below is a list of currently supported options.
         <tr>
             <td><code>--requests</code></td>
             <td>Number of requests to each DNS server.</td>
-            <td>10</td>
+            <td>25</td>
             <td>Any positive integer</td>
         </tr>
         <tr>
@@ -126,7 +127,7 @@ Below is a list of currently supported options.
         </tr>
         <tr>
             <td><code>--custom-servers-file</code></td>
-            <td>Provide a path to a file with custom servers list to use instead of built-in list. An example of file format can be found <a href="./ipv4-custom-servers-example.txt">here for IPv4</a> and <a href="./ipv6-custom-servers-example.txt">here for IPv6</a>.</td>
+            <td>Provide a path to a file with custom servers list to use instead of built-in list. An example of file format can be found <a href="https://github.com/qwerty541/dns-bench/blob/master/examples/ipv4-custom-servers-example.txt">here for IPv4</a> and <a href="https://github.com/qwerty541/dns-bench/blob/master/examples/ipv6-custom-servers-example.txt">here for IPv6</a>.</td>
             <td></td>
             <td></td>
         </tr>
