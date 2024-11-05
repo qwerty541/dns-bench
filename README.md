@@ -1,4 +1,4 @@
-# dns-bench
+# dns-bench <!-- omit in toc -->
 
 [![Crates.io][crates-badge]][crates-url]
 ![Rust version][rust-version]
@@ -11,6 +11,23 @@
 [workflow-badge]: https://github.com/qwerty541/dns-bench/workflows/check/badge.svg
 [actions-url]: https://github.com/qwerty541/dns-bench/actions
 [rust-version]: https://img.shields.io/badge/rust-1.74.1%2B-lightgrey.svg?logo=rust
+
+<details>
+<summary>Table of contents</summary>
+
+- [Description](#description)
+  - [Example](#example)
+  - [Features](#features)
+  - [List of built-in DNS servers](#list-of-built-in-dns-servers)
+- [Installation](#installation)
+  - [Which method to choose?](#which-method-to-choose)
+  - [From crates.io](#from-cratesio)
+  - [From git repository](#from-git-repository)
+  - [From Docker Hub](#from-docker-hub)
+- [Options](#options)
+- [License](#license)
+- [Contribution](#contribution)
+</details>
 
 ## Description
 
