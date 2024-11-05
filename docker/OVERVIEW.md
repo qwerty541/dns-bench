@@ -1,5 +1,17 @@
 Source: https://github.com/qwerty541/dns-bench
 
+<details>
+<summary>Table of contents</summary>
+
+- [Description](#description)
+  - [Example](#example)
+  - [Features](#features)
+  - [List of built-in DNS servers](#list-of-built-in-dns-servers)
+- [Usage](#usage)
+- [Options](#options)
+- [License](#license)
+</details>
+
 # Description
 
 This repository provides DNS benchmarking command line tool written in Rust. It iterates through built-in list of public DNS servers, measures their response time and print table with sorted results in console. It can be used to find the fastest DNS in your location for better internet browsing experience. An example of console output, list of features and list of built-in DNS servers can be found below.

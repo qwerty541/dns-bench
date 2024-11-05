@@ -147,6 +147,7 @@ impl DnsBenchApplication {
         self.multi_progress = Some(multi_progress);
     }
 
+    /// Initialize a progress bar.
     fn init_progress_bar(requests_count: u64) -> ProgressBar {
         let progress_bar = ProgressBar::new(requests_count);
 
