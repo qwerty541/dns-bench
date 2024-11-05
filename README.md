@@ -53,6 +53,9 @@ This repository provides DNS benchmarking command line tool written in Rust. It 
 
 ### List of built-in DNS servers
 
+<table>
+<tr><td>
+
 - Google Public DNS
 - Cloudflare
 - Quad9
@@ -60,6 +63,9 @@ This repository provides DNS benchmarking command line tool written in Rust. It 
 - OpenDNS
 - CleanBrowsing
 - AdGuard DNS
+
+</td><td>
+
 - Comodo Secure DNS
 - Level3
 - Verisign
@@ -67,6 +73,9 @@ This repository provides DNS benchmarking command line tool written in Rust. It 
 - Norton ConnectSafe
 - SafeDNS
 - NextDNS
+
+</td></tr>
+</table>
 
 ## Installation
 
