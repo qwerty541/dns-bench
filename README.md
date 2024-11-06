@@ -1,16 +1,35 @@
-# dns-bench
+# dns-bench <!-- omit in toc -->
 
-[![Crates.io][crates-badge]][crates-url]
+[![Crates.io version][crates-version-badge]][crates-url]
+[![Crates.io downloads][crates-downloads-badge]][crates-url]
 ![Rust version][rust-version]
 ![License][license-badge]
 [![Workflow Status][workflow-badge]][actions-url]
 
-[crates-badge]: https://img.shields.io/crates/v/dns-bench.svg
+[crates-version-badge]: https://img.shields.io/crates/v/dns-bench.svg
+[crates-downloads-badge]: https://img.shields.io/crates/d/dns-bench.svg
 [crates-url]: https://crates.io/crates/dns-bench
 [license-badge]: https://img.shields.io/crates/l/dns-bench.svg
 [workflow-badge]: https://github.com/qwerty541/dns-bench/workflows/check/badge.svg
 [actions-url]: https://github.com/qwerty541/dns-bench/actions
 [rust-version]: https://img.shields.io/badge/rust-1.74.1%2B-lightgrey.svg?logo=rust
+
+<details>
+<summary>Table of contents</summary>
+
+- [Description](#description)
+  - [Example](#example)
+  - [Features](#features)
+  - [List of built-in DNS servers](#list-of-built-in-dns-servers)
+- [Installation](#installation)
+  - [Which method to choose?](#which-method-to-choose)
+  - [From crates.io](#from-cratesio)
+  - [From git repository](#from-git-repository)
+  - [From Docker Hub](#from-docker-hub)
+- [Options](#options)
+- [License](#license)
+- [Contribution](#contribution)
+</details>
 
 ## Description
 
@@ -23,7 +42,7 @@ This repository provides DNS benchmarking command line tool written in Rust. It 
 ### Features
 
 - Built-in list of public DNS servers.
-- Requests count configuration. By default, 10 requests are made to each DNS server.
+- Requests count configuration. By default, 25 requests are made to each DNS server.
 - Threads count configuration. By default, 8 threads are used.
 - Timeout configuration. By default, 3 seconds timeout is used.
 - Domain configuration. By default, google.com domain is used.
@@ -36,6 +55,9 @@ This repository provides DNS benchmarking command line tool written in Rust. It 
 
 ### List of built-in DNS servers
 
+<table>
+<tr><td>
+
 - Google Public DNS
 - Cloudflare
 - Quad9
@@ -43,6 +65,9 @@ This repository provides DNS benchmarking command line tool written in Rust. It 
 - OpenDNS
 - CleanBrowsing
 - AdGuard DNS
+
+</td><td>
+
 - Comodo Secure DNS
 - Level3
 - Verisign
@@ -50,6 +75,9 @@ This repository provides DNS benchmarking command line tool written in Rust. It 
 - Norton ConnectSafe
 - SafeDNS
 - NextDNS
+
+</td></tr>
+</table>
 
 ## Installation
 
