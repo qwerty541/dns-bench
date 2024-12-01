@@ -1,0 +1,36 @@
+ci:
+  - changed-files:
+      - any-glob-to-any-file:
+          - .github/workflows/*
+          - .github/labeler.yml
+
+dependencies:
+  - changed-files:
+      - any-glob-to-any-file:
+          - Cargo.toml
+          - Cargo.lock
+
+docker:
+  - changed-files:
+      - any-glob-to-any-file:
+          - docker/*
+
+documentation:
+  - changed-files:
+      - any-glob-to-any-file:
+          - README.md
+          - RELEASE.md
+          - CHANGELOG.md
+          - CODE_OF_CONDUCT.md
+          - docker/OVERVIEW.md
+
+github_actions:
+  - changed-files:
+      - any-glob-to-any-file:
+          - .github/workflows/*
+          - .github/labeler.yml
+
+rust:
+  - changed-files:
+      - any-glob-to-any-file:
+          - src/*
