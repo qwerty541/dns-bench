@@ -137,6 +137,12 @@ If you want to pass some options, you can do it like this:
 $ docker run --rm -it --name dns-bench qwerty541/dns-bench:0.7.1 /bin/bash -c "dns-bench --requests 20 --domain microsoft.com --style re-structured-text"
 ```
 
+In case you want to use custom servers list, you have to mount the file with custom servers list to the container and pass the path to the file as an argument:
+
+```sh
+$ docker run --rm -it --name dns-bench --volume /home/alexandr/projects/dns-bench/examples/ipv4-custom-servers-example.txt:/ipv4-custom-servers-example.txt qwerty541/dns-bench:0.7.1 /bin/bash -c "dns-bench --custom-servers-file /ipv4-custom-servers-example.txt"
+```
+
 ## Options
 
 Below is a list of currently supported options.
