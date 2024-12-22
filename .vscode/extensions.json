@@ -1,3 +1,7 @@
 {
-    "recommendations": ["rust-lang.rust-analyzer", "yzhang.markdown-all-in-one"]
+    "recommendations": [
+        "rust-lang.rust-analyzer",
+        "yzhang.markdown-all-in-one",
+        "esbenp.prettier-vscode"
+    ]
 }
