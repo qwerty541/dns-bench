@@ -63,18 +63,22 @@ This repository provides DNS benchmarking command line tool written in Rust. It 
 - Quad9
 - ControlD
 - OpenDNS
-- CleanBrowsing
-- AdGuard DNS
 
 </td><td>
 
+- CleanBrowsing
+- AdGuard DNS
 - Comodo Secure DNS
 - Level3
 - Verisign
+
+</td><td>
+
 - DNS.WATCH
 - Norton ConnectSafe
 - SafeDNS
 - NextDNS
+- Dyn
 
 </td></tr>
 </table>
