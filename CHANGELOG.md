@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+- Added Dyn to the built-in servers list.
+
 ### Changed
 
 - Updated base image of Docker container from `rust:1.82.0` to `rust:1.83.0`
