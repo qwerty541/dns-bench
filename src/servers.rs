@@ -63,6 +63,8 @@ lazy_static::lazy_static! {
         ipv4_dns_entry!("SafeDNS", (195, 46, 39, 40), 53),
         ipv4_dns_entry!("NextDNS", (45, 90, 28, 100), 53),
         ipv4_dns_entry!("NextDNS", (45, 90, 30, 100), 53),
+        ipv4_dns_entry!("Dyn", (216, 146, 35, 35), 53),
+        ipv4_dns_entry!("Dyn", (216, 146, 36, 36), 53),
     ];
 }
 
