@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Added
+
+- Added Dyn to the built-in servers list.
+
+### Changed
+
+- Updated base image of Docker container from `rust:1.82.0` to `rust:1.83.0`
+
+### Documentation
+
+- Fixed default requests count in features section of DockerHub overview.
+- Added example command of using custom servers list feature with docker container into readme file and DockerHub overview.
+- Removed table of contents from the DockerHub overview because it doesn't work there.
+- Table with built-in servers list was splitted into three columns to improve readability.
+
+### Dependencies
+
+- Updated `serde` from 1.0.214 to 1.0.217
+- Updated `clap` from 4.5.20 to 4.5.23
+- Updated `indicatif` from 0.17.8 to 0.17.9
+- Updated `tabled` from 0.16.0 to 0.17.0
+- Updated `hickory-resolver` from 0.24.1 to 0.24.2
+
 ## v0.7.1 (06.11.2024)
 
 ### Changed
