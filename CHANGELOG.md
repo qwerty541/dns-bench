@@ -24,7 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Dependencies
 
-- Updated `serde` from 1.0.214 to 1.0.216
+- Updated `serde` from 1.0.214 to 1.0.217
 - Updated `clap` from 4.5.20 to 4.5.23
 - Updated `indicatif` from 0.17.8 to 0.17.9
 - Updated `tabled` from 0.16.0 to 0.17.0
