@@ -13,6 +13,8 @@ This document is a checklist for the release process of the `dns-bench` project.
 - [ ] Rebuild [Cargo.lock](./Cargo.lock) by running `cargo build`.
 - [ ] Commit changes with message `v<version>`.
 - [ ] Run `cargo publish` to publish the crate to crates.io.
+- [ ] Push changes to the repository.
+- [ ] Draft a new release on GitHub with the new version and the changelog.
 - [ ] Run `/docker/build.sh` to build a new Docker image.
 - [ ] Run `/docker/push.sh` to push the new Docker image to Docker Hub.
 - [ ] Update repository overview in Docker Hub.
