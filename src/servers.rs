@@ -65,6 +65,7 @@ lazy_static::lazy_static! {
         ipv4_dns_entry!("NextDNS", (45, 90, 30, 100), 53),
         ipv4_dns_entry!("Dyn", (216, 146, 35, 35), 53),
         ipv4_dns_entry!("Dyn", (216, 146, 36, 36), 53),
+        ipv4_dns_entry!("Hurricane Electric", (74, 82, 42, 42), 53),
     ];
 }
 
@@ -91,5 +92,6 @@ lazy_static::lazy_static! {
         ipv6_dns_entry!("DNS.WATCH", (0x2001, 0x1608, 0x0010, 0x0025, 0, 0, 0x9249, 0xd69b), 53),
         ipv6_dns_entry!("NextDNS", (0x2a07, 0xa8c0, 0, 0, 0, 0, 0x006e, 0x3f39), 53),
         ipv6_dns_entry!("NextDNS", (0x2a07, 0xa8c1, 0, 0, 0, 0, 0x006e, 0x3f39), 53),
+        ipv6_dns_entry!("Hurricane Electric", (0x2001, 0x0470, 0x0020, 0, 0, 0, 0, 0x0002), 53),
     ];
 }
