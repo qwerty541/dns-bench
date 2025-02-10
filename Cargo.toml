@@ -28,5 +28,5 @@ indicatif = "0.17.9"
 hickory-resolver = "0.24.2"
 serde = { version = "1.0.217", features = ["derive"], default-features = false }
 tabled = "0.17.0"
-toml = "0.8.19"
+toml = "0.8.20"
 lazy_static = "1.5.0"
