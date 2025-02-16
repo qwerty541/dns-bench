@@ -1,5 +1,6 @@
 {
     "editor.formatOnSave": true,
+    "files.insertFinalNewline": true,
     "[rust]": {
         "editor.defaultFormatter": "rust-lang.rust-analyzer"
     }
