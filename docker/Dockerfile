@@ -1,4 +1,4 @@
-FROM rust:1.84.0
+FROM rust:1.84.1
 
 RUN cargo install --git https://github.com/qwerty541/dns-bench.git --tag v0.7.2 dns-bench
 
