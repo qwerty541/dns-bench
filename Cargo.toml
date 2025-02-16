@@ -25,7 +25,7 @@ include = [
 clap = { version = "4.5.28", features = ["std", "derive"] }
 directories = "5.0.1"
 indicatif = "0.17.11"
-hickory-resolver = "0.24.2"
+hickory-resolver = "0.24.3"
 serde = { version = "1.0.217", features = ["derive"], default-features = false }
 tabled = "0.18.0"
 toml = "0.8.20"
