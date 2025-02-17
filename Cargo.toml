@@ -22,7 +22,7 @@ include = [
 ]
 
 [dependencies]
-clap = { version = "4.5.28", features = ["std", "derive"] }
+clap = { version = "4.5.29", features = ["std", "derive"] }
 directories = "5.0.1"
 indicatif = "0.17.11"
 hickory-resolver = "0.24.2"
