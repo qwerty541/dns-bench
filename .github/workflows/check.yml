@@ -67,7 +67,7 @@ jobs:
                   toolchain: ${{ matrix.rust }}
 
             - name: Cache
-              uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # v4.2.0
+              uses: actions/cache@d4323d4df104b026a6aa633fdb11d772146be0bf # v4.2.2
               with:
                   path: |
                       ~/.cargo
@@ -105,7 +105,7 @@ jobs:
                   toolchain: stable
 
             - name: Cache
-              uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # v4.2.0
+              uses: actions/cache@d4323d4df104b026a6aa633fdb11d772146be0bf # v4.2.2
               with:
                   path: |
                       ~/.cargo
@@ -117,4 +117,4 @@ jobs:
               run: cargo install cargo-msrv
 
             - name: Check msrv
-              run: cargo msrv find --log-target stdout --log-level info
+              run: cargo msrv find
