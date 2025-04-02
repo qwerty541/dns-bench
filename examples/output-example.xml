@@ -1,0 +1,386 @@
+<DnsBenchResultEntries>
+	<ResultEntry>
+		<Name>Router</Name>
+		<Ip>192.168.0.1</Ip>
+		<LastResolvedIp>216.58.208.206</LastResolvedIp>
+		<SuccessfullRequests>
+			<TotalRequests>25</TotalRequests>
+			<SuccessfullRequests>25</SuccessfullRequests>
+			<SuccessfullRequestsPercentage>100</SuccessfullRequestsPercentage>
+		</SuccessfullRequests>
+		<FirstDuration type="succeeded">956.019µs</FirstDuration>
+		<AverageDuration type="succeeded">897.359µs</AverageDuration>
+	</ResultEntry>
+	<ResultEntry>
+		<Name>NextDNS</Name>
+		<Ip>45.90.28.100</Ip>
+		<LastResolvedIp>142.250.203.206</LastResolvedIp>
+		<SuccessfullRequests>
+			<TotalRequests>25</TotalRequests>
+			<SuccessfullRequests>25</SuccessfullRequests>
+			<SuccessfullRequestsPercentage>100</SuccessfullRequestsPercentage>
+		</SuccessfullRequests>
+		<FirstDuration type="succeeded">11.608952ms</FirstDuration>
+		<AverageDuration type="succeeded">12.065243ms</AverageDuration>
+	</ResultEntry>
+	<ResultEntry>
+		<Name>Cloudflare</Name>
+		<Ip>1.1.1.1</Ip>
+		<LastResolvedIp>142.250.75.14</LastResolvedIp>
+		<SuccessfullRequests>
+			<TotalRequests>25</TotalRequests>
+			<SuccessfullRequests>25</SuccessfullRequests>
+			<SuccessfullRequestsPercentage>100</SuccessfullRequestsPercentage>
+		</SuccessfullRequests>
+		<FirstDuration type="succeeded">12.747959ms</FirstDuration>
+		<AverageDuration type="succeeded">15.906743ms</AverageDuration>
+	</ResultEntry>
+	<ResultEntry>
+		<Name>Cloudflare</Name>
+		<Ip>1.0.0.1</Ip>
+		<LastResolvedIp>142.250.203.142</LastResolvedIp>
+		<SuccessfullRequests>
+			<TotalRequests>25</TotalRequests>
+			<SuccessfullRequests>25</SuccessfullRequests>
+			<SuccessfullRequestsPercentage>100</SuccessfullRequestsPercentage>
+		</SuccessfullRequests>
+		<FirstDuration type="succeeded">26.451412ms</FirstDuration>
+		<AverageDuration type="succeeded">16.519577ms</AverageDuration>
+	</ResultEntry>
+	<ResultEntry>
+		<Name>CleanBrowsing</Name>
+		<Ip>185.228.169.9</Ip>
+		<LastResolvedIp>172.217.16.46</LastResolvedIp>
+		<SuccessfullRequests>
+			<TotalRequests>25</TotalRequests>
+			<SuccessfullRequests>24</SuccessfullRequests>
+			<SuccessfullRequestsPercentage>96</SuccessfullRequestsPercentage>
+		</SuccessfullRequests>
+		<FirstDuration type="succeeded">27.861698ms</FirstDuration>
+		<AverageDuration type="succeeded">26.189322ms</AverageDuration>
+	</ResultEntry>
+	<ResultEntry>
+		<Name>Google</Name>
+		<Ip>8.8.4.4</Ip>
+		<LastResolvedIp>172.217.16.14</LastResolvedIp>
+		<SuccessfullRequests>
+			<TotalRequests>25</TotalRequests>
+			<SuccessfullRequests>25</SuccessfullRequests>
+			<SuccessfullRequestsPercentage>100</SuccessfullRequestsPercentage>
+		</SuccessfullRequests>
+		<FirstDuration type="succeeded">25.106184ms</FirstDuration>
+		<AverageDuration type="succeeded">26.519282ms</AverageDuration>
+	</ResultEntry>
+	<ResultEntry>
+		<Name>Google</Name>
+		<Ip>8.8.8.8</Ip>
+		<LastResolvedIp>172.217.16.14</LastResolvedIp>
+		<SuccessfullRequests>
+			<TotalRequests>25</TotalRequests>
+			<SuccessfullRequests>25</SuccessfullRequests>
+			<SuccessfullRequestsPercentage>100</SuccessfullRequestsPercentage>
+		</SuccessfullRequests>
+		<FirstDuration type="succeeded">25.308388ms</FirstDuration>
+		<AverageDuration type="succeeded">27.844212ms</AverageDuration>
+	</ResultEntry>
+	<ResultEntry>
+		<Name>Norton ConnectSafe</Name>
+		<Ip>199.85.126.10</Ip>
+		<LastResolvedIp>216.58.206.46</LastResolvedIp>
+		<SuccessfullRequests>
+			<TotalRequests>25</TotalRequests>
+			<SuccessfullRequests>25</SuccessfullRequests>
+			<SuccessfullRequestsPercentage>100</SuccessfullRequestsPercentage>
+		</SuccessfullRequests>
+		<FirstDuration type="succeeded">36.836207ms</FirstDuration>
+		<AverageDuration type="succeeded">36.659799ms</AverageDuration>
+	</ResultEntry>
+	<ResultEntry>
+		<Name>Control D</Name>
+		<Ip>76.76.10.0</Ip>
+		<LastResolvedIp>142.250.178.206</LastResolvedIp>
+		<SuccessfullRequests>
+			<TotalRequests>25</TotalRequests>
+			<SuccessfullRequests>25</SuccessfullRequests>
+			<SuccessfullRequestsPercentage>100</SuccessfullRequestsPercentage>
+		</SuccessfullRequests>
+		<FirstDuration type="succeeded">36.877838ms</FirstDuration>
+		<AverageDuration type="succeeded">37.045443ms</AverageDuration>
+	</ResultEntry>
+	<ResultEntry>
+		<Name>Control D</Name>
+		<Ip>76.76.2.0</Ip>
+		<LastResolvedIp>142.250.178.206</LastResolvedIp>
+		<SuccessfullRequests>
+			<TotalRequests>25</TotalRequests>
+			<SuccessfullRequests>25</SuccessfullRequests>
+			<SuccessfullRequestsPercentage>100</SuccessfullRequestsPercentage>
+		</SuccessfullRequests>
+		<FirstDuration type="succeeded">37.315346ms</FirstDuration>
+		<AverageDuration type="succeeded">37.09532ms</AverageDuration>
+	</ResultEntry>
+	<ResultEntry>
+		<Name>Verisign</Name>
+		<Ip>64.6.64.6</Ip>
+		<LastResolvedIp>216.58.206.46</LastResolvedIp>
+		<SuccessfullRequests>
+			<TotalRequests>25</TotalRequests>
+			<SuccessfullRequests>25</SuccessfullRequests>
+			<SuccessfullRequestsPercentage>100</SuccessfullRequestsPercentage>
+		</SuccessfullRequests>
+		<FirstDuration type="succeeded">37.69679ms</FirstDuration>
+		<AverageDuration type="succeeded">37.730526ms</AverageDuration>
+	</ResultEntry>
+	<ResultEntry>
+		<Name>SafeDNS</Name>
+		<Ip>195.46.39.40</Ip>
+		<LastResolvedIp>142.250.185.78</LastResolvedIp>
+		<SuccessfullRequests>
+			<TotalRequests>25</TotalRequests>
+			<SuccessfullRequests>25</SuccessfullRequests>
+			<SuccessfullRequestsPercentage>100</SuccessfullRequestsPercentage>
+		</SuccessfullRequests>
+		<FirstDuration type="succeeded">37.667608ms</FirstDuration>
+		<AverageDuration type="succeeded">37.977849ms</AverageDuration>
+	</ResultEntry>
+	<ResultEntry>
+		<Name>SafeDNS</Name>
+		<Ip>195.46.39.39</Ip>
+		<LastResolvedIp>142.250.185.78</LastResolvedIp>
+		<SuccessfullRequests>
+			<TotalRequests>25</TotalRequests>
+			<SuccessfullRequests>25</SuccessfullRequests>
+			<SuccessfullRequestsPercentage>100</SuccessfullRequestsPercentage>
+		</SuccessfullRequests>
+		<FirstDuration type="succeeded">37.650066ms</FirstDuration>
+		<AverageDuration type="succeeded">38.000118ms</AverageDuration>
+	</ResultEntry>
+	<ResultEntry>
+		<Name>Quad9</Name>
+		<Ip>9.9.9.9</Ip>
+		<LastResolvedIp>172.217.16.14</LastResolvedIp>
+		<SuccessfullRequests>
+			<TotalRequests>25</TotalRequests>
+			<SuccessfullRequests>25</SuccessfullRequests>
+			<SuccessfullRequestsPercentage>100</SuccessfullRequestsPercentage>
+		</SuccessfullRequests>
+		<FirstDuration type="succeeded">41.475234ms</FirstDuration>
+		<AverageDuration type="succeeded">42.04875ms</AverageDuration>
+	</ResultEntry>
+	<ResultEntry>
+		<Name>OpenDNS Home</Name>
+		<Ip>208.67.220.220</Ip>
+		<LastResolvedIp>142.250.186.206</LastResolvedIp>
+		<SuccessfullRequests>
+			<TotalRequests>25</TotalRequests>
+			<SuccessfullRequests>25</SuccessfullRequests>
+			<SuccessfullRequestsPercentage>100</SuccessfullRequestsPercentage>
+		</SuccessfullRequests>
+		<FirstDuration type="succeeded">58.08342ms</FirstDuration>
+		<AverageDuration type="succeeded">43.371369ms</AverageDuration>
+	</ResultEntry>
+	<ResultEntry>
+		<Name>OpenDNS Home</Name>
+		<Ip>208.67.222.222</Ip>
+		<LastResolvedIp>142.250.186.206</LastResolvedIp>
+		<SuccessfullRequests>
+			<TotalRequests>25</TotalRequests>
+			<SuccessfullRequests>25</SuccessfullRequests>
+			<SuccessfullRequestsPercentage>100</SuccessfullRequestsPercentage>
+		</SuccessfullRequests>
+		<FirstDuration type="succeeded">42.24006ms</FirstDuration>
+		<AverageDuration type="succeeded">44.257649ms</AverageDuration>
+	</ResultEntry>
+	<ResultEntry>
+		<Name>Level3</Name>
+		<Ip>209.244.0.3</Ip>
+		<LastResolvedIp>142.250.187.142</LastResolvedIp>
+		<SuccessfullRequests>
+			<TotalRequests>25</TotalRequests>
+			<SuccessfullRequests>25</SuccessfullRequests>
+			<SuccessfullRequestsPercentage>100</SuccessfullRequestsPercentage>
+		</SuccessfullRequests>
+		<FirstDuration type="succeeded">41.734028ms</FirstDuration>
+		<AverageDuration type="succeeded">44.333134ms</AverageDuration>
+	</ResultEntry>
+	<ResultEntry>
+		<Name>CleanBrowsing</Name>
+		<Ip>185.228.168.9</Ip>
+		<LastResolvedIp>142.250.183.238</LastResolvedIp>
+		<SuccessfullRequests>
+			<TotalRequests>25</TotalRequests>
+			<SuccessfullRequests>25</SuccessfullRequests>
+			<SuccessfullRequestsPercentage>100</SuccessfullRequestsPercentage>
+		</SuccessfullRequests>
+		<FirstDuration type="succeeded">46.449695ms</FirstDuration>
+		<AverageDuration type="succeeded">46.129361ms</AverageDuration>
+	</ResultEntry>
+	<ResultEntry>
+		<Name>Level3</Name>
+		<Ip>209.244.0.4</Ip>
+		<LastResolvedIp>172.217.17.142</LastResolvedIp>
+		<SuccessfullRequests>
+			<TotalRequests>25</TotalRequests>
+			<SuccessfullRequests>25</SuccessfullRequests>
+			<SuccessfullRequestsPercentage>100</SuccessfullRequestsPercentage>
+		</SuccessfullRequests>
+		<FirstDuration type="succeeded">43.761039ms</FirstDuration>
+		<AverageDuration type="succeeded">46.524236ms</AverageDuration>
+	</ResultEntry>
+	<ResultEntry>
+		<Name>Comodo Secure DNS</Name>
+		<Ip>8.20.247.20</Ip>
+		<LastResolvedIp>142.250.187.110</LastResolvedIp>
+		<SuccessfullRequests>
+			<TotalRequests>25</TotalRequests>
+			<SuccessfullRequests>25</SuccessfullRequests>
+			<SuccessfullRequestsPercentage>100</SuccessfullRequestsPercentage>
+		</SuccessfullRequests>
+		<FirstDuration type="succeeded">47.876838ms</FirstDuration>
+		<AverageDuration type="succeeded">46.867703ms</AverageDuration>
+	</ResultEntry>
+	<ResultEntry>
+		<Name>Norton ConnectSafe</Name>
+		<Ip>199.85.127.10</Ip>
+		<LastResolvedIp>142.250.181.238</LastResolvedIp>
+		<SuccessfullRequests>
+			<TotalRequests>25</TotalRequests>
+			<SuccessfullRequests>25</SuccessfullRequests>
+			<SuccessfullRequestsPercentage>100</SuccessfullRequestsPercentage>
+		</SuccessfullRequests>
+		<FirstDuration type="succeeded">52.078046ms</FirstDuration>
+		<AverageDuration type="succeeded">47.664626ms</AverageDuration>
+	</ResultEntry>
+	<ResultEntry>
+		<Name>Comodo Secure DNS</Name>
+		<Ip>8.26.56.26</Ip>
+		<LastResolvedIp>142.250.187.110</LastResolvedIp>
+		<SuccessfullRequests>
+			<TotalRequests>25</TotalRequests>
+			<SuccessfullRequests>25</SuccessfullRequests>
+			<SuccessfullRequestsPercentage>100</SuccessfullRequestsPercentage>
+		</SuccessfullRequests>
+		<FirstDuration type="succeeded">47.849917ms</FirstDuration>
+		<AverageDuration type="succeeded">47.998061ms</AverageDuration>
+	</ResultEntry>
+	<ResultEntry>
+		<Name>NextDNS</Name>
+		<Ip>45.90.30.100</Ip>
+		<LastResolvedIp>142.251.36.14</LastResolvedIp>
+		<SuccessfullRequests>
+			<TotalRequests>25</TotalRequests>
+			<SuccessfullRequests>25</SuccessfullRequests>
+			<SuccessfullRequestsPercentage>100</SuccessfullRequestsPercentage>
+		</SuccessfullRequests>
+		<FirstDuration type="succeeded">51.759537ms</FirstDuration>
+		<AverageDuration type="succeeded">48.719458ms</AverageDuration>
+	</ResultEntry>
+	<ResultEntry>
+		<Name>DNS.WATCH</Name>
+		<Ip>84.200.70.40</Ip>
+		<LastResolvedIp>142.250.200.78</LastResolvedIp>
+		<SuccessfullRequests>
+			<TotalRequests>25</TotalRequests>
+			<SuccessfullRequests>14</SuccessfullRequests>
+			<SuccessfullRequestsPercentage>56</SuccessfullRequestsPercentage>
+		</SuccessfullRequests>
+		<FirstDuration type="failed">request timed out</FirstDuration>
+		<AverageDuration type="succeeded">49.555487ms</AverageDuration>
+	</ResultEntry>
+	<ResultEntry>
+		<Name>Quad9</Name>
+		<Ip>149.112.112.112</Ip>
+		<LastResolvedIp>172.217.16.14</LastResolvedIp>
+		<SuccessfullRequests>
+			<TotalRequests>25</TotalRequests>
+			<SuccessfullRequests>25</SuccessfullRequests>
+			<SuccessfullRequestsPercentage>100</SuccessfullRequestsPercentage>
+		</SuccessfullRequests>
+		<FirstDuration type="succeeded">32.623128ms</FirstDuration>
+		<AverageDuration type="succeeded">53.486195ms</AverageDuration>
+	</ResultEntry>
+	<ResultEntry>
+		<Name>DNS.WATCH</Name>
+		<Ip>84.200.69.80</Ip>
+		<LastResolvedIp>142.250.200.78</LastResolvedIp>
+		<SuccessfullRequests>
+			<TotalRequests>25</TotalRequests>
+			<SuccessfullRequests>9</SuccessfullRequests>
+			<SuccessfullRequestsPercentage>36</SuccessfullRequestsPercentage>
+		</SuccessfullRequests>
+		<FirstDuration type="failed">request timed out</FirstDuration>
+		<AverageDuration type="succeeded">57.810635ms</AverageDuration>
+	</ResultEntry>
+	<ResultEntry>
+		<Name>AdGuard DNS</Name>
+		<Ip>94.140.15.15</Ip>
+		<LastResolvedIp>142.250.186.206</LastResolvedIp>
+		<SuccessfullRequests>
+			<TotalRequests>25</TotalRequests>
+			<SuccessfullRequests>24</SuccessfullRequests>
+			<SuccessfullRequestsPercentage>96</SuccessfullRequestsPercentage>
+		</SuccessfullRequests>
+		<FirstDuration type="succeeded">40.456138ms</FirstDuration>
+		<AverageDuration type="succeeded">67.590095ms</AverageDuration>
+	</ResultEntry>
+	<ResultEntry>
+		<Name>Hurricane Electric</Name>
+		<Ip>74.82.42.42</Ip>
+		<LastResolvedIp>142.250.191.238</LastResolvedIp>
+		<SuccessfullRequests>
+			<TotalRequests>25</TotalRequests>
+			<SuccessfullRequests>25</SuccessfullRequests>
+			<SuccessfullRequestsPercentage>100</SuccessfullRequestsPercentage>
+		</SuccessfullRequests>
+		<FirstDuration type="succeeded">113.922854ms</FirstDuration>
+		<AverageDuration type="succeeded">76.521356ms</AverageDuration>
+	</ResultEntry>
+	<ResultEntry>
+		<Name>AdGuard DNS</Name>
+		<Ip>94.140.14.14</Ip>
+		<LastResolvedIp>142.250.186.206</LastResolvedIp>
+		<SuccessfullRequests>
+			<TotalRequests>25</TotalRequests>
+			<SuccessfullRequests>25</SuccessfullRequests>
+			<SuccessfullRequestsPercentage>100</SuccessfullRequestsPercentage>
+		</SuccessfullRequests>
+		<FirstDuration type="succeeded">38.603339ms</FirstDuration>
+		<AverageDuration type="succeeded">126.0714ms</AverageDuration>
+	</ResultEntry>
+	<ResultEntry>
+		<Name>Dyn</Name>
+		<Ip>216.146.35.35</Ip>
+		<LastResolvedIp>172.217.29.142</LastResolvedIp>
+		<SuccessfullRequests>
+			<TotalRequests>25</TotalRequests>
+			<SuccessfullRequests>25</SuccessfullRequests>
+			<SuccessfullRequestsPercentage>100</SuccessfullRequestsPercentage>
+		</SuccessfullRequests>
+		<FirstDuration type="succeeded">226.071104ms</FirstDuration>
+		<AverageDuration type="succeeded">226.232114ms</AverageDuration>
+	</ResultEntry>
+	<ResultEntry>
+		<Name>Dyn</Name>
+		<Ip>216.146.36.36</Ip>
+		<LastResolvedIp>172.217.29.142</LastResolvedIp>
+		<SuccessfullRequests>
+			<TotalRequests>25</TotalRequests>
+			<SuccessfullRequests>25</SuccessfullRequests>
+			<SuccessfullRequestsPercentage>100</SuccessfullRequestsPercentage>
+		</SuccessfullRequests>
+		<FirstDuration type="succeeded">226.113792ms</FirstDuration>
+		<AverageDuration type="succeeded">226.529106ms</AverageDuration>
+	</ResultEntry>
+	<ResultEntry>
+		<Name>Verisign</Name>
+		<Ip>64.6.65.6</Ip>
+		<LastResolvedIp>0.0.0.0</LastResolvedIp>
+		<SuccessfullRequests>
+			<TotalRequests>25</TotalRequests>
+			<SuccessfullRequests>0</SuccessfullRequests>
+			<SuccessfullRequestsPercentage>0</SuccessfullRequestsPercentage>
+		</SuccessfullRequests>
+		<FirstDuration type="failed">request timed out</FirstDuration>
+		<AverageDuration type="failed">No successfull requests</AverageDuration>
+	</ResultEntry>
+</DnsBenchResultEntries>

@@ -1,4 +1,5 @@
 use crate::args::Arguments;
+use crate::args::Format;
 use crate::args::IpAddr;
 use crate::args::Protocol;
 use crate::args::Style;
@@ -26,6 +27,8 @@ pub struct DnsBenchConfig {
     pub lookup_ip: IpAddr,
     pub style: Style,
     pub custom_servers_file: Option<PathBuf>,
+    #[serde(default)]
+    pub format: Format,
 }
 
 impl Default for DnsBenchConfig {
@@ -40,6 +43,7 @@ impl Default for DnsBenchConfig {
             lookup_ip: IpAddr::V4,
             style: Style::Rounded,
             custom_servers_file: None,
+            format: Format::HumanReadable,
         }
     }
 }
@@ -72,6 +76,9 @@ impl DnsBenchConfig {
         }
         if let Some(custom_servers_file) = &args.custom_servers_file {
             self.custom_servers_file = fs::canonicalize(custom_servers_file).ok()
+        }
+        if let Some(format) = args.format {
+            self.format = format;
         }
     }
 
