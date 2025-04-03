@@ -312,37 +312,37 @@ impl From<RawResultEntry> for XmlResultEntry {
 }
 
 #[derive(Debug)]
-pub enum XmlCoversionError {
+pub enum XmlConversionError {
     Io(io::Error),
     FromUtf8(FromUtf8Error),
 }
 
-impl fmt::Display for XmlCoversionError {
+impl fmt::Display for XmlConversionError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            XmlCoversionError::Io(e) => write!(f, "IO error: {}", e),
-            XmlCoversionError::FromUtf8(e) => write!(f, "UTF-8 error: {}", e),
+            XmlConversionError::Io(e) => write!(f, "IO error: {}", e),
+            XmlConversionError::FromUtf8(e) => write!(f, "UTF-8 error: {}", e),
         }
     }
 }
 
-impl From<io::Error> for XmlCoversionError {
+impl From<io::Error> for XmlConversionError {
     fn from(e: io::Error) -> Self {
-        XmlCoversionError::Io(e)
+        XmlConversionError::Io(e)
     }
 }
 
-impl From<FromUtf8Error> for XmlCoversionError {
+impl From<FromUtf8Error> for XmlConversionError {
     fn from(e: FromUtf8Error) -> Self {
-        XmlCoversionError::FromUtf8(e)
+        XmlConversionError::FromUtf8(e)
     }
 }
 
-impl std::error::Error for XmlCoversionError {}
+impl std::error::Error for XmlConversionError {}
 
 pub fn convert_result_entries_to_xml_string(
     result_entries: Vec<XmlResultEntry>,
-) -> Result<String, XmlCoversionError> {
+) -> Result<String, XmlConversionError> {
     let mut writer = Writer::new(io::Cursor::new(Vec::new()));
 
     writer
@@ -353,10 +353,10 @@ pub fn convert_result_entries_to_xml_string(
             }
             Ok(())
         })
-        .map_err(XmlCoversionError::Io)?;
+        .map_err(XmlConversionError::Io)?;
 
-    let result =
-        String::from_utf8(writer.into_inner().into_inner()).map_err(XmlCoversionError::FromUtf8)?;
+    let result = String::from_utf8(writer.into_inner().into_inner())
+        .map_err(XmlConversionError::FromUtf8)?;
 
     Ok(result)
 }
