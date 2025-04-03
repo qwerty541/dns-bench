@@ -4,6 +4,7 @@ use std::fmt;
 use std::io;
 use std::net::IpAddr;
 use std::net::Ipv4Addr;
+use std::string::FromUtf8Error;
 use std::time::Duration;
 use tabled::settings as tabled_settings;
 use tabled::Tabled;
@@ -310,9 +311,38 @@ impl From<RawResultEntry> for XmlResultEntry {
     }
 }
 
+#[derive(Debug)]
+pub enum XmlCoversionError {
+    Io(io::Error),
+    FromUtf8(FromUtf8Error),
+}
+
+impl fmt::Display for XmlCoversionError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            XmlCoversionError::Io(e) => write!(f, "IO error: {}", e),
+            XmlCoversionError::FromUtf8(e) => write!(f, "UTF-8 error: {}", e),
+        }
+    }
+}
+
+impl From<io::Error> for XmlCoversionError {
+    fn from(e: io::Error) -> Self {
+        XmlCoversionError::Io(e)
+    }
+}
+
+impl From<FromUtf8Error> for XmlCoversionError {
+    fn from(e: FromUtf8Error) -> Self {
+        XmlCoversionError::FromUtf8(e)
+    }
+}
+
+impl std::error::Error for XmlCoversionError {}
+
 pub fn convert_result_entries_to_xml_string(
     result_entries: Vec<XmlResultEntry>,
-) -> Result<String, quick_xml::Error> {
+) -> Result<String, XmlCoversionError> {
     let mut writer = Writer::new(io::Cursor::new(Vec::new()));
 
     writer
@@ -322,9 +352,12 @@ pub fn convert_result_entries_to_xml_string(
                 entry.write_as_xml(writer)?;
             }
             Ok(())
-        })?;
+        })
+        .map_err(XmlCoversionError::Io)?;
 
-    let result = String::from_utf8(writer.into_inner().into_inner()).unwrap();
+    let result =
+        String::from_utf8(writer.into_inner().into_inner()).map_err(XmlCoversionError::FromUtf8)?;
+
     Ok(result)
 }
 
