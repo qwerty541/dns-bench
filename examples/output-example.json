@@ -1,633 +1,633 @@
 [
-    {
-        "name": "Router",
-        "ip": "192.168.0.1",
-        "last_resolved_ip": "216.58.208.206",
-        "total_requests": 25,
-        "successfull_requests": 25,
-        "successfull_requests_percentage": 100.0,
-        "first_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 1998009
-            }
-        },
-        "average_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 905733
-            }
-        }
+  {
+    "name": "Router",
+    "ip": "192.168.0.1",
+    "last_resolved_ip": "216.58.209.14",
+    "total_requests": 25,
+    "successful_requests": 25,
+    "successful_requests_percentage": 100.0,
+    "first_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 2043877
+      }
     },
-    {
-        "name": "NextDNS",
-        "ip": "45.90.28.100",
-        "last_resolved_ip": "142.250.203.206",
-        "total_requests": 25,
-        "successfull_requests": 25,
-        "successfull_requests_percentage": 100.0,
-        "first_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 13217173
-            }
-        },
-        "average_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 10966152
-            }
-        }
-    },
-    {
-        "name": "Cloudflare",
-        "ip": "1.0.0.1",
-        "last_resolved_ip": "216.58.209.14",
-        "total_requests": 25,
-        "successfull_requests": 25,
-        "successfull_requests_percentage": 100.0,
-        "first_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 11747711
-            }
-        },
-        "average_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 18491842
-            }
-        }
-    },
-    {
-        "name": "Cloudflare",
-        "ip": "1.1.1.1",
-        "last_resolved_ip": "142.250.203.206",
-        "total_requests": 25,
-        "successfull_requests": 25,
-        "successfull_requests_percentage": 100.0,
-        "first_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 12247914
-            }
-        },
-        "average_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 18666949
-            }
-        }
-    },
-    {
-        "name": "CleanBrowsing",
-        "ip": "185.228.169.9",
-        "last_resolved_ip": "172.217.16.46",
-        "total_requests": 25,
-        "successfull_requests": 24,
-        "successfull_requests_percentage": 96.0,
-        "first_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 25292528
-            }
-        },
-        "average_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 25261943
-            }
-        }
-    },
-    {
-        "name": "Google",
-        "ip": "8.8.8.8",
-        "last_resolved_ip": "142.250.186.206",
-        "total_requests": 25,
-        "successfull_requests": 25,
-        "successfull_requests_percentage": 100.0,
-        "first_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 43166667
-            }
-        },
-        "average_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 30454142
-            }
-        }
-    },
-    {
-        "name": "Google",
-        "ip": "8.8.4.4",
-        "last_resolved_ip": "142.250.186.206",
-        "total_requests": 25,
-        "successfull_requests": 25,
-        "successfull_requests_percentage": 100.0,
-        "first_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 40696720
-            }
-        },
-        "average_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 31589732
-            }
-        }
-    },
-    {
-        "name": "Norton ConnectSafe",
-        "ip": "199.85.126.10",
-        "last_resolved_ip": "172.217.18.110",
-        "total_requests": 25,
-        "successfull_requests": 25,
-        "successfull_requests_percentage": 100.0,
-        "first_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 36316512
-            }
-        },
-        "average_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 36687018
-            }
-        }
-    },
-    {
-        "name": "Control D",
-        "ip": "76.76.2.0",
-        "last_resolved_ip": "142.250.185.238",
-        "total_requests": 25,
-        "successfull_requests": 25,
-        "successfull_requests_percentage": 100.0,
-        "first_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 36922083
-            }
-        },
-        "average_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 36853236
-            }
-        }
-    },
-    {
-        "name": "Control D",
-        "ip": "76.76.10.0",
-        "last_resolved_ip": "142.250.185.238",
-        "total_requests": 25,
-        "successfull_requests": 25,
-        "successfull_requests_percentage": 100.0,
-        "first_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 37715938
-            }
-        },
-        "average_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 36918256
-            }
-        }
-    },
-    {
-        "name": "Verisign",
-        "ip": "64.6.64.6",
-        "last_resolved_ip": "216.58.206.46",
-        "total_requests": 25,
-        "successfull_requests": 25,
-        "successfull_requests_percentage": 100.0,
-        "first_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 37553898
-            }
-        },
-        "average_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 37687816
-            }
-        }
-    },
-    {
-        "name": "SafeDNS",
-        "ip": "195.46.39.40",
-        "last_resolved_ip": "142.250.185.78",
-        "total_requests": 25,
-        "successfull_requests": 25,
-        "successfull_requests_percentage": 100.0,
-        "first_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 38321601
-            }
-        },
-        "average_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 37960758
-            }
-        }
-    },
-    {
-        "name": "SafeDNS",
-        "ip": "195.46.39.39",
-        "last_resolved_ip": "142.250.185.78",
-        "total_requests": 25,
-        "successfull_requests": 25,
-        "successfull_requests_percentage": 100.0,
-        "first_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 39237535
-            }
-        },
-        "average_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 38027038
-            }
-        }
-    },
-    {
-        "name": "Quad9",
-        "ip": "149.112.112.112",
-        "last_resolved_ip": "172.217.16.14",
-        "total_requests": 25,
-        "successfull_requests": 25,
-        "successfull_requests_percentage": 100.0,
-        "first_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 33359787
-            }
-        },
-        "average_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 38687346
-            }
-        }
-    },
-    {
-        "name": "AdGuard DNS",
-        "ip": "94.140.14.14",
-        "last_resolved_ip": "142.250.186.206",
-        "total_requests": 25,
-        "successfull_requests": 25,
-        "successfull_requests_percentage": 100.0,
-        "first_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 40007750
-            }
-        },
-        "average_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 39409852
-            }
-        }
-    },
-    {
-        "name": "Quad9",
-        "ip": "9.9.9.9",
-        "last_resolved_ip": "172.217.16.14",
-        "total_requests": 25,
-        "successfull_requests": 25,
-        "successfull_requests_percentage": 100.0,
-        "first_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 29214981
-            }
-        },
-        "average_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 40596401
-            }
-        }
-    },
-    {
-        "name": "AdGuard DNS",
-        "ip": "94.140.15.15",
-        "last_resolved_ip": "142.250.186.206",
-        "total_requests": 25,
-        "successfull_requests": 25,
-        "successfull_requests_percentage": 100.0,
-        "first_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 42273667
-            }
-        },
-        "average_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 41245533
-            }
-        }
-    },
-    {
-        "name": "CleanBrowsing",
-        "ip": "185.228.168.9",
-        "last_resolved_ip": "142.250.183.238",
-        "total_requests": 25,
-        "successfull_requests": 25,
-        "successfull_requests_percentage": 100.0,
-        "first_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 47141261
-            }
-        },
-        "average_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 46337231
-            }
-        }
-    },
-    {
-        "name": "NextDNS",
-        "ip": "45.90.30.100",
-        "last_resolved_ip": "142.251.36.14",
-        "total_requests": 25,
-        "successfull_requests": 25,
-        "successfull_requests_percentage": 100.0,
-        "first_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 46884029
-            }
-        },
-        "average_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 47338546
-            }
-        }
-    },
-    {
-        "name": "Comodo Secure DNS",
-        "ip": "8.26.56.26",
-        "last_resolved_ip": "142.250.187.110",
-        "total_requests": 25,
-        "successfull_requests": 25,
-        "successfull_requests_percentage": 100.0,
-        "first_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 48380989
-            }
-        },
-        "average_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 47392992
-            }
-        }
-    },
-    {
-        "name": "Comodo Secure DNS",
-        "ip": "8.20.247.20",
-        "last_resolved_ip": "142.250.178.142",
-        "total_requests": 25,
-        "successfull_requests": 25,
-        "successfull_requests_percentage": 100.0,
-        "first_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 52695471
-            }
-        },
-        "average_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 47674097
-            }
-        }
-    },
-    {
-        "name": "Level3",
-        "ip": "209.244.0.4",
-        "last_resolved_ip": "142.250.187.142",
-        "total_requests": 25,
-        "successfull_requests": 25,
-        "successfull_requests_percentage": 100.0,
-        "first_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 46271502
-            }
-        },
-        "average_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 47684586
-            }
-        }
-    },
-    {
-        "name": "Norton ConnectSafe",
-        "ip": "199.85.127.10",
-        "last_resolved_ip": "142.250.181.238",
-        "total_requests": 25,
-        "successfull_requests": 25,
-        "successfull_requests_percentage": 100.0,
-        "first_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 43666512
-            }
-        },
-        "average_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 47891595
-            }
-        }
-    },
-    {
-        "name": "OpenDNS Home",
-        "ip": "208.67.222.222",
-        "last_resolved_ip": "142.250.186.206",
-        "total_requests": 25,
-        "successfull_requests": 25,
-        "successfull_requests_percentage": 100.0,
-        "first_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 44568344
-            }
-        },
-        "average_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 48758356
-            }
-        }
-    },
-    {
-        "name": "Level3",
-        "ip": "209.244.0.3",
-        "last_resolved_ip": "172.217.17.142",
-        "total_requests": 25,
-        "successfull_requests": 25,
-        "successfull_requests_percentage": 100.0,
-        "first_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 55504988
-            }
-        },
-        "average_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 49102482
-            }
-        }
-    },
-    {
-        "name": "OpenDNS Home",
-        "ip": "208.67.220.220",
-        "last_resolved_ip": "142.250.186.206",
-        "total_requests": 25,
-        "successfull_requests": 25,
-        "successfull_requests_percentage": 100.0,
-        "first_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 56600273
-            }
-        },
-        "average_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 49351560
-            }
-        }
-    },
-    {
-        "name": "DNS.WATCH",
-        "ip": "84.200.69.80",
-        "last_resolved_ip": "142.250.200.78",
-        "total_requests": 25,
-        "successfull_requests": 12,
-        "successfull_requests_percentage": 48.0,
-        "first_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 51982077
-            }
-        },
-        "average_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 51373433
-            }
-        }
-    },
-    {
-        "name": "DNS.WATCH",
-        "ip": "84.200.70.40",
-        "last_resolved_ip": "142.250.200.78",
-        "total_requests": 25,
-        "successfull_requests": 13,
-        "successfull_requests_percentage": 52.0,
-        "first_duration": {
-            "failed": "request timed out"
-        },
-        "average_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 57799696
-            }
-        }
-    },
-    {
-        "name": "Hurricane Electric",
-        "ip": "74.82.42.42",
-        "last_resolved_ip": "142.250.191.238",
-        "total_requests": 25,
-        "successfull_requests": 25,
-        "successfull_requests_percentage": 100.0,
-        "first_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 165223007
-            }
-        },
-        "average_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 75394591
-            }
-        }
-    },
-    {
-        "name": "Dyn",
-        "ip": "216.146.35.35",
-        "last_resolved_ip": "172.217.29.142",
-        "total_requests": 25,
-        "successfull_requests": 25,
-        "successfull_requests_percentage": 100.0,
-        "first_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 226649120
-            }
-        },
-        "average_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 226631294
-            }
-        }
-    },
-    {
-        "name": "Dyn",
-        "ip": "216.146.36.36",
-        "last_resolved_ip": "172.217.29.142",
-        "total_requests": 25,
-        "successfull_requests": 25,
-        "successfull_requests_percentage": 100.0,
-        "first_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 226214090
-            }
-        },
-        "average_duration": {
-            "succeeded": {
-                "secs": 0,
-                "nanos": 226688310
-            }
-        }
-    },
-    {
-        "name": "Verisign",
-        "ip": "64.6.65.6",
-        "last_resolved_ip": "0.0.0.0",
-        "total_requests": 25,
-        "successfull_requests": 0,
-        "successfull_requests_percentage": 0.0,
-        "first_duration": {
-            "failed": "request timed out"
-        },
-        "average_duration": {
-            "failed": "No successfull requests"
-        }
+    "average_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 2085107
+      }
     }
+  },
+  {
+    "name": "NextDNS",
+    "ip": "45.90.28.100",
+    "last_resolved_ip": "142.250.203.206",
+    "total_requests": 25,
+    "successful_requests": 25,
+    "successful_requests_percentage": 100.0,
+    "first_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 13823263
+      }
+    },
+    "average_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 11218972
+      }
+    }
+  },
+  {
+    "name": "Cloudflare",
+    "ip": "1.1.1.1",
+    "last_resolved_ip": "142.250.203.206",
+    "total_requests": 25,
+    "successful_requests": 25,
+    "successful_requests_percentage": 100.0,
+    "first_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 12517456
+      }
+    },
+    "average_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 18070178
+      }
+    }
+  },
+  {
+    "name": "Cloudflare",
+    "ip": "1.0.0.1",
+    "last_resolved_ip": "142.250.75.14",
+    "total_requests": 25,
+    "successful_requests": 25,
+    "successful_requests_percentage": 100.0,
+    "first_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 19857847
+      }
+    },
+    "average_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 19450196
+      }
+    }
+  },
+  {
+    "name": "Quad9",
+    "ip": "9.9.9.9",
+    "last_resolved_ip": "142.250.203.142",
+    "total_requests": 25,
+    "successful_requests": 24,
+    "successful_requests_percentage": 96.0,
+    "first_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 24048088
+      }
+    },
+    "average_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 23099924
+      }
+    }
+  },
+  {
+    "name": "CleanBrowsing",
+    "ip": "185.228.169.9",
+    "last_resolved_ip": "172.217.16.46",
+    "total_requests": 25,
+    "successful_requests": 24,
+    "successful_requests_percentage": 96.0,
+    "first_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 26177637
+      }
+    },
+    "average_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 25614228
+      }
+    }
+  },
+  {
+    "name": "Google",
+    "ip": "8.8.8.8",
+    "last_resolved_ip": "216.58.215.78",
+    "total_requests": 25,
+    "successful_requests": 25,
+    "successful_requests_percentage": 100.0,
+    "first_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 26499374
+      }
+    },
+    "average_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 27831966
+      }
+    }
+  },
+  {
+    "name": "Google",
+    "ip": "8.8.4.4",
+    "last_resolved_ip": "172.217.16.14",
+    "total_requests": 25,
+    "successful_requests": 25,
+    "successful_requests_percentage": 100.0,
+    "first_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 41500669
+      }
+    },
+    "average_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 29498492
+      }
+    }
+  },
+  {
+    "name": "Norton ConnectSafe",
+    "ip": "199.85.126.10",
+    "last_resolved_ip": "142.250.185.206",
+    "total_requests": 25,
+    "successful_requests": 25,
+    "successful_requests_percentage": 100.0,
+    "first_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 36254393
+      }
+    },
+    "average_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 36541352
+      }
+    }
+  },
+  {
+    "name": "Control D",
+    "ip": "76.76.10.0",
+    "last_resolved_ip": "142.250.203.110",
+    "total_requests": 25,
+    "successful_requests": 25,
+    "successful_requests_percentage": 100.0,
+    "first_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 40006416
+      }
+    },
+    "average_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 37214626
+      }
+    }
+  },
+  {
+    "name": "Control D",
+    "ip": "76.76.2.0",
+    "last_resolved_ip": "142.250.203.110",
+    "total_requests": 25,
+    "successful_requests": 25,
+    "successful_requests_percentage": 100.0,
+    "first_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 37799829
+      }
+    },
+    "average_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 37257519
+      }
+    }
+  },
+  {
+    "name": "Verisign",
+    "ip": "64.6.64.6",
+    "last_resolved_ip": "142.250.185.238",
+    "total_requests": 25,
+    "successful_requests": 25,
+    "successful_requests_percentage": 100.0,
+    "first_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 37153130
+      }
+    },
+    "average_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 37534612
+      }
+    }
+  },
+  {
+    "name": "SafeDNS",
+    "ip": "195.46.39.39",
+    "last_resolved_ip": "142.250.185.78",
+    "total_requests": 25,
+    "successful_requests": 25,
+    "successful_requests_percentage": 100.0,
+    "first_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 37726931
+      }
+    },
+    "average_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 37788922
+      }
+    }
+  },
+  {
+    "name": "SafeDNS",
+    "ip": "195.46.39.40",
+    "last_resolved_ip": "142.250.185.78",
+    "total_requests": 25,
+    "successful_requests": 25,
+    "successful_requests_percentage": 100.0,
+    "first_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 37513450
+      }
+    },
+    "average_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 37822638
+      }
+    }
+  },
+  {
+    "name": "Quad9",
+    "ip": "149.112.112.112",
+    "last_resolved_ip": "142.250.203.142",
+    "total_requests": 25,
+    "successful_requests": 25,
+    "successful_requests_percentage": 100.0,
+    "first_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 41269886
+      }
+    },
+    "average_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 38538772
+      }
+    }
+  },
+  {
+    "name": "AdGuard DNS",
+    "ip": "94.140.14.14",
+    "last_resolved_ip": "142.250.186.206",
+    "total_requests": 25,
+    "successful_requests": 25,
+    "successful_requests_percentage": 100.0,
+    "first_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 43000390
+      }
+    },
+    "average_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 42123031
+      }
+    }
+  },
+  {
+    "name": "AdGuard DNS",
+    "ip": "94.140.15.15",
+    "last_resolved_ip": "142.250.186.206",
+    "total_requests": 25,
+    "successful_requests": 25,
+    "successful_requests_percentage": 100.0,
+    "first_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 42749884
+      }
+    },
+    "average_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 42132047
+      }
+    }
+  },
+  {
+    "name": "OpenDNS Home",
+    "ip": "208.67.222.222",
+    "last_resolved_ip": "142.250.203.142",
+    "total_requests": 25,
+    "successful_requests": 25,
+    "successful_requests_percentage": 100.0,
+    "first_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 58185720
+      }
+    },
+    "average_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 44921057
+      }
+    }
+  },
+  {
+    "name": "OpenDNS Home",
+    "ip": "208.67.220.220",
+    "last_resolved_ip": "142.250.203.142",
+    "total_requests": 25,
+    "successful_requests": 25,
+    "successful_requests_percentage": 100.0,
+    "first_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 42872872
+      }
+    },
+    "average_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 45166322
+      }
+    }
+  },
+  {
+    "name": "Norton ConnectSafe",
+    "ip": "199.85.127.10",
+    "last_resolved_ip": "142.250.181.238",
+    "total_requests": 25,
+    "successful_requests": 25,
+    "successful_requests_percentage": 100.0,
+    "first_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 45141028
+      }
+    },
+    "average_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 45868301
+      }
+    }
+  },
+  {
+    "name": "Hurricane Electric",
+    "ip": "74.82.42.42",
+    "last_resolved_ip": "142.250.184.238",
+    "total_requests": 25,
+    "successful_requests": 24,
+    "successful_requests_percentage": 96.0,
+    "first_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 101067144
+      }
+    },
+    "average_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 45926502
+      }
+    }
+  },
+  {
+    "name": "CleanBrowsing",
+    "ip": "185.228.168.9",
+    "last_resolved_ip": "142.250.207.174",
+    "total_requests": 25,
+    "successful_requests": 25,
+    "successful_requests_percentage": 100.0,
+    "first_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 46625618
+      }
+    },
+    "average_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 46516253
+      }
+    }
+  },
+  {
+    "name": "Level3",
+    "ip": "209.244.0.4",
+    "last_resolved_ip": "172.217.169.142",
+    "total_requests": 25,
+    "successful_requests": 25,
+    "successful_requests_percentage": 100.0,
+    "first_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 42751965
+      }
+    },
+    "average_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 46664032
+      }
+    }
+  },
+  {
+    "name": "NextDNS",
+    "ip": "45.90.30.100",
+    "last_resolved_ip": "142.251.36.14",
+    "total_requests": 25,
+    "successful_requests": 25,
+    "successful_requests_percentage": 100.0,
+    "first_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 47354479
+      }
+    },
+    "average_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 47002814
+      }
+    }
+  },
+  {
+    "name": "Comodo Secure DNS",
+    "ip": "8.26.56.26",
+    "last_resolved_ip": "172.217.17.142",
+    "total_requests": 25,
+    "successful_requests": 25,
+    "successful_requests_percentage": 100.0,
+    "first_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 47399547
+      }
+    },
+    "average_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 47026896
+      }
+    }
+  },
+  {
+    "name": "Comodo Secure DNS",
+    "ip": "8.20.247.20",
+    "last_resolved_ip": "142.250.184.142",
+    "total_requests": 25,
+    "successful_requests": 25,
+    "successful_requests_percentage": 100.0,
+    "first_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 47661758
+      }
+    },
+    "average_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 47528553
+      }
+    }
+  },
+  {
+    "name": "Level3",
+    "ip": "209.244.0.3",
+    "last_resolved_ip": "142.250.187.174",
+    "total_requests": 25,
+    "successful_requests": 25,
+    "successful_requests_percentage": 100.0,
+    "first_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 56394085
+      }
+    },
+    "average_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 47535766
+      }
+    }
+  },
+  {
+    "name": "DNS.WATCH",
+    "ip": "84.200.69.80",
+    "last_resolved_ip": "172.217.168.174",
+    "total_requests": 25,
+    "successful_requests": 3,
+    "successful_requests_percentage": 12.0,
+    "first_duration": {
+      "failed": "request timed out"
+    },
+    "average_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 48372819
+      }
+    }
+  },
+  {
+    "name": "DNS.WATCH",
+    "ip": "84.200.70.40",
+    "last_resolved_ip": "142.250.200.78",
+    "total_requests": 25,
+    "successful_requests": 22,
+    "successful_requests_percentage": 88.0,
+    "first_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 73648739
+      }
+    },
+    "average_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 49421977
+      }
+    }
+  },
+  {
+    "name": "Dyn",
+    "ip": "216.146.35.35",
+    "last_resolved_ip": "172.217.29.142",
+    "total_requests": 25,
+    "successful_requests": 25,
+    "successful_requests_percentage": 100.0,
+    "first_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 226028213
+      }
+    },
+    "average_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 226499486
+      }
+    }
+  },
+  {
+    "name": "Dyn",
+    "ip": "216.146.36.36",
+    "last_resolved_ip": "172.217.29.142",
+    "total_requests": 25,
+    "successful_requests": 25,
+    "successful_requests_percentage": 100.0,
+    "first_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 225864195
+      }
+    },
+    "average_duration": {
+      "succeeded": {
+        "secs": 0,
+        "nanos": 226571411
+      }
+    }
+  },
+  {
+    "name": "Verisign",
+    "ip": "64.6.65.6",
+    "last_resolved_ip": "0.0.0.0",
+    "total_requests": 25,
+    "successful_requests": 0,
+    "successful_requests_percentage": 0.0,
+    "first_duration": {
+      "failed": "request timed out"
+    },
+    "average_duration": {
+      "failed": "No successful requests"
+    }
+  }
 ]
