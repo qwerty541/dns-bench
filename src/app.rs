@@ -325,7 +325,7 @@ impl DnsBenchApplication {
         for (i, entry) in tabled_result_entries.iter().enumerate() {
             table.with(
                 tabled_settings::Modify::new(tabled_settings::object::Cell::new(i + 1, 3))
-                    .with(entry.successfull_requests_color.clone()),
+                    .with(entry.successful_requests_color.clone()),
             );
             table.with(
                 tabled_settings::Modify::new(tabled_settings::object::Cell::new(i + 1, 4))

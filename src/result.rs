@@ -86,9 +86,9 @@ pub struct RawResultEntry {
     pub ip: IpAddr,
     pub last_resolved_ip: IpAddr,
     pub total_requests: i32,
-    pub successfull_requests: i32,
-    pub successfull_requests_percentage: f32,
-    pub successfull_requests_color: tabled_settings::Color,
+    pub successful_requests: i32,
+    pub successful_requests_percentage: f32,
+    pub successful_requests_color: tabled_settings::Color,
     pub first_duration: TimeResult,
     pub first_duration_color: tabled_settings::Color,
     pub average_duration: TimeResult,
@@ -97,14 +97,14 @@ pub struct RawResultEntry {
 
 impl From<Vec<MeasureResult>> for RawResultEntry {
     fn from(value: Vec<MeasureResult>) -> Self {
-        let mut successfull_requests = 0;
+        let mut successful_requests = 0;
         let mut total_time = Duration::new(0, 0);
         let mut last_resolved_ip = IpAddr::V4(Ipv4Addr::new(0, 0, 0, 0));
 
         for measure_result in &value {
             match measure_result.time {
                 TimeResult::Succeeded(duration) => {
-                    successfull_requests += 1;
+                    successful_requests += 1;
                     total_time += duration;
                     last_resolved_ip = measure_result.resolved_ip;
                 }
@@ -112,19 +112,19 @@ impl From<Vec<MeasureResult>> for RawResultEntry {
             }
         }
 
-        let average_duration = if successfull_requests > 0 {
-            TimeResult::Succeeded(total_time / successfull_requests as u32)
+        let average_duration = if successful_requests > 0 {
+            TimeResult::Succeeded(total_time / successful_requests as u32)
         } else {
-            TimeResult::Failed(String::from("No successfull requests"))
+            TimeResult::Failed(String::from("No successful requests"))
         };
 
-        let successfull_requests_percentage =
-            successfull_requests as f32 / value.len() as f32 * 100.0;
-        let successfull_requests_color = if successfull_requests_percentage == 100.0 {
+        let successful_requests_percentage =
+            successful_requests as f32 / value.len() as f32 * 100.0;
+        let successful_requests_color = if successful_requests_percentage == 100.0 {
             tabled_settings::Color::FG_BRIGHT_GREEN
-        } else if successfull_requests_percentage >= 50.0 {
+        } else if successful_requests_percentage >= 50.0 {
             tabled_settings::Color::FG_BRIGHT_YELLOW
-        } else if successfull_requests_percentage >= 20.0 {
+        } else if successful_requests_percentage >= 20.0 {
             tabled_settings::Color::FG_BRIGHT_RED
         } else {
             tabled_settings::Color::FG_RED
@@ -135,9 +135,9 @@ impl From<Vec<MeasureResult>> for RawResultEntry {
             ip: value[0].ip,
             last_resolved_ip,
             total_requests: value.len() as i32,
-            successfull_requests,
-            successfull_requests_percentage,
-            successfull_requests_color,
+            successful_requests,
+            successful_requests_percentage,
+            successful_requests_color,
             first_duration: value[0].time.clone(),
             first_duration_color: value[0].time.clone().into(),
             average_duration: average_duration.clone(),
@@ -158,11 +158,11 @@ pub struct TabledResultEntry {
     pub ip: IpAddr,
     #[tabled(rename = "Last resolved IP")]
     pub last_resolved_ip: IpAddr,
-    /// String with the following format: "successfull_requests/total_requests (success_rate))"
+    /// String with the following format: "successful_requests/total_requests (success_rate))"
     #[tabled(rename = "Success rate")]
-    pub successfull_requests: String,
+    pub successful_requests: String,
     #[tabled(skip)]
-    pub successfull_requests_color: tabled_settings::Color,
+    pub successful_requests_color: tabled_settings::Color,
     #[tabled(rename = "First duration")]
     pub first_duration: TimeResult,
     #[tabled(skip)]
@@ -179,13 +179,13 @@ impl From<RawResultEntry> for TabledResultEntry {
             name: value.name,
             ip: value.ip,
             last_resolved_ip: value.last_resolved_ip,
-            successfull_requests: format!(
+            successful_requests: format!(
                 "{}/{} ({:.2}%)",
-                value.successfull_requests,
+                value.successful_requests,
                 value.total_requests,
-                value.successfull_requests_percentage
+                value.successful_requests_percentage
             ),
-            successfull_requests_color: value.successfull_requests_color,
+            successful_requests_color: value.successful_requests_color,
             first_duration: value.first_duration,
             first_duration_color: value.first_duration_color,
             average_duration: value.average_duration,
@@ -204,8 +204,8 @@ pub struct JsonResultEntry {
     pub ip: IpAddr,
     pub last_resolved_ip: IpAddr,
     pub total_requests: i32,
-    pub successfull_requests: i32,
-    pub successfull_requests_percentage: f32,
+    pub successful_requests: i32,
+    pub successful_requests_percentage: f32,
     pub first_duration: TimeResult,
     pub average_duration: TimeResult,
 }
@@ -217,8 +217,8 @@ impl From<RawResultEntry> for JsonResultEntry {
             ip: value.ip,
             last_resolved_ip: value.last_resolved_ip,
             total_requests: value.total_requests,
-            successfull_requests: value.successfull_requests,
-            successfull_requests_percentage: value.successfull_requests_percentage,
+            successful_requests: value.successful_requests,
+            successful_requests_percentage: value.successful_requests_percentage,
             first_duration: value.first_duration,
             average_duration: value.average_duration,
         }
@@ -235,8 +235,8 @@ pub struct XmlResultEntry {
     pub ip: IpAddr,
     pub last_resolved_ip: IpAddr,
     pub total_requests: i32,
-    pub successfull_requests: i32,
-    pub successfull_requests_percentage: f32,
+    pub successful_requests: i32,
+    pub successful_requests_percentage: f32,
     pub first_duration: TimeResult,
     pub average_duration: TimeResult,
 }
@@ -258,7 +258,7 @@ impl XmlResultEntry {
                         self.last_resolved_ip.to_string().as_str(),
                     ))?;
                 entry_writer
-                    .create_element("SuccessfullRequests")
+                    .create_element("SuccessfulRequests")
                     .write_inner_content(|srwriter| {
                         srwriter
                             .create_element("TotalRequests")
@@ -266,14 +266,14 @@ impl XmlResultEntry {
                                 self.total_requests.to_string().as_str(),
                             ))?;
                         srwriter
-                            .create_element("SuccessfullRequests")
+                            .create_element("SuccessfulRequests")
                             .write_text_content(BytesText::new(
-                                self.successfull_requests.to_string().as_str(),
+                                self.successful_requests.to_string().as_str(),
                             ))?;
                         srwriter
-                            .create_element("SuccessfullRequestsPercentage")
+                            .create_element("SuccessfulRequestsPercentage")
                             .write_text_content(BytesText::new(
-                                self.successfull_requests_percentage.to_string().as_str(),
+                                self.successful_requests_percentage.to_string().as_str(),
                             ))?;
                         Ok(())
                     })?;
@@ -302,8 +302,8 @@ impl From<RawResultEntry> for XmlResultEntry {
             ip: value.ip,
             last_resolved_ip: value.last_resolved_ip,
             total_requests: value.total_requests,
-            successfull_requests: value.successfull_requests,
-            successfull_requests_percentage: value.successfull_requests_percentage,
+            successful_requests: value.successful_requests,
+            successful_requests_percentage: value.successful_requests_percentage,
             first_duration: value.first_duration,
             average_duration: value.average_duration,
         }
@@ -368,10 +368,10 @@ mod tests {
             IpAddr::V4(Ipv4Addr::new(8, 8, 8, 8))
         );
         assert_eq!(result_entry.total_requests, 3);
-        assert_eq!(result_entry.successfull_requests, 2);
-        assert_eq!(result_entry.successfull_requests_percentage, 66.66667);
+        assert_eq!(result_entry.successful_requests, 2);
+        assert_eq!(result_entry.successful_requests_percentage, 66.66667);
         assert_eq!(
-            result_entry.successfull_requests_color,
+            result_entry.successful_requests_color,
             tabled_settings::Color::FG_BRIGHT_YELLOW
         );
         assert_eq!(
