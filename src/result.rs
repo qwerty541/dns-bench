@@ -370,7 +370,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_result_entry_from() {
+    fn test_raw_result_entry_from() {
         let measure_results = vec![
             MeasureResult {
                 name: String::from("Google"),
@@ -423,5 +423,84 @@ mod tests {
             result_entry.average_duration_color,
             tabled_settings::Color::FG_BRIGHT_GREEN
         );
+    }
+
+    #[test]
+    fn test_tabled_result_entry_from() {
+        let raw_result_entry = RawResultEntry {
+            name: String::from("Google"),
+            ip: IpAddr::V4(Ipv4Addr::new(8, 8, 8, 8)),
+            last_resolved_ip: IpAddr::V4(Ipv4Addr::new(8, 8, 8, 8)),
+            total_requests: 3,
+            successful_requests: 2,
+            successful_requests_percentage: 66.66667,
+            successful_requests_color: tabled_settings::Color::FG_BRIGHT_YELLOW,
+            first_duration: TimeResult::Succeeded(Duration::new(0, 100)),
+            first_duration_color: tabled_settings::Color::FG_BRIGHT_GREEN,
+            average_duration: TimeResult::Succeeded(Duration::new(0, 150)),
+            average_duration_color: tabled_settings::Color::FG_BRIGHT_GREEN,
+        };
+
+        let tabled_result_entry = TabledResultEntry::from(raw_result_entry);
+
+        assert_eq!(tabled_result_entry.name, "Google");
+        assert_eq!(
+            tabled_result_entry.ip,
+            IpAddr::V4(Ipv4Addr::new(8, 8, 8, 8))
+        );
+        assert_eq!(
+            tabled_result_entry.last_resolved_ip,
+            IpAddr::V4(Ipv4Addr::new(8, 8, 8, 8))
+        );
+        assert_eq!(tabled_result_entry.successful_requests, "2/3 (66.67%)");
+        assert_eq!(
+            tabled_result_entry.successful_requests_color,
+            tabled_settings::Color::FG_BRIGHT_YELLOW
+        );
+        assert_eq!(
+            tabled_result_entry.first_duration,
+            TimeResult::Succeeded(Duration::new(0, 100))
+        );
+        assert_eq!(
+            tabled_result_entry.first_duration_color,
+            tabled_settings::Color::FG_BRIGHT_GREEN
+        );
+        assert_eq!(
+            tabled_result_entry.average_duration,
+            TimeResult::Succeeded(Duration::new(0, 150))
+        );
+        assert_eq!(
+            tabled_result_entry.average_duration_color,
+            tabled_settings::Color::FG_BRIGHT_GREEN
+        );
+    }
+
+    #[test]
+    fn test_convert_result_entries_to_xml_string() {
+        let result_entries = vec![
+            XmlResultEntry {
+                name: String::from("Google"),
+                ip: IpAddr::V4(Ipv4Addr::new(8, 8, 8, 8)),
+                last_resolved_ip: IpAddr::V4(Ipv4Addr::new(8, 8, 8, 8)),
+                total_requests: 3,
+                successful_requests: 2,
+                successful_requests_percentage: 66.66667,
+                first_duration: TimeResult::Succeeded(Duration::new(0, 100)),
+                average_duration: TimeResult::Succeeded(Duration::new(0, 150)),
+            },
+            XmlResultEntry {
+                name: String::from("Cloudflare"),
+                ip: IpAddr::V4(Ipv4Addr::new(1, 1, 1, 1)),
+                last_resolved_ip: IpAddr::V4(Ipv4Addr::new(1, 1, 1, 1)),
+                total_requests: 3,
+                successful_requests: 3,
+                successful_requests_percentage: 100.0,
+                first_duration: TimeResult::Succeeded(Duration::new(0, 50)),
+                average_duration: TimeResult::Succeeded(Duration::new(0, 60)),
+            },
+        ];
+        let xml_string = convert_result_entries_to_xml_string(result_entries).unwrap();
+        let expected_string = "<DnsBenchResultEntries><ResultEntry><Name>Google</Name><Ip>8.8.8.8</Ip><LastResolvedIp>8.8.8.8</LastResolvedIp><SuccessfulRequests><TotalRequests>3</TotalRequests><SuccessfulRequests>2</SuccessfulRequests><SuccessfulRequestsPercentage>66.66667</SuccessfulRequestsPercentage></SuccessfulRequests><FirstDuration type=\"succeeded\">100ns</FirstDuration><AverageDuration type=\"succeeded\">150ns</AverageDuration></ResultEntry><ResultEntry><Name>Cloudflare</Name><Ip>1.1.1.1</Ip><LastResolvedIp>1.1.1.1</LastResolvedIp><SuccessfulRequests><TotalRequests>3</TotalRequests><SuccessfulRequests>3</SuccessfulRequests><SuccessfulRequestsPercentage>100</SuccessfulRequestsPercentage></SuccessfulRequests><FirstDuration type=\"succeeded\">50ns</FirstDuration><AverageDuration type=\"succeeded\">60ns</AverageDuration></ResultEntry></DnsBenchResultEntries>";
+        assert_eq!(xml_string, expected_string);
     }
 }
