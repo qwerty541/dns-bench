@@ -112,7 +112,7 @@ $ dns-bench [OPTIONS]
 Run the following command and wait until the crate is compiled:
 
 ```sh
-$ cargo install --git https://github.com/qwerty541/dns-bench.git --tag v0.7.2 dns-bench
+$ cargo install --git https://github.com/qwerty541/dns-bench.git --tag v0.8.0 dns-bench
 ```
 
 Also you can remove tag option to install the latest development version.
@@ -128,25 +128,25 @@ $ dns-bench [OPTIONS]
 Run the following command to pull the image:
 
 ```sh
-$ docker pull qwerty541/dns-bench:0.7.2
+$ docker pull qwerty541/dns-bench:0.8.0
 ```
 
 Now you can run this tool inside the container:
 
 ```sh
-$ docker run --rm -it --name dns-bench qwerty541/dns-bench:0.7.2
+$ docker run --rm -it --name dns-bench qwerty541/dns-bench:0.8.0
 ```
 
 If you want to pass some options, you can do it like this:
 
 ```sh
-$ docker run --rm -it --name dns-bench qwerty541/dns-bench:0.7.2 /bin/bash -c "dns-bench --requests 20 --domain microsoft.com --style re-structured-text"
+$ docker run --rm -it --name dns-bench qwerty541/dns-bench:0.8.0 /bin/bash -c "dns-bench --requests 20 --domain microsoft.com --style re-structured-text"
 ```
 
 In case you want to use custom servers list, you have to mount the file with custom servers list to the container and pass the path to the file as an argument:
 
 ```sh
-$ docker run --rm -it --name dns-bench --volume /home/alexandr/projects/dns-bench/examples/ipv4-custom-servers-example.txt:/ipv4-custom-servers-example.txt qwerty541/dns-bench:0.7.2 /bin/bash -c "dns-bench --custom-servers-file /ipv4-custom-servers-example.txt"
+$ docker run --rm -it --name dns-bench --volume /home/alexandr/projects/dns-bench/examples/ipv4-custom-servers-example.txt:/ipv4-custom-servers-example.txt qwerty541/dns-bench:0.8.0 /bin/bash -c "dns-bench --custom-servers-file /ipv4-custom-servers-example.txt"
 ```
 
 ## Options

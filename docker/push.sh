@@ -1,1 +1,1 @@
-docker push qwerty541/dns-bench:0.7.2
+docker push qwerty541/dns-bench:0.8.0
