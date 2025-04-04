@@ -49,9 +49,10 @@ This repository provides DNS benchmarking command line tool written in Rust. It 
 - Protocol configuration, either TCP or UDP. By default, UDP is used.
 - Lookup IP version configuration, either IPv4 or IPv6. By default, IPv4 is used.
 - Configuration of IP version used to establish connection, either IPv4 or IPv6. By default, IPv4 is used.
-- Table style configuration. By default, rounded style is used.
+- Table style configuration. By default, rounded style is used. In case of using JSON or XML format, the table style option is ignored.
 - Ability to save favorite configurations in a file inside user's home directory (`/home/user/.dns-bench/config.toml`) to avoid typing them every time.
 - Ability to provide custom servers list instead of built-in list.
+- Ability to choose output format, either human-readable, JSON or XML. By default, human-readable format is used.
 
 ### List of built-in DNS servers
 
@@ -219,6 +220,12 @@ Below is a list of currently supported options.
             <td>Provide a path to a file with custom servers list to use instead of built-in list. An example of file format can be found <a href="./examples/ipv4-custom-servers-example.txt">here for IPv4</a> and <a href="./examples/ipv6-custom-servers-example.txt">here for IPv6</a>.</td>
             <td></td>
             <td></td>
+        </tr>
+        <tr>
+            <td><code>--format</code></td>
+            <td>Format of the output.</td>
+            <td>human-readable</td>
+            <td>human-readable, json, xml</td>
         </tr>
     </tbody>
 </table>

@@ -1,9 +1,13 @@
 use crate::args;
 use crate::config;
 use crate::custom;
+use crate::result::convert_result_entries_to_xml_string;
+use crate::result::JsonResultEntry;
 use crate::result::MeasureResult;
-use crate::result::ResultEntry;
+use crate::result::RawResultEntry;
+use crate::result::TabledResultEntry;
 use crate::result::TimeResult;
+use crate::result::XmlResultEntry;
 use crate::servers;
 
 use hickory_resolver::config::NameServerConfig;
@@ -34,7 +38,7 @@ pub struct DnsBenchApplication {
     /// The DNS entries.
     dns_entries: sync::Arc<sync::Mutex<collections::VecDeque<servers::DnsEntry>>>,
     /// The result entries.
-    result_entries: sync::Arc<sync::Mutex<Vec<ResultEntry>>>,
+    result_entries: sync::Arc<sync::Mutex<Vec<RawResultEntry>>>,
     /// The threads.
     threads: Vec<thread::JoinHandle<()>>,
     /// The progress bar.
@@ -102,18 +106,20 @@ impl DnsBenchApplication {
 
     /// Print the configuration summary.
     fn print_config_summary(&self) {
-        println!(
-            "Starting DNS benchmark with the following parameters:\n\
-            Domain: {}; Threads: {}; Requests: {}; Protocol: {}\n\
-            Name servers: IP{}; Lookup: IP{}; Style: {}",
-            self.config.domain,
-            self.config.threads,
-            self.config.requests,
-            self.config.protocol,
-            self.config.name_servers_ip,
-            self.config.lookup_ip,
-            self.config.style,
-        );
+        if self.config.format == args::Format::HumanReadable {
+            println!(
+                "Starting DNS benchmark with the following parameters:\n\
+                Domain: {}; Threads: {}; Requests: {}; Protocol: {}\n\
+                Name servers: IP{}; Lookup: IP{}; Style: {}",
+                self.config.domain,
+                self.config.threads,
+                self.config.requests,
+                self.config.protocol,
+                self.config.name_servers_ip,
+                self.config.lookup_ip,
+                self.config.style,
+            );
+        }
     }
 
     /// Fill the DNS entries with the desired IP version.
@@ -234,7 +240,7 @@ impl DnsBenchApplication {
                         progress_bar.inc(1);
                     }
 
-                    let result_entry: ResultEntry = measure_results.into();
+                    let result_entry: RawResultEntry = measure_results.into();
                     result_entries.lock().unwrap().push(result_entry);
 
                     progress_bar.finish_and_clear();
@@ -271,8 +277,22 @@ impl DnsBenchApplication {
 
     /// Print the result.
     fn print_result(&self) {
+        match self.config.format {
+            args::Format::HumanReadable => self.print_result_human_readable(),
+            args::Format::Json => self.print_result_json(),
+            args::Format::Xml => self.print_result_xml(),
+        }
+    }
+
+    /// Print the result in human-readable format.
+    fn print_result_human_readable(&self) {
         let result_entries = self.result_entries.lock().unwrap();
-        let mut table = Table::new(&*result_entries);
+        let tabled_result_entries = result_entries
+            .iter()
+            .cloned()
+            .map(TabledResultEntry::from)
+            .collect::<Vec<TabledResultEntry>>();
+        let mut table = Table::new(tabled_result_entries.clone());
 
         if self.config.style == args::Style::Empty {
             table.with(tabled_settings::Style::empty());
@@ -302,10 +322,10 @@ impl DnsBenchApplication {
             table.with(tabled_settings::Style::ascii_rounded());
         }
 
-        for (i, entry) in result_entries.iter().enumerate() {
+        for (i, entry) in tabled_result_entries.iter().enumerate() {
             table.with(
                 tabled_settings::Modify::new(tabled_settings::object::Cell::new(i + 1, 3))
-                    .with(entry.successfull_requests_color.clone()),
+                    .with(entry.successful_requests_color.clone()),
             );
             table.with(
                 tabled_settings::Modify::new(tabled_settings::object::Cell::new(i + 1, 4))
@@ -320,9 +340,39 @@ impl DnsBenchApplication {
         println!("{}", table);
     }
 
+    /// Print the result in JSON format.
+    fn print_result_json(&self) {
+        let result_entries = self.result_entries.lock().unwrap();
+        let json_result_entries = result_entries
+            .iter()
+            .cloned()
+            .map(JsonResultEntry::from)
+            .collect::<Vec<JsonResultEntry>>();
+        match serde_json::to_string_pretty(&json_result_entries) {
+            Ok(json) => println!("{}", json),
+            Err(e) => eprintln!("Failed to serialize results to JSON: {:?}", e),
+        }
+    }
+
+    /// Print the result in XML format.
+    fn print_result_xml(&self) {
+        let result_entries = self.result_entries.lock().unwrap();
+        let xml_result_entries = result_entries
+            .iter()
+            .cloned()
+            .map(XmlResultEntry::from)
+            .collect::<Vec<XmlResultEntry>>();
+        match convert_result_entries_to_xml_string(xml_result_entries) {
+            Ok(xml) => println!("{}", xml),
+            Err(e) => eprintln!("Failed to serialize results to XML: {:?}", e),
+        }
+    }
+
     /// Print the benchmark time.
     fn print_bench_elapsed_time(&self) {
-        let bench_elapsed_time = self.bench_start_time.unwrap().elapsed();
-        println!("Benchmark completed in {bench_elapsed_time:?}",);
+        if self.config.format == args::Format::HumanReadable {
+            let bench_elapsed_time = self.bench_start_time.unwrap().elapsed();
+            println!("Benchmark completed in {bench_elapsed_time:?}",);
+        }
     }
 }

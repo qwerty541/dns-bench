@@ -40,6 +40,9 @@ pub struct Arguments {
     /// Provide a custom list of servers to use instead of the default ones.
     #[arg(long)]
     pub custom_servers_file: Option<PathBuf>,
+    /// The output format.
+    #[arg(long)]
+    pub format: Option<Format>,
 }
 
 macro_rules! argument_impl_from_str {
@@ -127,3 +130,16 @@ pub enum Style {
 
 argument_impl_from_str!(Style);
 argument_impl_display!(Style);
+
+#[derive(
+    Debug, Default, Clone, Copy, Eq, PartialEq, ValueEnum, serde::Serialize, serde::Deserialize,
+)]
+pub enum Format {
+    #[default]
+    HumanReadable,
+    Json,
+    Xml,
+}
+
+argument_impl_from_str!(Format);
+argument_impl_display!(Format);
