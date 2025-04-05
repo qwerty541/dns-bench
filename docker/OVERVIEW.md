@@ -59,25 +59,25 @@ This repository provides DNS benchmarking command line tool written in Rust. It 
 Run the following command to pull the image:
 
 ```sh
-$ docker pull qwerty541/dns-bench:0.7.2
+$ docker pull qwerty541/dns-bench:0.8.0
 ```
 
 Now you can run this tool inside the container:
 
 ```sh
-$ docker run --rm -it --name dns-bench qwerty541/dns-bench:0.7.2
+$ docker run --rm -it --name dns-bench qwerty541/dns-bench:0.8.0
 ```
 
 If you want to pass some options, you can do it like this:
 
 ```sh
-$ docker run --rm -it --name dns-bench qwerty541/dns-bench:0.7.2 /bin/bash -c "dns-bench --requests 20 --domain microsoft.com --style re-structured-text"
+$ docker run --rm -it --name dns-bench qwerty541/dns-bench:0.8.0 /bin/bash -c "dns-bench --requests 20 --domain microsoft.com --style re-structured-text"
 ```
 
 In case you want to use custom servers list, you have to mount the file with custom servers list to the container and pass the path to the file as an argument:
 
 ```sh
-$ docker run --rm -it --name dns-bench --volume /home/alexandr/projects/dns-bench/examples/ipv4-custom-servers-example.txt:/ipv4-custom-servers-example.txt qwerty541/dns-bench:0.7.2 /bin/bash -c "dns-bench --custom-servers-file /ipv4-custom-servers-example.txt"
+$ docker run --rm -it --name dns-bench --volume /home/alexandr/projects/dns-bench/examples/ipv4-custom-servers-example.txt:/ipv4-custom-servers-example.txt qwerty541/dns-bench:0.8.0 /bin/bash -c "dns-bench --custom-servers-file /ipv4-custom-servers-example.txt"
 ```
 
 # Options
