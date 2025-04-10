@@ -139,6 +139,7 @@ pub enum Format {
     HumanReadable,
     Json,
     Xml,
+    Csv,
 }
 
 argument_impl_from_str!(Format);

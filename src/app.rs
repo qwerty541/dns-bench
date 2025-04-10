@@ -1,7 +1,9 @@
 use crate::args;
 use crate::config;
 use crate::custom;
+use crate::result::convert_result_entries_to_csv_string;
 use crate::result::convert_result_entries_to_xml_string;
+use crate::result::CsvResultEntry;
 use crate::result::JsonResultEntry;
 use crate::result::MeasureResult;
 use crate::result::RawResultEntry;
@@ -281,6 +283,7 @@ impl DnsBenchApplication {
             args::Format::HumanReadable => self.print_result_human_readable(),
             args::Format::Json => self.print_result_json(),
             args::Format::Xml => self.print_result_xml(),
+            args::Format::Csv => self.print_result_csv(),
         }
     }
 
@@ -365,6 +368,19 @@ impl DnsBenchApplication {
         match convert_result_entries_to_xml_string(xml_result_entries) {
             Ok(xml) => println!("{}", xml),
             Err(e) => eprintln!("Failed to serialize results to XML: {:?}", e),
+        }
+    }
+
+    fn print_result_csv(&self) {
+        let result_entries = self.result_entries.lock().unwrap();
+        let csv_result_entries = result_entries
+            .iter()
+            .cloned()
+            .map(CsvResultEntry::from)
+            .collect::<Vec<CsvResultEntry>>();
+        match convert_result_entries_to_csv_string(csv_result_entries) {
+            Ok(csv) => println!("{}", csv),
+            Err(e) => eprintln!("Failed to serialize results to CSV: {:?}", e),
         }
     }
 

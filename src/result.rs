@@ -1,5 +1,3 @@
-use quick_xml::events::BytesText;
-use quick_xml::writer::Writer;
 use std::fmt;
 use std::io;
 use std::net::IpAddr;
@@ -243,19 +241,22 @@ pub struct XmlResultEntry {
 }
 
 impl XmlResultEntry {
-    pub fn write_as_xml(self, writer: &mut Writer<io::Cursor<Vec<u8>>>) -> io::Result<()> {
+    pub fn write_as_xml(
+        self,
+        writer: &mut quick_xml::writer::Writer<io::Cursor<Vec<u8>>>,
+    ) -> io::Result<()> {
         writer
             .create_element("ResultEntry")
             .write_inner_content(|entry_writer| {
                 entry_writer
                     .create_element("Name")
-                    .write_text_content(BytesText::new(&self.name))?;
-                entry_writer
-                    .create_element("Ip")
-                    .write_text_content(BytesText::new(self.ip.to_string().as_str()))?;
+                    .write_text_content(quick_xml::events::BytesText::new(&self.name))?;
+                entry_writer.create_element("Ip").write_text_content(
+                    quick_xml::events::BytesText::new(self.ip.to_string().as_str()),
+                )?;
                 entry_writer
                     .create_element("LastResolvedIp")
-                    .write_text_content(BytesText::new(
+                    .write_text_content(quick_xml::events::BytesText::new(
                         self.last_resolved_ip.to_string().as_str(),
                     ))?;
                 entry_writer
@@ -263,17 +264,17 @@ impl XmlResultEntry {
                     .write_inner_content(|srwriter| {
                         srwriter
                             .create_element("TotalRequests")
-                            .write_text_content(BytesText::new(
+                            .write_text_content(quick_xml::events::BytesText::new(
                                 self.total_requests.to_string().as_str(),
                             ))?;
                         srwriter
                             .create_element("SuccessfulRequests")
-                            .write_text_content(BytesText::new(
+                            .write_text_content(quick_xml::events::BytesText::new(
                                 self.successful_requests.to_string().as_str(),
                             ))?;
                         srwriter
                             .create_element("SuccessfulRequestsPercentage")
-                            .write_text_content(BytesText::new(
+                            .write_text_content(quick_xml::events::BytesText::new(
                                 self.successful_requests_percentage.to_string().as_str(),
                             ))?;
                         Ok(())
@@ -281,11 +282,13 @@ impl XmlResultEntry {
                 entry_writer
                     .create_element("FirstDuration")
                     .with_attribute(("type", self.first_duration.get_xml_type_str()))
-                    .write_text_content(BytesText::new(self.first_duration.to_string().as_str()))?;
+                    .write_text_content(quick_xml::events::BytesText::new(
+                        self.first_duration.to_string().as_str(),
+                    ))?;
                 entry_writer
                     .create_element("AverageDuration")
                     .with_attribute(("type", self.average_duration.get_xml_type_str()))
-                    .write_text_content(BytesText::new(
+                    .write_text_content(quick_xml::events::BytesText::new(
                         self.average_duration.to_string().as_str(),
                     ))?;
 
@@ -343,7 +346,7 @@ impl std::error::Error for XmlConversionError {}
 pub fn convert_result_entries_to_xml_string(
     result_entries: Vec<XmlResultEntry>,
 ) -> Result<String, XmlConversionError> {
-    let mut writer = Writer::new(io::Cursor::new(Vec::new()));
+    let mut writer = quick_xml::writer::Writer::new(io::Cursor::new(Vec::new()));
 
     writer
         .create_element("DnsBenchResultEntries")
@@ -359,6 +362,92 @@ pub fn convert_result_entries_to_xml_string(
         .map_err(XmlConversionError::FromUtf8)?;
 
     Ok(result)
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// CsvResultEntry
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct CsvResultEntry {
+    pub name: String,
+    pub ip: IpAddr,
+    pub last_resolved_ip: IpAddr,
+    pub total_requests: i32,
+    pub successful_requests: i32,
+    pub successful_requests_percentage: f32,
+    pub first_duration: String,
+    pub average_duration: String,
+}
+
+impl From<RawResultEntry> for CsvResultEntry {
+    fn from(value: RawResultEntry) -> Self {
+        CsvResultEntry {
+            name: value.name,
+            ip: value.ip,
+            last_resolved_ip: value.last_resolved_ip,
+            total_requests: value.total_requests,
+            successful_requests: value.successful_requests,
+            successful_requests_percentage: value.successful_requests_percentage,
+            first_duration: value.first_duration.to_string(),
+            average_duration: value.average_duration.to_string(),
+        }
+    }
+}
+
+#[derive(Debug)]
+pub enum CsvConversionError {
+    Io(io::Error),
+    FromUtf8(FromUtf8Error),
+    Csv(csv::Error),
+}
+
+impl fmt::Display for CsvConversionError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            CsvConversionError::Io(e) => write!(f, "IO error: {}", e),
+            CsvConversionError::FromUtf8(e) => write!(f, "UTF-8 error: {}", e),
+            CsvConversionError::Csv(e) => write!(f, "CSV error: {}", e),
+        }
+    }
+}
+
+impl From<io::Error> for CsvConversionError {
+    fn from(e: io::Error) -> Self {
+        CsvConversionError::Io(e)
+    }
+}
+
+impl From<FromUtf8Error> for CsvConversionError {
+    fn from(e: FromUtf8Error) -> Self {
+        CsvConversionError::FromUtf8(e)
+    }
+}
+
+impl From<csv::Error> for CsvConversionError {
+    fn from(e: csv::Error) -> Self {
+        CsvConversionError::Csv(e)
+    }
+}
+
+impl std::error::Error for CsvConversionError {}
+
+pub fn convert_result_entries_to_csv_string(
+    result_entries: Vec<CsvResultEntry>,
+) -> Result<String, CsvConversionError> {
+    let mut wtr = csv::Writer::from_writer(vec![]);
+
+    for entry in result_entries {
+        wtr.serialize(entry).map_err(CsvConversionError::Csv)?;
+    }
+
+    let data = String::from_utf8(
+        wtr.into_inner()
+            .map_err(|e| CsvConversionError::Io(e.into_error()))?,
+    )
+    .map_err(CsvConversionError::FromUtf8)?;
+
+    Ok(data)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
