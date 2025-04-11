@@ -42,14 +42,15 @@ This repository provides DNS benchmarking command line tool written in Rust. It 
 - Level3
 - Verisign
 - DNS.WATCH
+- Norton ConnectSafe
 
 </td><td>
 
-- Norton ConnectSafe
 - SafeDNS
 - NextDNS
 - Dyn
 - Hurricane Electric
+- Surfshark DNS
 
 </td></tr>
 </table>
