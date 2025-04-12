@@ -35,6 +35,27 @@ impl TimeResult {
             TimeResult::Failed(_) => "failed",
         }
     }
+
+    pub fn get_duration_millis(&self) -> Option<String> {
+        match self {
+            TimeResult::Succeeded(duration) => {
+                let millis = duration.as_secs() * 1000 + u64::from(duration.subsec_millis());
+                let fractional = duration.subsec_nanos() % 1_000_000; // Remaining fractional part in nanoseconds
+                Some(format!(
+                    "{:.6}",
+                    millis as f64 + fractional as f64 / 1_000_000.0
+                ))
+            }
+            TimeResult::Failed(_) => None,
+        }
+    }
+
+    pub fn get_error_str(&self) -> Option<&str> {
+        match self {
+            TimeResult::Succeeded(_) => None,
+            TimeResult::Failed(error) => Some(error),
+        }
+    }
 }
 
 impl fmt::Display for TimeResult {
@@ -376,8 +397,10 @@ pub struct CsvResultEntry {
     pub total_requests: i32,
     pub successful_requests: i32,
     pub successful_requests_percentage: f32,
-    pub first_duration: String,
-    pub average_duration: String,
+    pub first_duration_value_ms: Option<String>,
+    pub first_duration_error: Option<String>,
+    pub average_duration_value_ms: Option<String>,
+    pub average_duration_error: Option<String>,
 }
 
 impl From<RawResultEntry> for CsvResultEntry {
@@ -389,8 +412,13 @@ impl From<RawResultEntry> for CsvResultEntry {
             total_requests: value.total_requests,
             successful_requests: value.successful_requests,
             successful_requests_percentage: value.successful_requests_percentage,
-            first_duration: value.first_duration.to_string(),
-            average_duration: value.average_duration.to_string(),
+            first_duration_value_ms: value.first_duration.get_duration_millis(),
+            first_duration_error: value.first_duration.get_error_str().map(|v| v.to_string()),
+            average_duration_value_ms: value.average_duration.get_duration_millis(),
+            average_duration_error: value
+                .average_duration
+                .get_error_str()
+                .map(|v| v.to_string()),
         }
     }
 }
