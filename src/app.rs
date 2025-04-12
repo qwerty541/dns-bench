@@ -382,6 +382,7 @@ impl DnsBenchApplication {
         }
     }
 
+    /// Print the result in CSV format.
     fn print_result_csv(&self) {
         let result_entries = self.result_entries.lock().expect(POISONED_MUTEX_ERR);
         let csv_result_entries = result_entries
