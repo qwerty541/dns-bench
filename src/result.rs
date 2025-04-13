@@ -620,4 +620,60 @@ mod tests {
         let expected_string = "<DnsBenchResultEntries><ResultEntry><Name>Google</Name><Ip>8.8.8.8</Ip><LastResolvedIp>8.8.8.8</LastResolvedIp><SuccessfulRequests><TotalRequests>3</TotalRequests><SuccessfulRequests>2</SuccessfulRequests><SuccessfulRequestsPercentage>66.66667</SuccessfulRequestsPercentage></SuccessfulRequests><FirstDuration type=\"succeeded\">100ns</FirstDuration><AverageDuration type=\"succeeded\">150ns</AverageDuration></ResultEntry><ResultEntry><Name>Cloudflare</Name><Ip>1.1.1.1</Ip><LastResolvedIp>1.1.1.1</LastResolvedIp><SuccessfulRequests><TotalRequests>3</TotalRequests><SuccessfulRequests>3</SuccessfulRequests><SuccessfulRequestsPercentage>100</SuccessfulRequestsPercentage></SuccessfulRequests><FirstDuration type=\"succeeded\">50ns</FirstDuration><AverageDuration type=\"succeeded\">60ns</AverageDuration></ResultEntry></DnsBenchResultEntries>";
         assert_eq!(xml_string, expected_string);
     }
+
+    #[test]
+    fn test_convert_result_entries_to_csv_string() {
+        let result_entries = vec![
+            RawResultEntry::from(vec![
+                MeasureResult {
+                    name: String::from("Google"),
+                    ip: IpAddr::V4(Ipv4Addr::new(8, 8, 8, 8)),
+                    resolved_ip: IpAddr::V4(Ipv4Addr::new(8, 8, 8, 8)),
+                    time: TimeResult::Succeeded(Duration::new(0, 100)),
+                },
+                MeasureResult {
+                    name: String::from("Google"),
+                    ip: IpAddr::V4(Ipv4Addr::new(8, 8, 8, 8)),
+                    resolved_ip: IpAddr::V4(Ipv4Addr::new(8, 8, 8, 8)),
+                    time: TimeResult::Succeeded(Duration::new(0, 200)),
+                },
+                MeasureResult {
+                    name: String::from("Google"),
+                    ip: IpAddr::V4(Ipv4Addr::new(8, 8, 8, 8)),
+                    resolved_ip: IpAddr::V4(Ipv4Addr::new(8, 8, 8, 8)),
+                    time: TimeResult::Failed(String::from("Timeout")),
+                },
+            ]),
+            RawResultEntry::from(vec![
+                MeasureResult {
+                    name: String::from("Cloudflare"),
+                    ip: IpAddr::V4(Ipv4Addr::new(1, 1, 1, 1)),
+                    resolved_ip: IpAddr::V4(Ipv4Addr::new(1, 1, 1, 1)),
+                    time: TimeResult::Succeeded(Duration::new(0, 50)),
+                },
+                MeasureResult {
+                    name: String::from("Cloudflare"),
+                    ip: IpAddr::V4(Ipv4Addr::new(1, 1, 1, 1)),
+                    resolved_ip: IpAddr::V4(Ipv4Addr::new(1, 1, 1, 1)),
+                    time: TimeResult::Succeeded(Duration::new(0, 60)),
+                },
+                MeasureResult {
+                    name: String::from("Cloudflare"),
+                    ip: IpAddr::V4(Ipv4Addr::new(1, 1, 1, 1)),
+                    resolved_ip: IpAddr::V4(Ipv4Addr::new(1, 1, 1, 1)),
+                    time: TimeResult::Succeeded(Duration::new(0, 70)),
+                },
+            ]),
+        ];
+        let csv_string = convert_result_entries_to_csv_string(
+            result_entries
+                .iter()
+                .cloned()
+                .map(CsvResultEntry::from)
+                .collect(),
+        )
+        .unwrap();
+        let expected_csv = "name,ip,last_resolved_ip,total_requests,successful_requests,successful_requests_percentage,first_duration_value_ms,first_duration_error,average_duration_value_ms,average_duration_error\nGoogle,8.8.8.8,8.8.8.8,3,2,66.66667,0.000100,,0.000150,\nCloudflare,1.1.1.1,1.1.1.1,3,3,100.0,0.000050,,0.000060,\n";
+        assert_eq!(csv_string, expected_csv);
+    }
 }
