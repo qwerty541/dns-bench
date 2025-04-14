@@ -19,8 +19,8 @@ const USER_DIRS_ERROR: &str =
 #[derive(Debug, Clone, Eq, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct DnsBenchConfig {
     pub domain: String,
-    pub threads: usize,
-    pub requests: usize,
+    pub threads: u16,
+    pub requests: u16,
     pub timeout: u64,
     pub protocol: Protocol,
     pub name_servers_ip: IpAddr,
