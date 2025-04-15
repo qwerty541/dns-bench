@@ -14,13 +14,13 @@ pub struct Arguments {
     #[arg(long)]
     pub domain: Option<String>,
     /// The number of threads to use.
-    #[arg(long)]
-    pub threads: Option<usize>,
+    #[arg(long, value_parser = clap::value_parser!(u16).range(1..256))]
+    pub threads: Option<u16>,
     /// The number of requests to make.
-    #[arg(long)]
-    pub requests: Option<usize>,
+    #[arg(long, value_parser = clap::value_parser!(u16).range(1..1000))]
+    pub requests: Option<u16>,
     /// The timeout in seconds.
-    #[arg(long)]
+    #[arg(long, value_parser = clap::value_parser!(u64).range(1..60))]
     pub timeout: Option<u64>,
     /// The protocol to use.
     #[arg(long)]
