@@ -1,7 +1,9 @@
 use crate::args;
 use crate::config;
 use crate::custom;
+use crate::result::convert_result_entries_to_csv_string;
 use crate::result::convert_result_entries_to_xml_string;
+use crate::result::CsvResultEntry;
 use crate::result::JsonResultEntry;
 use crate::result::MeasureResult;
 use crate::result::RawResultEntry;
@@ -28,6 +30,8 @@ use std::time::Duration;
 use std::time::Instant;
 use tabled::settings as tabled_settings;
 use tabled::Table;
+
+const POISONED_MUTEX_ERR: &str = "Poisoned mutex error";
 
 /// The main application.
 pub struct DnsBenchApplication {
@@ -136,14 +140,20 @@ impl DnsBenchApplication {
                         }
                     };
                 println!("Using custom servers list.");
-                self.dns_entries.lock().unwrap().extend(custom_entries);
+                self.dns_entries
+                    .lock()
+                    .expect(POISONED_MUTEX_ERR)
+                    .extend(custom_entries);
             }
             None => {
                 let dns_entries = match self.config.name_servers_ip {
                     args::IpAddr::V4 => servers::IPV4_DNS_ENTRIES.clone(),
                     args::IpAddr::V6 => servers::IPV6_DNS_ENTRIES.clone(),
                 };
-                self.dns_entries.lock().unwrap().extend(dns_entries);
+                self.dns_entries
+                    .lock()
+                    .expect(POISONED_MUTEX_ERR)
+                    .extend(dns_entries);
             }
         }
     }
@@ -182,7 +192,7 @@ impl DnsBenchApplication {
 
             self.threads.push(thread::spawn(move || loop {
                 let dns_entry = {
-                    let mut dns_entries = dns_entries.lock().unwrap();
+                    let mut dns_entries = dns_entries.lock().expect(POISONED_MUTEX_ERR);
                     dns_entries.pop_front()
                 };
 
@@ -242,7 +252,10 @@ impl DnsBenchApplication {
                     }
 
                     let result_entry: RawResultEntry = measure_results.into();
-                    result_entries.lock().unwrap().push(result_entry);
+                    result_entries
+                        .lock()
+                        .expect(POISONED_MUTEX_ERR)
+                        .push(result_entry);
 
                     progress_bar.finish_and_clear();
                     multi_progress.remove(&progress_bar);
@@ -262,7 +275,7 @@ impl DnsBenchApplication {
 
     /// Sort result entries by average duration, failed entries are at the end.
     fn sort_result_entries(&self) {
-        let mut result_entries = self.result_entries.lock().unwrap();
+        let mut result_entries = self.result_entries.lock().expect(POISONED_MUTEX_ERR);
         result_entries.sort_by(|a, b| {
             let a = match a.average_duration {
                 TimeResult::Succeeded(duration) => duration,
@@ -282,12 +295,13 @@ impl DnsBenchApplication {
             args::Format::HumanReadable => self.print_result_human_readable(),
             args::Format::Json => self.print_result_json(),
             args::Format::Xml => self.print_result_xml(),
+            args::Format::Csv => self.print_result_csv(),
         }
     }
 
     /// Print the result in human-readable format.
     fn print_result_human_readable(&self) {
-        let result_entries = self.result_entries.lock().unwrap();
+        let result_entries = self.result_entries.lock().expect(POISONED_MUTEX_ERR);
         let tabled_result_entries = result_entries
             .iter()
             .cloned()
@@ -343,7 +357,7 @@ impl DnsBenchApplication {
 
     /// Print the result in JSON format.
     fn print_result_json(&self) {
-        let result_entries = self.result_entries.lock().unwrap();
+        let result_entries = self.result_entries.lock().expect(POISONED_MUTEX_ERR);
         let json_result_entries = result_entries
             .iter()
             .cloned()
@@ -357,7 +371,7 @@ impl DnsBenchApplication {
 
     /// Print the result in XML format.
     fn print_result_xml(&self) {
-        let result_entries = self.result_entries.lock().unwrap();
+        let result_entries = self.result_entries.lock().expect(POISONED_MUTEX_ERR);
         let xml_result_entries = result_entries
             .iter()
             .cloned()
@@ -366,6 +380,20 @@ impl DnsBenchApplication {
         match convert_result_entries_to_xml_string(xml_result_entries) {
             Ok(xml) => println!("{}", xml),
             Err(e) => eprintln!("Failed to serialize results to XML: {:?}", e),
+        }
+    }
+
+    /// Print the result in CSV format.
+    fn print_result_csv(&self) {
+        let result_entries = self.result_entries.lock().expect(POISONED_MUTEX_ERR);
+        let csv_result_entries = result_entries
+            .iter()
+            .cloned()
+            .map(CsvResultEntry::from)
+            .collect::<Vec<CsvResultEntry>>();
+        match convert_result_entries_to_csv_string(csv_result_entries) {
+            Ok(csv) => println!("{}", csv),
+            Err(e) => eprintln!("Failed to serialize results to CSV: {:?}", e),
         }
     }
 
