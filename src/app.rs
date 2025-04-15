@@ -109,11 +109,12 @@ impl DnsBenchApplication {
         if self.config.format == args::Format::HumanReadable {
             println!(
                 "Starting DNS benchmark with the following parameters:\n\
-                Domain: {}; Threads: {}; Requests: {}; Protocol: {}\n\
-                Name servers: IP{}; Lookup: IP{}; Style: {}",
+                Domain: {}; Threads: {}; Requests: {}; Timeout: {}\n\
+                Protocol: {}; Name servers: IP{}; Lookup: IP{}; Style: {}",
                 self.config.domain,
                 self.config.threads,
                 self.config.requests,
+                self.config.timeout,
                 self.config.protocol,
                 self.config.name_servers_ip,
                 self.config.lookup_ip,
