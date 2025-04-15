@@ -51,6 +51,7 @@ This repository provides DNS benchmarking command line tool written in Rust. It 
 - Dyn
 - Hurricane Electric
 - Surfshark DNS
+- SafeServe
 
 </td></tr>
 </table>

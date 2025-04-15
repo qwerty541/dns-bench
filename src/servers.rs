@@ -68,6 +68,8 @@ lazy_static::lazy_static! {
         ipv4_dns_entry!("Hurricane Electric", (74, 82, 42, 42), 53),
         ipv4_dns_entry!("Surfshark DNS", (162, 252, 172, 57), 53),
         ipv4_dns_entry!("Surfshark DNS", (149, 154, 159, 92), 53),
+        ipv4_dns_entry!("SafeServe", (198, 54, 117, 10), 53),
+        ipv4_dns_entry!("SafeServe", (198, 54, 117, 11), 53),
     ];
 }
 
