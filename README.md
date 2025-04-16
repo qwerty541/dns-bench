@@ -73,14 +73,16 @@ This repository provides DNS benchmarking command line tool written in Rust. It 
 - Level3
 - Verisign
 - DNS.WATCH
+- Norton ConnectSafe
 
 </td><td>
 
-- Norton ConnectSafe
 - SafeDNS
 - NextDNS
 - Dyn
 - Hurricane Electric
+- Surfshark DNS
+- SafeServe
 
 </td></tr>
 </table>
@@ -171,19 +173,19 @@ Below is a list of currently supported options.
             <td><code>--threads</code></td>
             <td>Number of threads to use.</td>
             <td>8</td>
-            <td>Any positive integer</td>
+            <td>1..256</td>
         </tr>
         <tr>
             <td><code>--requests</code></td>
             <td>Number of requests to each DNS server.</td>
             <td>25</td>
-            <td>Any positive integer</td>
+            <td>1..1000</td>
         </tr>
         <tr>
             <td><code>--timeout</code></td>
             <td>Timeout in seconds.</td>
             <td>3</td>
-            <td>Any positive integer</td>
+            <td>1..60</td>
         </tr>
         <tr>
             <td><code>--protocol</code></td>
