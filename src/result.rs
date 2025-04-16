@@ -1,5 +1,3 @@
-use quick_xml::events::BytesText;
-use quick_xml::writer::Writer;
 use std::fmt;
 use std::io;
 use std::net::IpAddr;
@@ -35,6 +33,27 @@ impl TimeResult {
         match self {
             TimeResult::Succeeded(_) => "succeeded",
             TimeResult::Failed(_) => "failed",
+        }
+    }
+
+    pub fn get_duration_millis(&self) -> Option<String> {
+        match self {
+            TimeResult::Succeeded(duration) => {
+                let millis = duration.as_secs() * 1000 + u64::from(duration.subsec_millis());
+                let fractional = duration.subsec_nanos() % 1_000_000; // Remaining fractional part in nanoseconds
+                Some(format!(
+                    "{:.6}",
+                    millis as f64 + fractional as f64 / 1_000_000.0
+                ))
+            }
+            TimeResult::Failed(_) => None,
+        }
+    }
+
+    pub fn get_error_str(&self) -> Option<&str> {
+        match self {
+            TimeResult::Succeeded(_) => None,
+            TimeResult::Failed(error) => Some(error),
         }
     }
 }
@@ -243,19 +262,22 @@ pub struct XmlResultEntry {
 }
 
 impl XmlResultEntry {
-    pub fn write_as_xml(self, writer: &mut Writer<io::Cursor<Vec<u8>>>) -> io::Result<()> {
+    pub fn write_as_xml(
+        self,
+        writer: &mut quick_xml::writer::Writer<io::Cursor<Vec<u8>>>,
+    ) -> io::Result<()> {
         writer
             .create_element("ResultEntry")
             .write_inner_content(|entry_writer| {
                 entry_writer
                     .create_element("Name")
-                    .write_text_content(BytesText::new(&self.name))?;
-                entry_writer
-                    .create_element("Ip")
-                    .write_text_content(BytesText::new(self.ip.to_string().as_str()))?;
+                    .write_text_content(quick_xml::events::BytesText::new(&self.name))?;
+                entry_writer.create_element("Ip").write_text_content(
+                    quick_xml::events::BytesText::new(self.ip.to_string().as_str()),
+                )?;
                 entry_writer
                     .create_element("LastResolvedIp")
-                    .write_text_content(BytesText::new(
+                    .write_text_content(quick_xml::events::BytesText::new(
                         self.last_resolved_ip.to_string().as_str(),
                     ))?;
                 entry_writer
@@ -263,17 +285,17 @@ impl XmlResultEntry {
                     .write_inner_content(|srwriter| {
                         srwriter
                             .create_element("TotalRequests")
-                            .write_text_content(BytesText::new(
+                            .write_text_content(quick_xml::events::BytesText::new(
                                 self.total_requests.to_string().as_str(),
                             ))?;
                         srwriter
                             .create_element("SuccessfulRequests")
-                            .write_text_content(BytesText::new(
+                            .write_text_content(quick_xml::events::BytesText::new(
                                 self.successful_requests.to_string().as_str(),
                             ))?;
                         srwriter
                             .create_element("SuccessfulRequestsPercentage")
-                            .write_text_content(BytesText::new(
+                            .write_text_content(quick_xml::events::BytesText::new(
                                 self.successful_requests_percentage.to_string().as_str(),
                             ))?;
                         Ok(())
@@ -281,11 +303,13 @@ impl XmlResultEntry {
                 entry_writer
                     .create_element("FirstDuration")
                     .with_attribute(("type", self.first_duration.get_xml_type_str()))
-                    .write_text_content(BytesText::new(self.first_duration.to_string().as_str()))?;
+                    .write_text_content(quick_xml::events::BytesText::new(
+                        self.first_duration.to_string().as_str(),
+                    ))?;
                 entry_writer
                     .create_element("AverageDuration")
                     .with_attribute(("type", self.average_duration.get_xml_type_str()))
-                    .write_text_content(BytesText::new(
+                    .write_text_content(quick_xml::events::BytesText::new(
                         self.average_duration.to_string().as_str(),
                     ))?;
 
@@ -343,7 +367,7 @@ impl std::error::Error for XmlConversionError {}
 pub fn convert_result_entries_to_xml_string(
     result_entries: Vec<XmlResultEntry>,
 ) -> Result<String, XmlConversionError> {
-    let mut writer = Writer::new(io::Cursor::new(Vec::new()));
+    let mut writer = quick_xml::writer::Writer::new(io::Cursor::new(Vec::new()));
 
     writer
         .create_element("DnsBenchResultEntries")
@@ -359,6 +383,99 @@ pub fn convert_result_entries_to_xml_string(
         .map_err(XmlConversionError::FromUtf8)?;
 
     Ok(result)
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// CsvResultEntry
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct CsvResultEntry {
+    pub name: String,
+    pub ip: IpAddr,
+    pub last_resolved_ip: IpAddr,
+    pub total_requests: i32,
+    pub successful_requests: i32,
+    pub successful_requests_percentage: f32,
+    pub first_duration_value_ms: Option<String>,
+    pub first_duration_error: Option<String>,
+    pub average_duration_value_ms: Option<String>,
+    pub average_duration_error: Option<String>,
+}
+
+impl From<RawResultEntry> for CsvResultEntry {
+    fn from(value: RawResultEntry) -> Self {
+        CsvResultEntry {
+            name: value.name,
+            ip: value.ip,
+            last_resolved_ip: value.last_resolved_ip,
+            total_requests: value.total_requests,
+            successful_requests: value.successful_requests,
+            successful_requests_percentage: value.successful_requests_percentage,
+            first_duration_value_ms: value.first_duration.get_duration_millis(),
+            first_duration_error: value.first_duration.get_error_str().map(|v| v.to_string()),
+            average_duration_value_ms: value.average_duration.get_duration_millis(),
+            average_duration_error: value
+                .average_duration
+                .get_error_str()
+                .map(|v| v.to_string()),
+        }
+    }
+}
+
+#[derive(Debug)]
+pub enum CsvConversionError {
+    Io(io::Error),
+    FromUtf8(FromUtf8Error),
+    Csv(csv::Error),
+}
+
+impl fmt::Display for CsvConversionError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            CsvConversionError::Io(e) => write!(f, "IO error: {}", e),
+            CsvConversionError::FromUtf8(e) => write!(f, "UTF-8 error: {}", e),
+            CsvConversionError::Csv(e) => write!(f, "CSV error: {}", e),
+        }
+    }
+}
+
+impl From<io::Error> for CsvConversionError {
+    fn from(e: io::Error) -> Self {
+        CsvConversionError::Io(e)
+    }
+}
+
+impl From<FromUtf8Error> for CsvConversionError {
+    fn from(e: FromUtf8Error) -> Self {
+        CsvConversionError::FromUtf8(e)
+    }
+}
+
+impl From<csv::Error> for CsvConversionError {
+    fn from(e: csv::Error) -> Self {
+        CsvConversionError::Csv(e)
+    }
+}
+
+impl std::error::Error for CsvConversionError {}
+
+pub fn convert_result_entries_to_csv_string(
+    result_entries: Vec<CsvResultEntry>,
+) -> Result<String, CsvConversionError> {
+    let mut wtr = csv::Writer::from_writer(vec![]);
+
+    for entry in result_entries {
+        wtr.serialize(entry).map_err(CsvConversionError::Csv)?;
+    }
+
+    let data = String::from_utf8(
+        wtr.into_inner()
+            .map_err(|e| CsvConversionError::Io(e.into_error()))?,
+    )
+    .map_err(CsvConversionError::FromUtf8)?;
+
+    Ok(data)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -502,5 +619,61 @@ mod tests {
         let xml_string = convert_result_entries_to_xml_string(result_entries).unwrap();
         let expected_string = "<DnsBenchResultEntries><ResultEntry><Name>Google</Name><Ip>8.8.8.8</Ip><LastResolvedIp>8.8.8.8</LastResolvedIp><SuccessfulRequests><TotalRequests>3</TotalRequests><SuccessfulRequests>2</SuccessfulRequests><SuccessfulRequestsPercentage>66.66667</SuccessfulRequestsPercentage></SuccessfulRequests><FirstDuration type=\"succeeded\">100ns</FirstDuration><AverageDuration type=\"succeeded\">150ns</AverageDuration></ResultEntry><ResultEntry><Name>Cloudflare</Name><Ip>1.1.1.1</Ip><LastResolvedIp>1.1.1.1</LastResolvedIp><SuccessfulRequests><TotalRequests>3</TotalRequests><SuccessfulRequests>3</SuccessfulRequests><SuccessfulRequestsPercentage>100</SuccessfulRequestsPercentage></SuccessfulRequests><FirstDuration type=\"succeeded\">50ns</FirstDuration><AverageDuration type=\"succeeded\">60ns</AverageDuration></ResultEntry></DnsBenchResultEntries>";
         assert_eq!(xml_string, expected_string);
+    }
+
+    #[test]
+    fn test_convert_result_entries_to_csv_string() {
+        let result_entries = vec![
+            RawResultEntry::from(vec![
+                MeasureResult {
+                    name: String::from("Google"),
+                    ip: IpAddr::V4(Ipv4Addr::new(8, 8, 8, 8)),
+                    resolved_ip: IpAddr::V4(Ipv4Addr::new(8, 8, 8, 8)),
+                    time: TimeResult::Succeeded(Duration::new(0, 100)),
+                },
+                MeasureResult {
+                    name: String::from("Google"),
+                    ip: IpAddr::V4(Ipv4Addr::new(8, 8, 8, 8)),
+                    resolved_ip: IpAddr::V4(Ipv4Addr::new(8, 8, 8, 8)),
+                    time: TimeResult::Succeeded(Duration::new(0, 200)),
+                },
+                MeasureResult {
+                    name: String::from("Google"),
+                    ip: IpAddr::V4(Ipv4Addr::new(8, 8, 8, 8)),
+                    resolved_ip: IpAddr::V4(Ipv4Addr::new(8, 8, 8, 8)),
+                    time: TimeResult::Failed(String::from("Timeout")),
+                },
+            ]),
+            RawResultEntry::from(vec![
+                MeasureResult {
+                    name: String::from("Cloudflare"),
+                    ip: IpAddr::V4(Ipv4Addr::new(1, 1, 1, 1)),
+                    resolved_ip: IpAddr::V4(Ipv4Addr::new(1, 1, 1, 1)),
+                    time: TimeResult::Succeeded(Duration::new(0, 50)),
+                },
+                MeasureResult {
+                    name: String::from("Cloudflare"),
+                    ip: IpAddr::V4(Ipv4Addr::new(1, 1, 1, 1)),
+                    resolved_ip: IpAddr::V4(Ipv4Addr::new(1, 1, 1, 1)),
+                    time: TimeResult::Succeeded(Duration::new(0, 60)),
+                },
+                MeasureResult {
+                    name: String::from("Cloudflare"),
+                    ip: IpAddr::V4(Ipv4Addr::new(1, 1, 1, 1)),
+                    resolved_ip: IpAddr::V4(Ipv4Addr::new(1, 1, 1, 1)),
+                    time: TimeResult::Succeeded(Duration::new(0, 70)),
+                },
+            ]),
+        ];
+        let csv_string = convert_result_entries_to_csv_string(
+            result_entries
+                .iter()
+                .cloned()
+                .map(CsvResultEntry::from)
+                .collect(),
+        )
+        .unwrap();
+        let expected_csv = "name,ip,last_resolved_ip,total_requests,successful_requests,successful_requests_percentage,first_duration_value_ms,first_duration_error,average_duration_value_ms,average_duration_error\nGoogle,8.8.8.8,8.8.8.8,3,2,66.66667,0.000100,,0.000150,\nCloudflare,1.1.1.1,1.1.1.1,3,3,100.0,0.000050,,0.000060,\n";
+        assert_eq!(csv_string, expected_csv);
     }
 }
