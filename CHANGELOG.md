@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added SafeServe to the built-in servers list.
 - Enhanced numeric command line arguments validation to ensure they are within the specified range.
 - Added requests timeout value to the summary output.
+- From this version, the Docker images will be multi-arch. Here is a list of supported architectures: `linux/amd64`, `linux/arm64`, `linux/arm/v7`, `linux/386`, `linux/s390x`, `linux/ppc64le`. Previously, only `linux/amd64` was supported.
+- From this version, the latest Docker image will be available under the `latest` tag. Previously, only the versioned tag was available.
 - Minor documentation improvements.
 - Improved tests coverage.
 
