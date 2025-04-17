@@ -1,4 +1,4 @@
-FROM rust:1.85.1
+FROM rust:1.86.0
 
 # Set the working directory
 WORKDIR /app
