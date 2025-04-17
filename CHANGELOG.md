@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v0.9.0 (16.04.2025)
+
+### Added
+
+- Introduced a new CSV output format. It can be used by specifying the `--format` option with the value `csv`.
+- Added Surfshark DNS to the built-in servers list.
+- Added SafeServe to the built-in servers list.
+- Enhanced numeric command line arguments validation to ensure they are within the specified range.
+- Added requests timeout value to the summary output.
+- From this version, the Docker images will be multi-arch. Here is a list of supported architectures: `linux/amd64`, `linux/arm64`, `linux/arm/v7`, `linux/386`, `linux/s390x`, `linux/ppc64le`. Previously, only `linux/amd64` was supported.
+- From this version, the latest Docker image will be available under the `latest` tag. Previously, only the versioned tag was available.
+- Minor documentation improvements.
+- Improved tests coverage.
+
+### Changed
+
+- Updated base image of Docker container from `rust:1.85.0` to `rust:1.85.1`
+
+### Dependencies
+
+- Updated `clap` from 4.5.32 to 4.5.34
+
 ## v0.8.0 (04.04.2025)
 
 ### Added
