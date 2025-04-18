@@ -1,1 +1,1 @@
-docker build -t qwerty541/dns-bench:0.9.0 .
+docker build --tag dns-bench-test:latest --file ./docker/Dockerfile .
