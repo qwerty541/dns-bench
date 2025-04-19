@@ -8,13 +8,12 @@ This document is a checklist for the release process of the `dns-bench` project.
 - [ ] Define a new version according to [Semantic Versioning](https://semver.org/spec/v2.0.0.html) and update it inside the following files:
   - [ ] Tag version in [README.md](./README.md) and [/docker/OVERVIEW.md](./docker/OVERVIEW.md) installation instructions.
   - [ ] `version` property in [Cargo.toml](./Cargo.toml) to the new version.
-  - [ ] Tag version in [Dockerfile](./docker/Dockerfile), [docker-build.sh](./docker/build.sh) and [docker-push.sh](./docker/push.sh).
+  - [ ] Tag version in [Docker workflow](./.github/workflows/docker.yml).
   - [ ] Rename `Unreleased` section in [CHANGELOG.md](./CHANGELOG.md) to the new version and date.
 - [ ] Rebuild [Cargo.lock](./Cargo.lock) by running `cargo build`.
 - [ ] Commit changes with message `v<version>`.
 - [ ] Run `cargo publish` to publish the crate to crates.io.
 - [ ] Push changes to the repository.
 - [ ] Draft a new release on GitHub with the new version and the changelog.
-- [ ] Run `/docker/build.sh` to build a new Docker image.
-- [ ] Run `/docker/push.sh` to push the new Docker image to Docker Hub.
+- [ ] Manually run the workflow "build, test, and push multi-arch docker image" on the GitHub Actions page. This will build and push the new Docker image to Docker Hub.
 - [ ] Update repository overview in Docker Hub.
