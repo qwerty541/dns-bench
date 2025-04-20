@@ -6,7 +6,6 @@ This document is a checklist for the release process of the `dns-bench` project.
 - Ensure that the [README.md](./README.md) and [/docker/OVERVIEW.md](./docker/OVERVIEW.md) contain all the necessary information about the new version.
 - Ensure that GitHub Actions CI is passing and MSRV is not changed, if changed update badge in [README.md](./README.md), [CHANGELOG.md](./CHANGELOG.md) and [Cargo.toml](./Cargo.toml).
 - Define a new version according to [Semantic Versioning](https://semver.org/spec/v2.0.0.html) and update it inside the following files:
-  - Tag version in [README.md](./README.md) and [/docker/OVERVIEW.md](./docker/OVERVIEW.md) installation instructions.
   - `version` property in [Cargo.toml](./Cargo.toml) to the new version.
   - Tag version in [Docker workflow](./.github/workflows/docker.yml).
   - Rename `Unreleased` section in [CHANGELOG.md](./CHANGELOG.md) to the new version and date.
