@@ -61,8 +61,8 @@ impl TimeResult {
 impl fmt::Display for TimeResult {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            TimeResult::Succeeded(duration) => write!(f, "{:?}", duration),
-            TimeResult::Failed(error) => write!(f, "{}", error),
+            TimeResult::Succeeded(duration) => write!(f, "{duration:?}"),
+            TimeResult::Failed(error) => write!(f, "{error}"),
         }
     }
 }
@@ -344,8 +344,8 @@ pub enum XmlConversionError {
 impl fmt::Display for XmlConversionError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            XmlConversionError::Io(e) => write!(f, "IO error: {}", e),
-            XmlConversionError::FromUtf8(e) => write!(f, "UTF-8 error: {}", e),
+            XmlConversionError::Io(e) => write!(f, "IO error: {e}"),
+            XmlConversionError::FromUtf8(e) => write!(f, "UTF-8 error: {e}"),
         }
     }
 }
@@ -433,9 +433,9 @@ pub enum CsvConversionError {
 impl fmt::Display for CsvConversionError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            CsvConversionError::Io(e) => write!(f, "IO error: {}", e),
-            CsvConversionError::FromUtf8(e) => write!(f, "UTF-8 error: {}", e),
-            CsvConversionError::Csv(e) => write!(f, "CSV error: {}", e),
+            CsvConversionError::Io(e) => write!(f, "IO error: {e}"),
+            CsvConversionError::FromUtf8(e) => write!(f, "UTF-8 error: {e}"),
+            CsvConversionError::Csv(e) => write!(f, "CSV error: {e}"),
         }
     }
 }
