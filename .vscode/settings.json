@@ -3,5 +3,6 @@
     "files.insertFinalNewline": true,
     "[rust]": {
         "editor.defaultFormatter": "rust-lang.rust-analyzer"
-    }
+    },
+    "rust-analyzer.checkOnSave.command": "clippy"
 }
