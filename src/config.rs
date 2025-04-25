@@ -139,9 +139,9 @@ pub enum LoadConfigError {
 impl fmt::Display for LoadConfigError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            LoadConfigError::UserDirs => write!(f, "UserDirs: {}", USER_DIRS_ERROR),
-            LoadConfigError::Io(e) => write!(f, "Io: {}", e),
-            LoadConfigError::Toml(e) => write!(f, "Toml: {}", e),
+            LoadConfigError::UserDirs => write!(f, "UserDirs: {USER_DIRS_ERROR}"),
+            LoadConfigError::Io(e) => write!(f, "Io: {e}"),
+            LoadConfigError::Toml(e) => write!(f, "Toml: {e}"),
         }
     }
 }
