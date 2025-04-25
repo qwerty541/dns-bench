@@ -75,9 +75,8 @@ impl DnsBenchApplication {
             config::LoadConfigResult::FileDoesNotExist => config::DnsBenchConfig::default(),
             config::LoadConfigResult::Error(e) => {
                 eprintln!(
-                    "Failed to load config: {:?}\n\
-                    Proceeding with default parameters...",
-                    e
+                    "Failed to load config: {e:?}\n\
+                    Proceeding with default parameters..."
                 );
                 config::DnsBenchConfig::default()
             }
@@ -103,7 +102,7 @@ impl DnsBenchApplication {
         if self.arguments.save_config {
             match self.config.write_into_file() {
                 Ok(_) => println!("Configuration saved successfully."),
-                Err(e) => eprintln!("Failed to save configuration: {:?}", e),
+                Err(e) => eprintln!("Failed to save configuration: {e:?}"),
             }
         }
     }
@@ -135,7 +134,7 @@ impl DnsBenchApplication {
                     match custom::read_custom_servers_list(filepath, self.config.name_servers_ip) {
                         Ok(entries) => entries,
                         Err(e) => {
-                            eprintln!("Failed to read custom servers list: {:?}", e);
+                            eprintln!("Failed to read custom servers list: {e:?}");
                             process::exit(1);
                         }
                     };
@@ -352,7 +351,7 @@ impl DnsBenchApplication {
             );
         }
 
-        println!("{}", table);
+        println!("{table}");
     }
 
     /// Print the result in JSON format.
@@ -364,8 +363,8 @@ impl DnsBenchApplication {
             .map(JsonResultEntry::from)
             .collect::<Vec<JsonResultEntry>>();
         match serde_json::to_string_pretty(&json_result_entries) {
-            Ok(json) => println!("{}", json),
-            Err(e) => eprintln!("Failed to serialize results to JSON: {:?}", e),
+            Ok(json) => println!("{json}"),
+            Err(e) => eprintln!("Failed to serialize results to JSON: {e:?}"),
         }
     }
 
@@ -378,8 +377,8 @@ impl DnsBenchApplication {
             .map(XmlResultEntry::from)
             .collect::<Vec<XmlResultEntry>>();
         match convert_result_entries_to_xml_string(xml_result_entries) {
-            Ok(xml) => println!("{}", xml),
-            Err(e) => eprintln!("Failed to serialize results to XML: {:?}", e),
+            Ok(xml) => println!("{xml}"),
+            Err(e) => eprintln!("Failed to serialize results to XML: {e:?}"),
         }
     }
 
@@ -392,8 +391,8 @@ impl DnsBenchApplication {
             .map(CsvResultEntry::from)
             .collect::<Vec<CsvResultEntry>>();
         match convert_result_entries_to_csv_string(csv_result_entries) {
-            Ok(csv) => println!("{}", csv),
-            Err(e) => eprintln!("Failed to serialize results to CSV: {:?}", e),
+            Ok(csv) => println!("{csv}"),
+            Err(e) => eprintln!("Failed to serialize results to CSV: {e:?}"),
         }
     }
 
