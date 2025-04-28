@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Changed
+
+- Updated base image of Docker container from `rust:1.85.1` to `rust:1.86.0`
+
+### Fixed
+
+- Resolved several uninlined format args clippy lints on the nightly toolchain.
+
+### Build
+
+- Removed preview git-animation from the published crate to reduce its size.
+
+### Documentation
+
+- Replaced outdated preview gif-animation with two new separate ones for crate and DockerHub.
+- Enhanced text in description section, fixed grammatical errors, and improved overall readability.
+
+### Dependencies
+
+- Updated `clap` from 4.5.34 to 4.5.37
+
 ## v0.9.0 (16.04.2025)
 
 ### Added
