@@ -17,7 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Build
 
-- Removed preview git-animation from the published crate to reduce its size.
+- Removed preview git-animation from the published crate to reduce its size 30+ times (1.15 MiB => 31.1 KiB).
 
 ### Documentation
 
