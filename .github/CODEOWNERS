@@ -2,4 +2,4 @@
 # Code owners are automatically requested for review when someone opens a pull request that modifies code they own.
 
 # Assign @qwerty541 as the default owner for all files in the repository.
-* @qwerty541
+** @qwerty541
