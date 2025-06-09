@@ -4,6 +4,7 @@ mod config;
 mod custom;
 mod result;
 mod servers;
+mod system;
 
 use app::DnsBenchApplication;
 use args::Arguments;

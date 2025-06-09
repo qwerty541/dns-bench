@@ -1,0 +1,24 @@
+Windows IP Configuration
+
+   Host Name . . . . . . . . . . . . : EXAMPLE-PC
+   Primary Dns Suffix  . . . . . . . : 
+   Node Type . . . . . . . . . . . . : Hybrid
+   IP Routing Enabled. . . . . . . . : No
+   WINS Proxy Enabled. . . . . . . . : No
+
+Ethernet adapter Ethernet:
+
+   Connection-specific DNS Suffix  . : 
+   Description . . . . . . . . . . . : Intel(R) Ethernet Connection
+   Physical Address. . . . . . . . . : 00-1A-2B-3C-4D-5E
+   DHCP Enabled. . . . . . . . . . . : Yes
+   Autoconfiguration Enabled . . . . : Yes
+   IPv4 Address. . . . . . . . . . . : 192.168.1.100(Preferred) 
+   Subnet Mask . . . . . . . . . . . : 255.255.255.0
+   Lease Obtained. . . . . . . . . . : Monday, January 1, 2024 12:00:00 PM
+   Lease Expires . . . . . . . . . . : Tuesday, January 2, 2024 12:00:00 PM
+   Default Gateway . . . . . . . . . : 192.168.1.1
+   DHCP Server . . . . . . . . . . . : 192.168.1.1
+   DNS Servers . . . . . . . . . . . : 8.8.8.8
+                                       1.1.1.1
+   NetBIOS over Tcpip. . . . . . . . : Enabled
