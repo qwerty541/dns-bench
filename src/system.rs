@@ -14,7 +14,7 @@ fn get_dns_linux() -> io::Result<(IpAddr, Option<IpAddr>)> {
     if servers.is_empty() {
         Err(io::Error::new(
             io::ErrorKind::NotFound,
-            "No nameserver lines",
+            "No DNS servers found",
         ))
     } else {
         let second = servers.get(1).cloned();
@@ -46,7 +46,7 @@ fn get_dns_macos() -> io::Result<(IpAddr, Option<IpAddr>)> {
     if servers.is_empty() {
         Err(io::Error::new(
             io::ErrorKind::NotFound,
-            "No nameserver entries",
+            "No DNS servers found",
         ))
     } else {
         let second = servers.get(1).cloned();
