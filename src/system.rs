@@ -118,7 +118,7 @@ mod tests {
 
     #[test]
     fn test_parse_resolv_conf_content() {
-        let content = fs::read_to_string("examples/resolv.conf").unwrap();
+        let content = fs::read_to_string("./tests/assets/resolv.conf").unwrap();
         let servers = parse_resolv_conf_content(&content);
         assert_eq!(servers.len(), 2);
         assert_eq!(servers[0], IpAddr::from_str("8.8.8.8").unwrap());
@@ -127,7 +127,7 @@ mod tests {
 
     #[test]
     fn test_parse_scutil_output() {
-        let text = fs::read_to_string("examples/scutil_dns.txt").unwrap();
+        let text = fs::read_to_string("./tests/assets/scutil_dns.txt").unwrap();
         let servers = parse_scutil_output(&text);
         assert_eq!(servers.len(), 3);
         assert_eq!(servers[0], IpAddr::from_str("8.8.8.8").unwrap());
@@ -137,7 +137,7 @@ mod tests {
 
     #[test]
     fn test_parse_ipconfig_output() {
-        let text = fs::read_to_string("examples/ipconfig_all.txt").unwrap();
+        let text = fs::read_to_string("./tests/assets/ipconfig_all.txt").unwrap();
         let servers = parse_ipconfig_output(&text);
         assert_eq!(servers.len(), 2);
         assert_eq!(servers[0], IpAddr::from_str("8.8.8.8").unwrap());
