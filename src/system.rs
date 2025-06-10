@@ -11,15 +11,7 @@ use std::str::FromStr;
 fn get_dns_linux() -> io::Result<(IpAddr, Option<IpAddr>)> {
     let content = fs::read_to_string("/etc/resolv.conf")?;
     let servers = parse_resolv_conf_content(&content);
-    if servers.is_empty() {
-        Err(io::Error::new(
-            io::ErrorKind::NotFound,
-            "No DNS servers found",
-        ))
-    } else {
-        let second = servers.get(1).cloned();
-        Ok((servers[0], second))
-    }
+    select_primary_and_secondary(servers)
 }
 
 #[cfg(any(test, target_os = "linux"))]
@@ -43,15 +35,7 @@ fn get_dns_macos() -> io::Result<(IpAddr, Option<IpAddr>)> {
     let output = Command::new("scutil").args(&["--dns"]).output()?;
     let text = String::from_utf8_lossy(&output.stdout);
     let servers = parse_scutil_output(&text);
-    if servers.is_empty() {
-        Err(io::Error::new(
-            io::ErrorKind::NotFound,
-            "No DNS servers found",
-        ))
-    } else {
-        let second = servers.get(1).cloned();
-        Ok((servers[0], second))
-    }
+    select_primary_and_secondary(servers)
 }
 
 #[cfg(any(test, target_os = "macos"))]
@@ -76,15 +60,7 @@ fn get_dns_windows() -> io::Result<(IpAddr, Option<IpAddr>)> {
     let output = Command::new("ipconfig").arg("/all").output()?;
     let text = String::from_utf8_lossy(&output.stdout);
     let servers = parse_ipconfig_output(&text);
-    if servers.is_empty() {
-        Err(io::Error::new(
-            io::ErrorKind::NotFound,
-            "No DNS servers found",
-        ))
-    } else {
-        let second = servers.get(1).cloned();
-        Ok((servers[0], second))
-    }
+    select_primary_and_secondary(servers)
 }
 
 #[cfg(any(test, target_os = "windows"))]
@@ -107,6 +83,19 @@ fn parse_ipconfig_output(text: &str) -> Vec<IpAddr> {
         }
     }
     servers
+}
+
+/// Helper function to select the first and optional second DNS server
+fn select_primary_and_secondary(servers: Vec<IpAddr>) -> io::Result<(IpAddr, Option<IpAddr>)> {
+    if servers.is_empty() {
+        Err(io::Error::new(
+            io::ErrorKind::NotFound,
+            "No DNS servers found",
+        ))
+    } else {
+        let second = servers.get(1).cloned();
+        Ok((servers[0], second))
+    }
 }
 
 pub fn get_system_dns() -> io::Result<(IpAddr, Option<IpAddr>)> {
