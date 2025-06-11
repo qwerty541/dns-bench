@@ -33,7 +33,7 @@
 
 ## Description
 
-This repository provides a DNS benchmarking command-line tool written in Rust. It iterates through a built-in list of public DNS servers, measures their response time, and prints a table with sorted results in the console. It can be used to find the fastest DNS server in your location for a better internet browsing experience. A preview, list of features, and list of built-in DNS servers can be found below.
+This repository provides a DNS benchmarking command-line tool written in Rust. It iterates through a built-in list of public and automatically detected system DNS servers, measures their response time, and prints a table with sorted results in the console. It can be used to find the fastest DNS server in your location for a better internet browsing experience. A preview, list of features, and list of built-in DNS servers can be found below.
 
 ### Preview
 
