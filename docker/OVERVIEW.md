@@ -11,7 +11,7 @@ This repository provides a DNS benchmarking command-line tool written in Rust. I
 ## Features
 
 - Built-in list of public DNS servers.
-- Automatically detects primary and secondary DNS servers configured in the system on Linux, Windows and MacOS platforms, this servers will be marked in the results table, so you can easily compare them with others and choose the best one.
+- Automatically detects primary and secondary DNS servers configured in the system on Linux, Windows and MacOS platforms, this servers will be marked in the results table, so you can easily compare them with others and choose the best one. This feature will be skipped when running inside the Docker container, because the container does not have access to the host's network configuration.
 - Requests count configuration. By default, 25 requests are made to each DNS server.
 - Threads count configuration. By default, 8 threads are used.
 - Timeout configuration. By default, 3 seconds timeout is used.
