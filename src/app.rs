@@ -61,17 +61,21 @@ impl DnsBenchApplication {
         config.resolve_args(&arguments);
 
         // Try to get system DNS servers here and store their IPs for later marking.
-        let system_dns_ips = match get_system_dns() {
-            Ok((primary, secondary)) => {
-                let mut ips = vec![primary];
-                if let Some(sec) = secondary {
-                    if sec != primary {
-                        ips.push(sec);
+        let system_dns_ips = if !config.skip_system_servers {
+            match get_system_dns() {
+                Ok((primary, secondary)) => {
+                    let mut ips = vec![primary];
+                    if let Some(sec) = secondary {
+                        if sec != primary {
+                            ips.push(sec);
+                        }
                     }
+                    Some(ips)
                 }
-                Some(ips)
+                Err(_) => None,
             }
-            Err(_) => None,
+        } else {
+            None
         };
 
         Self {

@@ -29,6 +29,8 @@ pub struct DnsBenchConfig {
     pub custom_servers_file: Option<PathBuf>,
     #[serde(default)]
     pub format: Format,
+    #[serde(default)]
+    pub skip_system_servers: bool,
 }
 
 impl Default for DnsBenchConfig {
@@ -44,6 +46,7 @@ impl Default for DnsBenchConfig {
             style: Style::Rounded,
             custom_servers_file: None,
             format: Format::HumanReadable,
+            skip_system_servers: false,
         }
     }
 }
@@ -79,6 +82,9 @@ impl DnsBenchConfig {
         }
         if let Some(format) = args.format {
             self.format = format;
+        }
+        if args.skip_system_servers {
+            self.skip_system_servers = true;
         }
     }
 
