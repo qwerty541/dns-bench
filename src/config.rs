@@ -31,6 +31,8 @@ pub struct DnsBenchConfig {
     pub format: Format,
     #[serde(default)]
     pub skip_system_servers: bool,
+    // WARNING! Addition of the serde default attribute for all new fields is important to ensure backward compatibility
+    // with older configuration files that may not have these fields defined.
 }
 
 impl Default for DnsBenchConfig {
