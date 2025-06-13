@@ -6,7 +6,13 @@ This repository provides a DNS benchmarking command-line tool written in Rust. I
 
 ## Preview
 
-<img src="https://raw.githubusercontent.com/qwerty541/dns-bench/master/docs/assets/dockerhub-preview.gif" width="100%" alt="Preview" />
+### Image
+
+<img src="https://raw.githubusercontent.com/qwerty541/dns-bench/master/docs/assets/dockerhub-preview.png" width="100%" alt="Preview image" />
+
+### Animation
+
+<img src="https://raw.githubusercontent.com/qwerty541/dns-bench/master/docs/assets/dockerhub-preview.gif" width="100%" alt="Preview animation" />
 
 ## Features
 
