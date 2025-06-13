@@ -19,6 +19,8 @@
 
 - [Description](#description)
   - [Preview](#preview)
+    - [Image](#image)
+    - [Animation](#animation)
   - [Features](#features)
     - [🚀 Core Features](#-core-features)
     - [⚙️ Configuration \& Flexibility](#️-configuration--flexibility)
@@ -41,7 +43,13 @@ This repository provides a DNS benchmarking command-line tool written in Rust. I
 
 ### Preview
 
-<img src="./docs/assets/crate-preview.gif" width="100%" alt="Preview" />
+#### Image
+
+<img src="./docs/assets/crate-preview.png" width="100%" alt="Preview image" />
+
+#### Animation
+
+<img src="./docs/assets/crate-preview.gif" width="100%" alt="Preview animation" />
 
 ### Features
 
