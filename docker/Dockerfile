@@ -11,4 +11,4 @@ COPY src ./src
 RUN cargo install --path .
 
 # Set the default command
-CMD ["dns-bench"]
+CMD ["dns-bench", "--skip-system-servers"]

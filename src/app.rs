@@ -11,6 +11,7 @@ use crate::result::TabledResultEntry;
 use crate::result::TimeResult;
 use crate::result::XmlResultEntry;
 use crate::servers;
+use crate::system::get_system_dns;
 
 use hickory_resolver::config::NameServerConfig;
 use hickory_resolver::config::ResolverConfig;
@@ -49,6 +50,8 @@ pub struct DnsBenchApplication {
     multi_progress: Option<MultiProgress>,
     /// The benchmark start time.
     bench_start_time: Option<Instant>,
+    /// The set of system DNS server IPs (for marking in table).
+    system_dns_ips: Option<Vec<IpAddr>>,
 }
 
 impl DnsBenchApplication {
@@ -56,6 +59,30 @@ impl DnsBenchApplication {
     pub fn new(arguments: args::Arguments) -> Self {
         let mut config = Self::load_config();
         config.resolve_args(&arguments);
+
+        // Try to get system DNS servers here and store their IPs for later marking.
+        let system_dns_ips = if !config.skip_system_servers {
+            match get_system_dns() {
+                Ok((primary, secondary)) => {
+                    let mut ips = vec![primary];
+                    if let Some(sec) = secondary {
+                        if sec != primary {
+                            ips.push(sec);
+                        }
+                    }
+                    Some(ips)
+                }
+                Err(e) => {
+                    eprintln!(
+                        "Failed to retrieve system DNS servers: {e}.\n\
+                        Proceeding with built-in or custom list only..."
+                    );
+                    None
+                }
+            }
+        } else {
+            None
+        };
 
         Self {
             arguments,
@@ -65,6 +92,7 @@ impl DnsBenchApplication {
             threads: Vec::new(),
             multi_progress: None,
             bench_start_time: None,
+            system_dns_ips,
         }
     }
 
@@ -128,7 +156,8 @@ impl DnsBenchApplication {
 
     /// Fill the DNS entries with the desired IP version.
     fn fill_dns_entries(&mut self) {
-        match self.config.custom_servers_file.clone() {
+        // 1. Get the base list (custom or built-in)
+        let mut entries = match self.config.custom_servers_file.clone() {
             Some(filepath) => {
                 let custom_entries =
                     match custom::read_custom_servers_list(filepath, self.config.name_servers_ip) {
@@ -139,22 +168,37 @@ impl DnsBenchApplication {
                         }
                     };
                 println!("Using custom servers list.");
-                self.dns_entries
-                    .lock()
-                    .expect(POISONED_MUTEX_ERR)
-                    .extend(custom_entries);
+                custom_entries
             }
-            None => {
-                let dns_entries = match self.config.name_servers_ip {
-                    args::IpAddr::V4 => servers::IPV4_DNS_ENTRIES.clone(),
-                    args::IpAddr::V6 => servers::IPV6_DNS_ENTRIES.clone(),
-                };
-                self.dns_entries
-                    .lock()
-                    .expect(POISONED_MUTEX_ERR)
-                    .extend(dns_entries);
+            None => match self.config.name_servers_ip {
+                args::IpAddr::V4 => servers::IPV4_DNS_ENTRIES.clone(),
+                args::IpAddr::V6 => servers::IPV6_DNS_ENTRIES.clone(),
+            },
+        };
+
+        // 2. Add system DNS servers if available and not already present
+        if let Some(system_ips) = &self.system_dns_ips {
+            let mut already_present = entries
+                .iter()
+                .map(|e| e.socket_addr.ip())
+                .collect::<std::collections::HashSet<_>>();
+            for sys_ip in system_ips {
+                if !already_present.contains(sys_ip) {
+                    // Add as "System DNS"
+                    let name = "System DNS".to_string();
+                    // Use default port 53
+                    let socket_addr = std::net::SocketAddr::new(*sys_ip, 53);
+                    entries.push(servers::DnsEntry { name, socket_addr });
+                    already_present.insert(*sys_ip);
+                }
             }
         }
+
+        // 3. Store entries
+        self.dns_entries
+            .lock()
+            .expect(POISONED_MUTEX_ERR)
+            .extend(entries);
     }
 
     /// Create a multi progress.
@@ -301,10 +345,17 @@ impl DnsBenchApplication {
     /// Print the result in human-readable format.
     fn print_result_human_readable(&self) {
         let result_entries = self.result_entries.lock().expect(POISONED_MUTEX_ERR);
+        let system_ips = self.system_dns_ips.clone().unwrap_or_default();
         let tabled_result_entries = result_entries
             .iter()
             .cloned()
-            .map(TabledResultEntry::from)
+            .map(|entry| {
+                let mut tre = TabledResultEntry::from(entry);
+                if system_ips.contains(&tre.ip) {
+                    tre.name = format!("> {}", tre.name);
+                }
+                tre
+            })
             .collect::<Vec<TabledResultEntry>>();
         let mut table = Table::new(tabled_result_entries.clone());
 

@@ -19,7 +19,13 @@
 
 - [Description](#description)
   - [Preview](#preview)
+    - [Image](#image)
+    - [Animation](#animation)
   - [Features](#features)
+    - [🚀 Core Features](#-core-features)
+    - [⚙️ Configuration \& Flexibility](#️-configuration--flexibility)
+    - [📊 Output \& Usability](#-output--usability)
+    - [🐳 Platform \& Integration](#-platform--integration)
   - [List of built-in DNS servers](#list-of-built-in-dns-servers)
 - [Installation](#installation)
   - [Which method to choose?](#which-method-to-choose)
@@ -33,26 +39,53 @@
 
 ## Description
 
-This repository provides a DNS benchmarking command-line tool written in Rust. It iterates through a built-in list of public DNS servers, measures their response time, and prints a table with sorted results in the console. It can be used to find the fastest DNS server in your location for a better internet browsing experience. A preview, list of features, and list of built-in DNS servers can be found below.
+This repository provides a DNS benchmarking command-line tool written in Rust. It iterates through a built-in list of public DNS servers as well as automatically detected system DNS servers, measures their response times, and prints a table of sorted results in the console. You can use it to find the fastest DNS server for your location, improving your internet browsing experience. A preview, list of features, and the list of built-in DNS servers are provided below.
 
 ### Preview
 
-<img src="./docs/assets/crate-preview.gif" width="100%" alt="Preview" />
+#### Image
+
+<img src="./docs/assets/crate-preview.png" width="100%" alt="Preview image" />
+
+#### Animation
+
+<img src="./docs/assets/crate-preview.gif" width="100%" alt="Preview animation" />
 
 ### Features
 
-- Built-in list of public DNS servers.
-- Requests count configuration. By default, 25 requests are made to each DNS server.
-- Threads count configuration. By default, 8 threads are used.
-- Timeout configuration. By default, 3 seconds timeout is used.
-- Domain configuration. By default, google.com domain is used.
-- Protocol configuration, either TCP or UDP. By default, UDP is used.
-- Lookup IP version configuration, either IPv4 or IPv6. By default, IPv4 is used.
-- Configuration of IP version used to establish connection, either IPv4 or IPv6. By default, IPv4 is used.
-- Table style configuration. By default, the rounded style is used. If a non-human-readable format is selected, the table style option is ignored.
-- Ability to save favorite configurations in a file inside user's home directory (`/home/user/.dns-bench/config.toml`) to avoid typing them every time.
-- Ability to provide custom servers list instead of built-in list.
-- Ability to choose the output format: human-readable, JSON, XML, or CSV. By default, the human-readable format is used.
+#### 🚀 Core Features
+
+- **Built-in list of public DNS servers**  
+  Includes popular providers like Google, Cloudflare, Quad9, and more.
+- **Automatic detection of system DNS servers**  
+  Detects and highlights your system's configured DNS servers (Linux, Windows, macOS).
+- **Multi-threaded benchmarking**  
+  Runs benchmarks in parallel for faster results.
+
+#### ⚙️ Configuration & Flexibility
+
+- **Customizable request count, thread count, timeout, and domain**  
+  Fine-tune how many requests, threads, and which domain to test.
+- **Protocol and IP version selection**  
+  Choose between UDP/TCP and IPv4/IPv6 for both lookup and connection.
+- **Custom DNS server lists**  
+  Use your own list of DNS servers instead of the built-in set.
+
+#### 📊 Output & Usability
+
+- **Multiple output formats**  
+  Human-readable table, JSON, XML, or CSV for easy integration and analysis.
+- **Configurable table styles**  
+  Choose from various table styles for better readability.
+- **Save favorite configurations**  
+  Store your preferred settings in a config file for quick reuse.
+
+#### 🐳 Platform & Integration
+
+- **Docker support**  
+  Run easily in a containerized environment (system DNS detection is skipped in Docker).
+- **Cross-platform**  
+  Works on Linux, Windows, and macOS.
 
 ### List of built-in DNS servers
 
@@ -228,6 +261,12 @@ Below is a list of currently supported options.
             <td>Format of the output.</td>
             <td>human-readable</td>
             <td>human-readable, json, xml, csv</td>
+        </tr>
+        <tr>
+            <td><code>--skip-system-servers</code></td>
+            <td>Skip auto-detection of system DNS servers.</td>
+            <td></td>
+            <td></td>
         </tr>
     </tbody>
 </table>

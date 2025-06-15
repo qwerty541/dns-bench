@@ -43,6 +43,9 @@ pub struct Arguments {
     /// The output format.
     #[arg(long)]
     pub format: Option<Format>,
+    /// Skip autodetection of system DNS servers.
+    #[arg(long)]
+    pub skip_system_servers: bool,
 }
 
 macro_rules! argument_impl_from_str {
