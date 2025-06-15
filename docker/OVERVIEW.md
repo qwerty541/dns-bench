@@ -189,7 +189,7 @@ Below is a list of currently supported options.
         </tr>
         <tr>
             <td><code>--skip-system-servers</code></td>
-            <td>Skip auto detection of system DNS servers.</td>
+            <td>Skip auto-detection of system DNS servers.</td>
             <td></td>
             <td></td>
         </tr>
