@@ -72,7 +72,13 @@ impl DnsBenchApplication {
                     }
                     Some(ips)
                 }
-                Err(_) => None,
+                Err(e) => {
+                    eprintln!(
+                        "Failed to retrieve system DNS servers: {e}.\n\
+                        Proceeding with built-in or custom list only..."
+                    );
+                    None
+                }
             }
         } else {
             None
