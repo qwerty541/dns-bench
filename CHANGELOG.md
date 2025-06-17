@@ -24,7 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Completely reworked features section to make it more informative and user-friendly.
 - Reviewed grammar and spelling errors in the description section.
 - Updated the preview gif-animation to reflect the new features.
-- Added the preview image to the readme file and DockerHub overview.
+- Added the preview image to the readme file and Docker Hub overview.
 
 ### Dependencies
 
