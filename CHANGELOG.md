@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Implemented automatic detection of the system DNS servers on Linux, Windows and macOS platforms and it's inclusion in the benchmark in case these servers are not present in the built-in servers list.
+- Implemented automatic detection of the system DNS servers on Linux, Windows and macOS platforms and its inclusion in the benchmark in case these servers are not present in the built-in servers list.
 - Servers that are currently configured in the system will be highlighted in the output table.
 - Added `--skip-system-servers` option to skip the auto-detection of system DNS servers.
 
