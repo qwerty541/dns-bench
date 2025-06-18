@@ -49,7 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Documentation
 
-- Replaced outdated preview gif-animation with two new separate ones for crate and DockerHub.
+- Replaced outdated preview gif-animation with two new separate ones for crate and Docker Hub.
 - Enhanced text in description section, fixed grammatical errors, and improved overall readability.
 
 ### Dependencies
@@ -112,9 +112,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Documentation
 
-- Fixed default requests count in features section of DockerHub overview.
-- Added example command of using custom servers list feature with docker container into readme file and DockerHub overview.
-- Removed table of contents from the DockerHub overview because it doesn't work there.
+- Fixed default requests count in features section of Docker Hub overview.
+- Added example command of using custom servers list feature with docker container into readme file and Docker Hub overview.
+- Removed table of contents from the Docker Hub overview because it doesn't work there.
 - Table with built-in servers list was split into three columns to improve readability.
 
 ### Dependencies
@@ -134,8 +134,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Documentation
 
 - Fixed default requests count in features section of readme file.
-- Added opt-in table of contents to the readme file and DockerHub overview.
-- Refactored list of built-in servers into two columns to make it more compact inside the readme file and DockerHub overview.
+- Added opt-in table of contents to the readme file and Docker Hub overview.
+- Refactored list of built-in servers into two columns to make it more compact inside the readme file and Docker Hub overview.
 - Added crates.io downloads badge into the readme file.
 
 ### Dependencies
