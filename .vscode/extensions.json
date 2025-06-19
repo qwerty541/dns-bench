@@ -2,6 +2,7 @@
     "recommendations": [
         "rust-lang.rust-analyzer",
         "yzhang.markdown-all-in-one",
-        "esbenp.prettier-vscode"
+        "esbenp.prettier-vscode",
+        "github.vscode-github-actions"
     ]
 }
