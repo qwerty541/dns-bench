@@ -21,7 +21,7 @@ include = [
 ]
 
 [dependencies]
-clap = { version = "4.5.39", features = ["std", "derive"] }
+clap = { version = "4.5.40", features = ["std", "derive"] }
 csv = "1.3.1"
 directories = "6.0.0"
 hickory-resolver = "0.24.4"
