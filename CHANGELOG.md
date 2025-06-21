@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v0.10.0 (17.06.2025)
+
+### Added
+
+- Implemented automatic detection of the system DNS servers on Linux, Windows and macOS platforms and its inclusion in the benchmark in case these servers are not present in the built-in servers list.
+- Servers that are currently configured in the system will be highlighted in the output table.
+- Added `--skip-system-servers` option to skip the auto-detection of system DNS servers.
+
+### Changed
+
+- Changed MSRV from 1.74.1 to 1.82.0
+- Updated base image of Docker container from `rust:1.86.0` to `rust:1.87.0`
+
+### Documentation
+
+- Added information about new features.
+- Completely reworked features section to make it more informative and user-friendly.
+- Reviewed grammar and spelling errors in the description section.
+- Updated the preview gif-animation to reflect the new features.
+- Added the preview image to the readme file and Docker Hub overview.
+
+### Dependencies
+
+- Updated `quick-xml` from 0.37.4 to 0.37.5
+- Updated `toml` from 0.8.20 to 0.8.23
+- Updated `tabled` from 0.18.0 to 0.20.0
+- Updated `clap` from 4.5.37 to 4.5.39
+
 ## v0.9.1 (28.04.2025)
 
 ### Changed
@@ -87,7 +115,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed default requests count in features section of DockerHub overview.
 - Added example command of using custom servers list feature with docker container into readme file and DockerHub overview.
 - Removed table of contents from the DockerHub overview because it doesn't work there.
-- Table with built-in servers list was splitted into three columns to improve readability.
+- Table with built-in servers list was split into three columns to improve readability.
 
 ### Dependencies
 

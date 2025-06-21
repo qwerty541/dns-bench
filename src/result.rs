@@ -178,7 +178,7 @@ pub struct TabledResultEntry {
     pub ip: IpAddr,
     #[tabled(rename = "Last resolved IP")]
     pub last_resolved_ip: IpAddr,
-    /// String with the following format: "successful_requests/total_requests (success_rate))"
+    /// String with the following format: "successful_requests/total_requests (success_rate)"
     #[tabled(rename = "Success rate")]
     pub successful_requests: String,
     #[tabled(skip)]
