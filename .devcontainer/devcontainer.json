@@ -1,0 +1,31 @@
+{
+    "name": "dns-bench-dev",
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "features": {
+        "ghcr.io/devcontainers/features/docker-in-docker:2": {
+            "version": "latest",
+            "dockerDashComposeVersion": "latest"
+        },
+        "ghcr.io/devcontainers/features/rust:1": { "version": "1.87.0" },
+        "ghcr.io/rocker-org/devcontainer-features/apt-packages:1": {
+            "packages": "mingw-w64"
+        }
+    },
+    "postCreateCommand": "./.devcontainer/install.sh",
+    "postStartCommand": "hostname dev",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "rust-lang.rust-analyzer",
+                "yzhang.markdown-all-in-one",
+                "esbenp.prettier-vscode",
+                "github.copilot",
+                "github.copilot-chat",
+                "wakatime.vscode-wakatime"
+            ],
+            "settings": {}
+        }
+    },
+    "remoteUser": "root",
+    "privileged": true
+}
