@@ -113,7 +113,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Documentation
 
 - Fixed default requests count in features section of Docker Hub overview.
-- Added example command of using custom servers list feature with docker container into readme file and Docker Hub overview.
+- Added example command of using custom servers list feature with Docker container into readme file and Docker Hub overview.
 - Removed table of contents from the Docker Hub overview because it doesn't work there.
 - Table with built-in servers list was split into three columns to improve readability.
 
