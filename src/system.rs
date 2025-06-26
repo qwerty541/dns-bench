@@ -112,14 +112,19 @@ pub fn get_system_dns() -> io::Result<(IpAddr, Option<IpAddr>)> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::fs;
     use std::net::IpAddr;
     use std::str::FromStr;
 
+    macro_rules! load_asset {
+        ($path:expr) => {
+            include_str!(concat!(env!("CARGO_MANIFEST_DIR"), $path))
+        };
+    }
+
     #[test]
     fn test_parse_resolv_conf_content() {
-        let content = fs::read_to_string("./tests/assets/resolv.conf").unwrap();
-        let servers = parse_resolv_conf_content(&content);
+        let content = load_asset!("/tests/assets/resolv.conf");
+        let servers = parse_resolv_conf_content(content);
         assert_eq!(servers.len(), 2);
         assert_eq!(servers[0], IpAddr::from_str("8.8.8.8").unwrap());
         assert_eq!(servers[1], IpAddr::from_str("1.1.1.1").unwrap());
@@ -127,8 +132,8 @@ mod tests {
 
     #[test]
     fn test_parse_scutil_output() {
-        let text = fs::read_to_string("./tests/assets/scutil_dns.txt").unwrap();
-        let servers = parse_scutil_output(&text);
+        let text = load_asset!("/tests/assets/scutil_dns.txt");
+        let servers = parse_scutil_output(text);
         assert_eq!(servers.len(), 3);
         assert_eq!(servers[0], IpAddr::from_str("8.8.8.8").unwrap());
         assert_eq!(servers[1], IpAddr::from_str("1.1.1.1").unwrap());
@@ -137,8 +142,8 @@ mod tests {
 
     #[test]
     fn test_parse_ipconfig_output() {
-        let text = fs::read_to_string("./tests/assets/ipconfig_all.txt").unwrap();
-        let servers = parse_ipconfig_output(&text);
+        let text = load_asset!("/tests/assets/ipconfig_all.txt");
+        let servers = parse_ipconfig_output(text);
         assert_eq!(servers.len(), 2);
         assert_eq!(servers[0], IpAddr::from_str("8.8.8.8").unwrap());
         assert_eq!(servers[1], IpAddr::from_str("1.1.1.1").unwrap());
@@ -146,8 +151,8 @@ mod tests {
 
     #[test]
     fn test_parse_ipconfig_output_ru() {
-        let text = fs::read_to_string("./tests/assets/ipconfig_all_ru.txt").unwrap();
-        let servers = parse_ipconfig_output(&text);
+        let text = load_asset!("/tests/assets/ipconfig_all_ru.txt");
+        let servers = parse_ipconfig_output(text);
         assert_eq!(servers.len(), 2);
         assert_eq!(servers[0], IpAddr::from_str("8.8.8.8").unwrap());
         assert_eq!(servers[1], IpAddr::from_str("1.1.1.1").unwrap());
