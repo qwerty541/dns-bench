@@ -68,7 +68,7 @@ fn parse_ipconfig_output(text: &str) -> Vec<IpAddr> {
     let mut servers = Vec::new();
     for line in text.lines() {
         let l = line.trim();
-        if l.contains("DNS") || l.contains("DNS") {
+        if l.contains("DNS") {
             if let Some(ip_str) = l.split(':').nth(1) {
                 let ip = IpAddr::from_str(ip_str.trim());
                 if let Ok(ip) = ip {
