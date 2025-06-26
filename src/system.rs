@@ -68,7 +68,7 @@ fn parse_ipconfig_output(text: &str) -> Vec<IpAddr> {
     let mut servers = Vec::new();
     for line in text.lines() {
         let l = line.trim();
-        if l.starts_with("DNS Servers") || l.starts_with("DNS Server") {
+        if l.contains("DNS") || l.contains("DNS") {
             if let Some(ip_str) = l.split(':').nth(1) {
                 let ip = IpAddr::from_str(ip_str.trim());
                 if let Ok(ip) = ip {
@@ -138,6 +138,15 @@ mod tests {
     #[test]
     fn test_parse_ipconfig_output() {
         let text = fs::read_to_string("./tests/assets/ipconfig_all.txt").unwrap();
+        let servers = parse_ipconfig_output(&text);
+        assert_eq!(servers.len(), 2);
+        assert_eq!(servers[0], IpAddr::from_str("8.8.8.8").unwrap());
+        assert_eq!(servers[1], IpAddr::from_str("1.1.1.1").unwrap());
+    }
+
+    #[test]
+    fn test_parse_ipconfig_output_ru() {
+        let text = fs::read_to_string("./tests/assets/ipconfig_all_ru.txt").unwrap();
         let servers = parse_ipconfig_output(&text);
         assert_eq!(servers.len(), 2);
         assert_eq!(servers[0], IpAddr::from_str("8.8.8.8").unwrap());
