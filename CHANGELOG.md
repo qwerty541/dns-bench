@@ -290,7 +290,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Dependencies
 
 - Updated `trust-dns-resolver` from 0.23.0 to 0.23.2
-- Updated `clap` from 4.4.6 to 4.4.7  
+- Updated `clap` from 4.4.6 to 4.4.7
 
 ## v0.1.2 (05.10.2023)
 
