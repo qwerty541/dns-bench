@@ -255,7 +255,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Fixed tabled sorting, now failed DNS entries are always at the end of the table.
+- Fixed table sorting, now failed DNS entries are always at the end of the table.
 - Fixed error handling, now it shows actual error descriptions instead of static "Failed to resolve" message.
 - Fixed sending extra requests on fails, `hickory-resolver` got default retries count of 2.
 
