@@ -230,11 +230,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
--  Added `--protocol` option to specify protocol (either TCP or UDP).
--  Added `--lookup-ip` option to specify lookup IP version (either IPv4 or IPv6).
--  Added `--name-servers-ip` option to specify IP version used to establish connection (either IPv4 or IPv6).
--  Significant code refactoring.
--  Various minor documentation improvements.
+- Added `--protocol` option to specify protocol (either TCP or UDP).
+- Added `--lookup-ip` option to specify lookup IP version (either IPv4 or IPv6).
+- Added `--name-servers-ip` option to specify IP version used to establish connection (either IPv4 or IPv6).
+- Significant code refactoring.
+- Various minor documentation improvements.
 
 ### Changed
 
