@@ -268,7 +268,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Boosted performance 5x times by multi thread implementation (now by default 8 threads).
+- Boosted performance 5x by multithreaded implementation (now by default 8 threads).
 - Added `--threads` option to specify custom number of threads.
 - Added output of total benchmark time.
 
