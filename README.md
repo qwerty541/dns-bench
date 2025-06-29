@@ -29,9 +29,10 @@
   - [List of built-in DNS servers](#list-of-built-in-dns-servers)
 - [Installation](#installation)
   - [Which method to choose?](#which-method-to-choose)
-  - [From crates.io](#from-cratesio)
-  - [From git repository](#from-git-repository)
+  - [From crates.io using Cargo](#from-cratesio-using-cargo)
+  - [From git repository using Cargo](#from-git-repository-using-cargo)
   - [From Docker Hub](#from-docker-hub)
+  - [Executable file for Windows](#executable-file-for-windows)
 - [Options](#options)
 - [License](#license)
 - [Contribution](#contribution)
@@ -124,11 +125,11 @@ This repository provides a DNS benchmarking command-line tool written in Rust. I
 
 ### Which method to choose?
 
-- If you don't have Rust programming language environment installed on your machine, then [installation from Docker Hub](#from-docker-hub) will be the best option for you.
-- If you have Rust programming language environment installed on your machine, then you can choose between [installation from crates.io](#from-cratesio) or [installation from git repository](#from-git-repository).
+- If you don't have Rust programming language environment installed on your machine, then you can choose between [installation from Docker Hub](#from-docker-hub) or [download the latest Windows executable file](#executable-file-for-windows).
+- If you have Rust programming language environment installed on your machine, then you can choose between [installation from crates.io](#from-cratesio-using-cargo) or [installation from git repository](#from-git-repository-using-cargo).
 - Installation from git repository is suitable only when you want to use the development version instead of the stable one or the crates.io service is unavailable.
 
-### From crates.io
+### From crates.io using Cargo
 
 Run the following command and wait until the crate is compiled:
 
@@ -142,7 +143,7 @@ Now you can run compiled binary:
 $ dns-bench [OPTIONS]
 ```
 
-### From git repository
+### From git repository using Cargo
 
 Run the following command and wait until the crate is compiled:
 
@@ -183,6 +184,19 @@ In case you want to use custom servers list, you have to mount the file with cus
 ```sh
 $ docker run --rm -it --name dns-bench --volume /home/alexandr/projects/dns-bench/examples/ipv4-custom-servers-example.txt:/ipv4-custom-servers-example.txt qwerty541/dns-bench:latest /bin/bash -c "dns-bench --custom-servers-file /ipv4-custom-servers-example.txt"
 ```
+
+### Executable file for Windows
+
+You can download the latest Windows executable file from the [releases page](https://github.com/qwerty541/dns-bench/releases/latest).
+
+After downloading, open the command line, navigate to the directory where you saved the file, and run it with the following command:
+
+```cmd
+dns-bench.exe [OPTIONS]
+```
+
+> [!WARNING]
+> The Windows executable file is not signed, so you may see a warning when running it. You can ignore this warning if you trust the source of the file. If you want to avoid this warning, you can build the crate from source using Rust programming language environment installed on your machine or use the Docker image as described above.
 
 ## Options
 
