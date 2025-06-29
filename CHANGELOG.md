@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Documentation
 
 - Updated installation instructions in the readme file to include information about the Windows executable file.
+- Updated changelog of the old versions to adhere to keep a changelog format.
 - Fixed Docker Hub branding across all documents.
 
 ### Dependencies
