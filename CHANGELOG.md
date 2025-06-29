@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Added
+
+- Implemented build process of the Windows executable file. Starting from this version, the compiled executable file will be attached to each GitHub release.
+- Added devcontainer configuration to the repository. It allows you to run the project in a containerized development environment using Visual Studio Code or any other compatible IDE.
+
+### Fixed
+
+- Adjusted the automatic detection of system DNS servers on Windows to work with non-English locales. Previously, it could fail if the system language was not English.
+
+### Documentation
+
+- Updated installation instructions in the readme file to include information about the Windows executable file.
+- Updated changelog entries of previous versions to adhere to keep a changelog format.
+- Fixed Docker Hub branding across all documents.
+
+### Dependencies
+
+- Updated `clap` from 4.5.39 to 4.5.40
+- Updated `directories` from 5.0.1 to 6.0.0
+
 ## v0.10.0 (17.06.2025)
 
 ### Added
