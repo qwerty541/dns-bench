@@ -16,9 +16,13 @@
     "customizations": {
         "vscode": {
             "extensions": [
+                // Project related extensions, keep in sync with .vscode/extensions.json
                 "rust-lang.rust-analyzer",
                 "yzhang.markdown-all-in-one",
                 "esbenp.prettier-vscode",
+                "github.vscode-github-actions",
+
+                // Useful extensions for development
                 "github.copilot",
                 "github.copilot-chat",
                 "wakatime.vscode-wakatime"
