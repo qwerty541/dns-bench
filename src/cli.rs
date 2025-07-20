@@ -1,4 +1,6 @@
+use clap::Args;
 use clap::Parser;
+use clap::Subcommand;
 use clap::ValueEnum;
 use hickory_resolver::config::LookupIpStrategy;
 use hickory_resolver::config::Protocol as ResolverProtocol;
@@ -9,7 +11,26 @@ use std::str::FromStr;
 #[derive(Debug, Clone, Parser)]
 #[command(next_line_help = true)]
 #[command(author, version, about, long_about = None)]
-pub struct Arguments {
+pub struct Cli {
+    #[command(flatten)]
+    pub args: DefaultArgs,
+
+    #[command(subcommand)]
+    pub command: Option<Commands>,
+}
+
+#[derive(Debug, Clone, Args)]
+pub struct DefaultArgs {
+    #[command(flatten)]
+    pub args: SharedArgs,
+
+    /// Save the configurations to a file in users home directory.
+    #[arg(long)]
+    pub save_config: bool,
+}
+
+#[derive(Debug, Clone, Args)]
+pub struct SharedArgs {
     /// The domain to resolve.
     #[arg(long)]
     pub domain: Option<String>,
@@ -34,9 +55,6 @@ pub struct Arguments {
     /// The style to use for the table.
     #[arg(long)]
     pub style: Option<Style>,
-    /// Save the configurations to a file in users home directory.
-    #[arg(long)]
-    pub save_config: bool,
     /// Provide a custom list of servers to use instead of the default ones.
     #[arg(long)]
     pub custom_servers_file: Option<PathBuf>,
@@ -46,6 +64,31 @@ pub struct Arguments {
     /// Skip autodetection of system DNS servers.
     #[arg(long)]
     pub skip_system_servers: bool,
+}
+
+#[derive(Debug, Clone, Subcommand)]
+pub enum Commands {
+    /// Commands related to configuration management.
+    #[command(subcommand)]
+    Config(ConfigCommand),
+}
+
+#[derive(Debug, Clone, Subcommand)]
+pub enum ConfigCommand {
+    /// Create a config file with default values if it does not exist.
+    Init,
+    /// Set one or more config values.
+    Set(ConfigSetArgs),
+    /// Reset config file to default values.
+    Reset,
+    /// Delete config file.
+    Delete,
+}
+
+#[derive(Debug, Clone, Args)]
+pub struct ConfigSetArgs {
+    #[command(flatten)]
+    pub common: SharedArgs,
 }
 
 macro_rules! argument_impl_from_str {
