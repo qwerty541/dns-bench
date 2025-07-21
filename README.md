@@ -33,7 +33,9 @@
   - [From git repository using Cargo](#from-git-repository-using-cargo)
   - [From Docker Hub](#from-docker-hub)
   - [Executable file for Windows](#executable-file-for-windows)
-- [Options](#options)
+- [Command-Line Reference](#command-line-reference)
+  - [Options](#options)
+  - [Subcommands](#subcommands)
 - [License](#license)
 - [Contribution](#contribution)
 </details>
@@ -198,7 +200,9 @@ dns-bench.exe [OPTIONS]
 > [!WARNING]
 > The Windows executable file is not signed, so you may see a warning when running it. You can ignore this warning if you trust the source of the file. If you want to avoid this warning, you can build the crate from source using Rust programming language environment installed on your machine or use the Docker image as described above.
 
-## Options
+## Command-Line Reference
+
+### Options
 
 Below is a list of currently supported options.
 
@@ -281,6 +285,35 @@ Below is a list of currently supported options.
             <td>Skip auto-detection of system DNS servers.</td>
             <td></td>
             <td></td>
+        </tr>
+    </tbody>
+</table>
+
+### Subcommands
+
+Below is a list of currently supported subcommands.
+
+<table>
+    <thead>
+        <th>Subcommand</th>
+        <th>Description</th>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>dns-bench config init</code></td>
+            <td>Create a config file with default values if it does not exist.</td>
+        </tr>
+        <tr>
+            <td><code>dns-bench config set [--key value ...]</code></td>
+            <td>Set one or more config values. Supports all options listed above.</td>
+        </tr>
+        <tr>
+            <td><code>dns-bench config reset</code></td>
+            <td>Reset config file to default values.</td>
+        </tr>
+        <tr>
+            <td><code>dns-bench config delete</code></td>
+            <td>Delete config file.</td>
         </tr>
     </tbody>
 </table>
