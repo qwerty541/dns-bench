@@ -29,12 +29,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         Some(Commands::Config(ConfigCommand::Set(set_args))) => {
             if !DnsBenchConfig::config_file_exists()? {
                 println!("Config file does not exist. Run `dns-bench config init` first.");
-                return Ok(());
+            } else {
+                let mut config = DnsBenchConfig::try_load_from_file().unwrap_or_default();
+                config.resolve_args(&set_args.common);
+                config.write_into_file()?;
+                println!("Config file updated.");
             }
-            let mut config = DnsBenchConfig::try_load_from_file().unwrap_or_default();
-            config.resolve_args(&set_args.common);
-            config.write_into_file()?;
-            println!("Config file updated.");
         }
         Some(Commands::Config(ConfigCommand::Reset)) => {
             if !DnsBenchConfig::config_file_exists()? {
