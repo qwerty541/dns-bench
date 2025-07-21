@@ -31,7 +31,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 println!("Config file does not exist. Run `dns-bench config init` first.");
                 return Ok(());
             }
-            let mut config = DnsBenchConfig::try_load_from_file().unwrap();
+            let mut config = DnsBenchConfig::try_load_from_file().unwrap_or_default();
             config.resolve_args(&set_args.common);
             config.write_into_file()?;
             println!("Config file updated.");

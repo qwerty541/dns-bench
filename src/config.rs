@@ -156,7 +156,7 @@ pub enum LoadConfigResult {
 }
 
 impl LoadConfigResult {
-    pub fn unwrap(self) -> DnsBenchConfig {
+    pub fn unwrap_or_default(self) -> DnsBenchConfig {
         match self {
             LoadConfigResult::Loaded(c) => c,
             LoadConfigResult::FileDoesNotExist => DnsBenchConfig::default(),

@@ -57,7 +57,7 @@ pub struct DnsBenchApplication {
 impl DnsBenchApplication {
     /// Create a new instance of the application.
     pub fn new(arguments: cli::DefaultArgs) -> Self {
-        let mut config = config::DnsBenchConfig::try_load_from_file().unwrap();
+        let mut config = config::DnsBenchConfig::try_load_from_file().unwrap_or_default();
         config.resolve_args(&arguments.args);
 
         // Try to get system DNS servers here and store their IPs for later marking.
