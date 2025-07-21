@@ -42,6 +42,8 @@ This repository provides a DNS benchmarking command-line tool written in Rust. I
   Choose from various table styles for better readability.
 - **Save favorite configurations**  
   Store your preferred settings in a config file for quick reuse.
+- **Config file management without running benchmarks**  
+  Use [subcommands](#subcommands) to manage your config independently from benchmarking.
 
 ### 🐳 Platform & Integration
 
