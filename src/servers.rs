@@ -70,6 +70,8 @@ lazy_static::lazy_static! {
         ipv4_dns_entry!("Surfshark DNS", (149, 154, 159, 92), 53),
         ipv4_dns_entry!("SafeServe", (198, 54, 117, 10), 53),
         ipv4_dns_entry!("SafeServe", (198, 54, 117, 11), 53),
+        ipv4_dns_entry!("Vercara UltraDNS Public", (156, 154, 70, 2), 53),
+        ipv4_dns_entry!("Vercara UltraDNS Public", (156, 154, 71, 2), 53),
     ];
 }
 
@@ -97,5 +99,7 @@ lazy_static::lazy_static! {
         ipv6_dns_entry!("NextDNS", (0x2a07, 0xa8c0, 0, 0, 0, 0, 0x006e, 0x3f39), 53),
         ipv6_dns_entry!("NextDNS", (0x2a07, 0xa8c1, 0, 0, 0, 0, 0x006e, 0x3f39), 53),
         ipv6_dns_entry!("Hurricane Electric", (0x2001, 0x0470, 0x0020, 0, 0, 0, 0, 0x0002), 53),
+        ipv6_dns_entry!("Vercara UltraDNS Public", (0x2610, 0x00a1, 0x1018, 0, 0, 0, 0, 0x0002), 53),
+        ipv6_dns_entry!("Vercara UltraDNS Public", (0x2610, 0x00a1, 0x1019, 0, 0, 0, 0, 0x0002), 53),
     ];
 }
