@@ -1,4 +1,5 @@
 use crate::args;
+use crate::cli;
 use crate::config;
 use crate::custom;
 use crate::result::convert_result_entries_to_csv_string;
@@ -37,7 +38,7 @@ const POISONED_MUTEX_ERR: &str = "Poisoned mutex error";
 /// The main application.
 pub struct DnsBenchApplication {
     /// The arguments.
-    arguments: args::Arguments,
+    arguments: cli::DefaultArgs,
     /// The configuration.
     config: config::DnsBenchConfig,
     /// The DNS entries.
@@ -56,9 +57,9 @@ pub struct DnsBenchApplication {
 
 impl DnsBenchApplication {
     /// Create a new instance of the application.
-    pub fn new(arguments: args::Arguments) -> Self {
-        let mut config = Self::load_config();
-        config.resolve_args(&arguments);
+    pub fn new(arguments: cli::DefaultArgs) -> Self {
+        let mut config = config::DnsBenchConfig::try_load_from_file().unwrap_or_default();
+        config.resolve_args(&arguments.args);
 
         // Try to get system DNS servers here and store their IPs for later marking.
         let system_dns_ips = if !config.skip_system_servers {
@@ -93,21 +94,6 @@ impl DnsBenchApplication {
             multi_progress: None,
             bench_start_time: None,
             system_dns_ips,
-        }
-    }
-
-    /// Load the configuration from a file.
-    fn load_config() -> config::DnsBenchConfig {
-        match config::DnsBenchConfig::try_load_from_file() {
-            config::LoadConfigResult::Loaded(c) => c,
-            config::LoadConfigResult::FileDoesNotExist => config::DnsBenchConfig::default(),
-            config::LoadConfigResult::Error(e) => {
-                eprintln!(
-                    "Failed to load config: {e:?}\n\
-                    Proceeding with default parameters..."
-                );
-                config::DnsBenchConfig::default()
-            }
         }
     }
 

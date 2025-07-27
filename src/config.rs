@@ -1,8 +1,8 @@
-use crate::args::Arguments;
 use crate::args::Format;
 use crate::args::IpAddr;
 use crate::args::Protocol;
 use crate::args::Style;
+use crate::cli::SharedArgs;
 
 use directories::UserDirs;
 use std::error::Error;
@@ -54,7 +54,7 @@ impl Default for DnsBenchConfig {
 }
 
 impl DnsBenchConfig {
-    pub fn resolve_args(&mut self, args: &Arguments) {
+    pub fn resolve_args(&mut self, args: &SharedArgs) {
         if let Some(domain) = &args.domain {
             self.domain.clone_from(domain);
         }
@@ -128,6 +128,24 @@ impl DnsBenchConfig {
 
         Ok(())
     }
+
+    pub fn config_file_path() -> Result<PathBuf, Box<dyn Error>> {
+        let user_dirs = UserDirs::new().ok_or(USER_DIRS_ERROR)?;
+        let home_dir = user_dirs.home_dir().to_path_buf();
+        Ok(home_dir.join(CONFIG_DIR_NAME).join(CONFIG_FILE_NAME))
+    }
+
+    pub fn config_file_exists() -> Result<bool, Box<dyn Error>> {
+        Ok(Self::config_file_path()?.exists())
+    }
+
+    pub fn delete_config_file() -> Result<(), Box<dyn Error>> {
+        let path = Self::config_file_path()?;
+        if path.exists() {
+            std::fs::remove_file(path)?;
+        }
+        Ok(())
+    }
 }
 
 #[derive(Debug)]
@@ -135,6 +153,22 @@ pub enum LoadConfigResult {
     Loaded(DnsBenchConfig),
     FileDoesNotExist,
     Error(LoadConfigError),
+}
+
+impl LoadConfigResult {
+    pub fn unwrap_or_default(self) -> DnsBenchConfig {
+        match self {
+            LoadConfigResult::Loaded(c) => c,
+            LoadConfigResult::FileDoesNotExist => DnsBenchConfig::default(),
+            LoadConfigResult::Error(e) => {
+                eprintln!(
+                    "Failed to load config: {e:?}\n\
+                    Proceeding with default parameters..."
+                );
+                DnsBenchConfig::default()
+            }
+        }
+    }
 }
 
 #[derive(Debug)]
