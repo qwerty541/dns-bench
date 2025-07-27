@@ -42,6 +42,8 @@ This repository provides a DNS benchmarking command-line tool written in Rust. I
   Choose from various table styles for better readability.
 - **Save favorite configurations**  
   Store your preferred settings in a config file for quick reuse.
+- **Config file management without running benchmarks**  
+  Use [subcommands](#subcommands) to manage your config independently from benchmarking.
 
 ### 🐳 Platform & Integration
 
@@ -110,7 +112,9 @@ In case you want to use custom servers list, you have to mount the file with cus
 $ docker run --rm -it --name dns-bench --volume /home/alexandr/projects/dns-bench/examples/ipv4-custom-servers-example.txt:/ipv4-custom-servers-example.txt qwerty541/dns-bench:latest /bin/bash -c "dns-bench --custom-servers-file /ipv4-custom-servers-example.txt"
 ```
 
-# Options
+# Command-Line Reference
+
+## Options
 
 Below is a list of currently supported options.
 
@@ -193,6 +197,35 @@ Below is a list of currently supported options.
             <td>Skip auto-detection of system DNS servers.</td>
             <td></td>
             <td></td>
+        </tr>
+    </tbody>
+</table>
+
+## Subcommands
+
+Below is a list of currently supported subcommands.
+
+<table>
+    <thead>
+        <th>Subcommand</th>
+        <th>Description</th>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>dns-bench config init</code></td>
+            <td>Create a config file with default values if it does not exist.</td>
+        </tr>
+        <tr>
+            <td><code>dns-bench config set [--key value ...]</code></td>
+            <td>Set one or more config values. Supports all options listed above.</td>
+        </tr>
+        <tr>
+            <td><code>dns-bench config reset</code></td>
+            <td>Reset config file to default values.</td>
+        </tr>
+        <tr>
+            <td><code>dns-bench config delete</code></td>
+            <td>Delete config file.</td>
         </tr>
     </tbody>
 </table>
