@@ -34,3 +34,5 @@ Surfshark DNS;162.252.172.57:53
 Surfshark DNS;149.154.159.92:53
 SafeServe;198.54.117.10:53
 SafeServe;198.54.117.11:53
+Vercara UltraDNS Public;156.154.70.2:53
+Vercara UltraDNS Public;156.154.71.2:53

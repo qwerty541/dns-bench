@@ -103,24 +103,25 @@ This repository provides a DNS benchmarking command-line tool written in Rust. I
 - ControlD
 - OpenDNS
 - CleanBrowsing
+- AdGuard DNS
 
 </td><td>
 
-- AdGuard DNS
 - Comodo Secure DNS
 - Level3
 - Verisign
 - DNS.WATCH
 - Norton ConnectSafe
+- SafeDNS
+- NextDNS
 
 </td><td>
 
-- SafeDNS
-- NextDNS
 - Dyn
 - Hurricane Electric
 - Surfshark DNS
 - SafeServe
+- Vercara UltraDNS Public
 
 </td></tr>
 </table>

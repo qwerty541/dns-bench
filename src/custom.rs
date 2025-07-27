@@ -68,7 +68,7 @@ mod tests {
         let filepath = PathBuf::from("./examples/ipv4-custom-servers-example.txt");
         let entries = read_custom_servers_list(filepath, IpAddr::V4).unwrap();
 
-        assert_eq!(entries.len(), 36);
+        assert_eq!(entries.len(), 38);
         assert_eq!(entries[0].name, "Google");
         assert_eq!(entries[0].socket_addr, "8.8.8.8:53".parse().unwrap());
     }
@@ -78,7 +78,7 @@ mod tests {
         let filepath = PathBuf::from("./examples/ipv6-custom-servers-example.txt");
         let entries = read_custom_servers_list(filepath, IpAddr::V6).unwrap();
 
-        assert_eq!(entries.len(), 22);
+        assert_eq!(entries.len(), 24);
         assert_eq!(entries[0].name, "Google");
         assert_eq!(
             entries[0].socket_addr,
