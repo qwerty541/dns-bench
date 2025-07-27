@@ -10,7 +10,24 @@ use std::path::PathBuf;
 
 #[derive(Debug, Clone, Parser)]
 #[command(next_line_help = true)]
-#[command(author, version, about, long_about = None)]
+#[command(
+    author = clap::crate_authors!("\n"),
+    version,
+    about,
+    long_about = None,
+    help_template = "\
+{before-help}{name} {version}
+
+{about}
+
+Author: {author}
+Source: https://github.com/qwerty541/dns-bench
+
+{usage-heading} {usage}
+
+{all-args}{after-help}
+",
+)]
 pub struct Cli {
     #[command(flatten)]
     pub args: DefaultArgs,
