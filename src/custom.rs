@@ -1,4 +1,4 @@
-use crate::cli::IpAddr;
+use crate::args::IpAddr;
 use crate::servers::DnsEntry;
 
 use std::fs::File;

@@ -1,8 +1,8 @@
-use crate::cli::Format;
-use crate::cli::IpAddr;
-use crate::cli::Protocol;
+use crate::args::Format;
+use crate::args::IpAddr;
+use crate::args::Protocol;
+use crate::args::Style;
 use crate::cli::SharedArgs;
-use crate::cli::Style;
 
 use directories::UserDirs;
 use std::error::Error;

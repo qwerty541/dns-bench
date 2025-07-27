@@ -1,3 +1,4 @@
+use crate::args;
 use crate::cli;
 use crate::config;
 use crate::custom;
@@ -122,7 +123,7 @@ impl DnsBenchApplication {
 
     /// Print the configuration summary.
     fn print_config_summary(&self) {
-        if self.config.format == cli::Format::HumanReadable {
+        if self.config.format == args::Format::HumanReadable {
             println!(
                 "Starting DNS benchmark with the following parameters:\n\
                 Domain: {}; Threads: {}; Requests: {}; Timeout: {}\n\
@@ -156,8 +157,8 @@ impl DnsBenchApplication {
                 custom_entries
             }
             None => match self.config.name_servers_ip {
-                cli::IpAddr::V4 => servers::IPV4_DNS_ENTRIES.clone(),
-                cli::IpAddr::V6 => servers::IPV6_DNS_ENTRIES.clone(),
+                args::IpAddr::V4 => servers::IPV4_DNS_ENTRIES.clone(),
+                args::IpAddr::V6 => servers::IPV6_DNS_ENTRIES.clone(),
             },
         };
 
@@ -269,8 +270,8 @@ impl DnsBenchApplication {
                                     name: dns_entry.name.clone(),
                                     ip: dns_entry.socket_addr.ip(),
                                     resolved_ip: match config.lookup_ip {
-                                        cli::IpAddr::V4 => IpAddr::V4(Ipv4Addr::UNSPECIFIED),
-                                        cli::IpAddr::V6 => IpAddr::V6(Ipv6Addr::UNSPECIFIED),
+                                        args::IpAddr::V4 => IpAddr::V4(Ipv4Addr::UNSPECIFIED),
+                                        args::IpAddr::V6 => IpAddr::V6(Ipv6Addr::UNSPECIFIED),
                                     },
                                     time: TimeResult::Failed(e.to_string()),
                                 },
@@ -320,10 +321,10 @@ impl DnsBenchApplication {
     /// Print the result.
     fn print_result(&self) {
         match self.config.format {
-            cli::Format::HumanReadable => self.print_result_human_readable(),
-            cli::Format::Json => self.print_result_json(),
-            cli::Format::Xml => self.print_result_xml(),
-            cli::Format::Csv => self.print_result_csv(),
+            args::Format::HumanReadable => self.print_result_human_readable(),
+            args::Format::Json => self.print_result_json(),
+            args::Format::Xml => self.print_result_xml(),
+            args::Format::Csv => self.print_result_csv(),
         }
     }
 
@@ -344,31 +345,31 @@ impl DnsBenchApplication {
             .collect::<Vec<TabledResultEntry>>();
         let mut table = Table::new(tabled_result_entries.clone());
 
-        if self.config.style == cli::Style::Empty {
+        if self.config.style == args::Style::Empty {
             table.with(tabled_settings::Style::empty());
-        } else if self.config.style == cli::Style::Blank {
+        } else if self.config.style == args::Style::Blank {
             table.with(tabled_settings::Style::blank());
-        } else if self.config.style == cli::Style::Ascii {
+        } else if self.config.style == args::Style::Ascii {
             table.with(tabled_settings::Style::ascii());
-        } else if self.config.style == cli::Style::Psql {
+        } else if self.config.style == args::Style::Psql {
             table.with(tabled_settings::Style::psql());
-        } else if self.config.style == cli::Style::Markdown {
+        } else if self.config.style == args::Style::Markdown {
             table.with(tabled_settings::Style::markdown());
-        } else if self.config.style == cli::Style::Modern {
+        } else if self.config.style == args::Style::Modern {
             table.with(tabled_settings::Style::modern());
-        } else if self.config.style == cli::Style::Sharp {
+        } else if self.config.style == args::Style::Sharp {
             table.with(tabled_settings::Style::sharp());
-        } else if self.config.style == cli::Style::Rounded {
+        } else if self.config.style == args::Style::Rounded {
             table.with(tabled_settings::Style::rounded());
-        } else if self.config.style == cli::Style::ModernRounded {
+        } else if self.config.style == args::Style::ModernRounded {
             table.with(tabled_settings::Style::modern_rounded());
-        } else if self.config.style == cli::Style::Extended {
+        } else if self.config.style == args::Style::Extended {
             table.with(tabled_settings::Style::extended());
-        } else if self.config.style == cli::Style::Dots {
+        } else if self.config.style == args::Style::Dots {
             table.with(tabled_settings::Style::dots());
-        } else if self.config.style == cli::Style::ReStructuredText {
+        } else if self.config.style == args::Style::ReStructuredText {
             table.with(tabled_settings::Style::re_structured_text());
-        } else if self.config.style == cli::Style::AsciiRounded {
+        } else if self.config.style == args::Style::AsciiRounded {
             table.with(tabled_settings::Style::ascii_rounded());
         }
 
@@ -434,7 +435,7 @@ impl DnsBenchApplication {
 
     /// Print the benchmark time.
     fn print_bench_elapsed_time(&self) {
-        if self.config.format == cli::Format::HumanReadable {
+        if self.config.format == args::Format::HumanReadable {
             let bench_elapsed_time = self.bench_start_time.unwrap().elapsed();
             println!("Benchmark completed in {bench_elapsed_time:?}",);
         }
