@@ -8,14 +8,7 @@ use clap::Parser;
 use clap::Subcommand;
 use std::path::PathBuf;
 
-#[derive(Debug, Clone, Parser)]
-#[command(next_line_help = true)]
-#[command(
-    author = clap::crate_authors!("\n"),
-    version,
-    about,
-    long_about = None,
-    help_template = "\
+const HELP_TEMPLATE: &str = "\
 {before-help}{name} {version}
 
 {about}
@@ -26,7 +19,16 @@ Source: https://github.com/qwerty541/dns-bench
 {usage-heading} {usage}
 
 {all-args}{after-help}
-",
+";
+
+#[derive(Debug, Clone, Parser)]
+#[command(next_line_help = true)]
+#[command(
+    author = clap::crate_authors!("\n"),
+    version,
+    about,
+    long_about = None,
+    help_template = HELP_TEMPLATE,
 )]
 pub struct Cli {
     #[command(flatten)]
@@ -91,19 +93,63 @@ pub enum Commands {
 }
 
 #[derive(Debug, Clone, Subcommand)]
+#[command(
+    author = clap::crate_authors!("\n"),
+    version,
+    about,
+    long_about = None,
+    help_template = HELP_TEMPLATE
+)]
 pub enum ConfigCommand {
     /// Create a config file with default values if it does not exist.
-    Init,
+    Init(ConfigInitArgs),
     /// Set one or more config values.
     Set(ConfigSetArgs),
     /// Reset config file to default values.
-    Reset,
+    Reset(ConfigResetArgs),
     /// Delete config file.
-    Delete,
+    Delete(ConfigDeleteArgs),
 }
 
 #[derive(Debug, Clone, Args)]
+#[command(
+    author = clap::crate_authors!("\n"),
+    version,
+    about,
+    long_about = None,
+    help_template = HELP_TEMPLATE
+)]
+pub struct ConfigInitArgs;
+
+#[derive(Debug, Clone, Args)]
+#[command(
+    author = clap::crate_authors!("\n"),
+    version,
+    about,
+    long_about = None,
+    help_template = HELP_TEMPLATE
+)]
 pub struct ConfigSetArgs {
     #[command(flatten)]
     pub common: SharedArgs,
 }
+
+#[derive(Debug, Clone, Args)]
+#[command(
+    author = clap::crate_authors!("\n"),
+    version,
+    about,
+    long_about = None,
+    help_template = HELP_TEMPLATE
+)]
+pub struct ConfigResetArgs;
+
+#[derive(Debug, Clone, Args)]
+#[command(
+    author = clap::crate_authors!("\n"),
+    version,
+    about,
+    long_about = None,
+    help_template = HELP_TEMPLATE
+)]
+pub struct ConfigDeleteArgs;
