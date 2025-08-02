@@ -18,7 +18,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let cli = Cli::parse();
 
     match cli.command {
-        Some(Commands::Config(ConfigCommand::Init)) => {
+        Some(Commands::Config(ConfigCommand::Init(_))) => {
             if DnsBenchConfig::config_file_exists()? {
                 println!("Config file already exists.");
             } else {
@@ -37,7 +37,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 println!("Config file updated.");
             }
         }
-        Some(Commands::Config(ConfigCommand::Reset)) => {
+        Some(Commands::Config(ConfigCommand::Reset(_))) => {
             if !DnsBenchConfig::config_file_exists()? {
                 println!("Config file does not exist.");
             } else {
@@ -46,7 +46,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 println!("Config file reset to default values.");
             }
         }
-        Some(Commands::Config(ConfigCommand::Delete)) => {
+        Some(Commands::Config(ConfigCommand::Delete(_))) => {
             if !DnsBenchConfig::config_file_exists()? {
                 println!("Config file does not exist.");
             } else {
