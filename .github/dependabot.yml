@@ -32,7 +32,7 @@ updates:
 
   # Maintain dependencies for Devcontainers
   - package-ecosystem: devcontainers
-    directory: "/.devcontainer/"
+    directory: "/"
     schedule:
       interval: weekly
     open-pull-requests-limit: 10
