@@ -111,15 +111,22 @@ pub enum ConfigCommand {
     Delete(ConfigDeleteArgs),
 }
 
-#[derive(Debug, Clone, Args)]
-#[command(
-    author = clap::crate_authors!("\n"),
-    version,
-    about,
-    long_about = None,
-    help_template = HELP_TEMPLATE
-)]
-pub struct ConfigInitArgs;
+#[rustfmt::skip]
+macro_rules! empty_command_struct {
+    ($name:ident) => {
+        #[derive(Debug, Clone, Args)]
+        #[command(
+            author = clap::crate_authors!("\n"),
+            version,
+            about,
+            long_about = None,
+            help_template = HELP_TEMPLATE
+        )]
+        pub struct $name;
+    };
+}
+
+empty_command_struct!(ConfigInitArgs);
 
 #[derive(Debug, Clone, Args)]
 #[command(
@@ -134,22 +141,6 @@ pub struct ConfigSetArgs {
     pub common: SharedArgs,
 }
 
-#[derive(Debug, Clone, Args)]
-#[command(
-    author = clap::crate_authors!("\n"),
-    version,
-    about,
-    long_about = None,
-    help_template = HELP_TEMPLATE
-)]
-pub struct ConfigResetArgs;
+empty_command_struct!(ConfigResetArgs);
 
-#[derive(Debug, Clone, Args)]
-#[command(
-    author = clap::crate_authors!("\n"),
-    version,
-    about,
-    long_about = None,
-    help_template = HELP_TEMPLATE
-)]
-pub struct ConfigDeleteArgs;
+empty_command_struct!(ConfigDeleteArgs);
