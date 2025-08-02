@@ -5,6 +5,37 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Added
+
+- Implemented subcommands which allow users to perform configurations file management without the necessity to run benchmark each time. Here is the list of available subcommands:
+    - `dns-bench config init` - initializes the configuration file with default values.
+    - `dns-bench config set [--key value ...]` - sets the specified keys to the specified values inside the configuration file.
+    - `dns-bench config reset` - resets the configuration file to its default values.
+    - `dns-bench config delete` - deletes the configuration file.
+- Added Vercara UltraDNS Public to the built-in servers list.
+
+### Changed
+
+- Updated base image of Docker container from `rust:1.87.0` to `rust:1.88.0`
+- Changed help template of all commands to include author information and repository link.
+
+### Documentation
+
+- Reworked the options section inside documentation into command-line reference section which includes options and subcommands subsections.
+- Updated license copyright years.
+
+### Dependencies
+
+- Updated `quick-xml` from 0.37.5 to 0.38.0
+- Updated `indicatif` from 0.17.11 to 0.18.0
+- Updated `toml` from 0.8.23 to 0.9.2
+- Updated `clap` from 4.5.40 to 4.5.41
+- Updated `anstream` from 0.6.7 to 0.6.19
+- Updated `mio` from 0.8.8 to 0.8.11
+- Updated `serde_json` from 1.0.140 to 1.0.141
+
 ## v0.10.1 (29.06.2025)
 
 ### Added
