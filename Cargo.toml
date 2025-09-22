@@ -31,4 +31,4 @@ quick-xml = "0.38.3"
 serde = { version = "1.0.223", features = ["derive"], default-features = false }
 serde_json = "1.0.145"
 tabled = "0.20.0"
-toml = "0.9.5"
+toml = "0.9.7"
