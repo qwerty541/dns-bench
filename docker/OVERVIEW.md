@@ -86,7 +86,7 @@ docker run --rm -it --name dns-bench \
 docker run --rm -it --name dns-bench \
   --network host \
   qwerty541/dns-bench:latest \
-  /bin/bash -c "dns-bench" 
+  /bin/bash -c "dns-bench"
 ```
 
 - Inside containers, system DNS autodetection is typically skipped. If you still want to include system DNS servers from the host you can override the default command as shown above.
