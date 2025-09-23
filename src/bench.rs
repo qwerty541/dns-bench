@@ -347,33 +347,21 @@ impl BenchmarkRunner {
             .collect::<Vec<TabledResultEntry>>();
         let mut table = Table::new(tabled_result_entries.clone());
 
-        if self.config.style == Style::Empty {
-            table.with(tabled_settings::Style::empty());
-        } else if self.config.style == Style::Blank {
-            table.with(tabled_settings::Style::blank());
-        } else if self.config.style == Style::Ascii {
-            table.with(tabled_settings::Style::ascii());
-        } else if self.config.style == Style::Psql {
-            table.with(tabled_settings::Style::psql());
-        } else if self.config.style == Style::Markdown {
-            table.with(tabled_settings::Style::markdown());
-        } else if self.config.style == Style::Modern {
-            table.with(tabled_settings::Style::modern());
-        } else if self.config.style == Style::Sharp {
-            table.with(tabled_settings::Style::sharp());
-        } else if self.config.style == Style::Rounded {
-            table.with(tabled_settings::Style::rounded());
-        } else if self.config.style == Style::ModernRounded {
-            table.with(tabled_settings::Style::modern_rounded());
-        } else if self.config.style == Style::Extended {
-            table.with(tabled_settings::Style::extended());
-        } else if self.config.style == Style::Dots {
-            table.with(tabled_settings::Style::dots());
-        } else if self.config.style == Style::ReStructuredText {
-            table.with(tabled_settings::Style::re_structured_text());
-        } else if self.config.style == Style::AsciiRounded {
-            table.with(tabled_settings::Style::ascii_rounded());
-        }
+        match self.config.style {
+            Style::Empty => table.with(tabled_settings::Style::empty()),
+            Style::Blank => table.with(tabled_settings::Style::blank()),
+            Style::Ascii => table.with(tabled_settings::Style::ascii()),
+            Style::Psql => table.with(tabled_settings::Style::psql()),
+            Style::Markdown => table.with(tabled_settings::Style::markdown()),
+            Style::Modern => table.with(tabled_settings::Style::modern()),
+            Style::Sharp => table.with(tabled_settings::Style::sharp()),
+            Style::Rounded => table.with(tabled_settings::Style::rounded()),
+            Style::ModernRounded => table.with(tabled_settings::Style::modern_rounded()),
+            Style::Extended => table.with(tabled_settings::Style::extended()),
+            Style::Dots => table.with(tabled_settings::Style::dots()),
+            Style::ReStructuredText => table.with(tabled_settings::Style::re_structured_text()),
+            Style::AsciiRounded => table.with(tabled_settings::Style::ascii_rounded()),
+        };
 
         for (i, entry) in tabled_result_entries.iter().enumerate() {
             table.with(
