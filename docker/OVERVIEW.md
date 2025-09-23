@@ -109,7 +109,7 @@ docker run --rm -it --name dns-bench \
   /bin/bash -c "dns-bench --format xml"
 
 # CSV (save to a file on the host)
-docker run --rm -it --name dns-bench \
+docker run --rm --name dns-bench \
   qwerty541/dns-bench:latest \
   /bin/bash -c "dns-bench --format csv" \
   > results.csv
