@@ -7,6 +7,16 @@ A fast, cross-platform DNS benchmarking CLI. This image runs the `dns-bench` bin
 - Releases: https://github.com/qwerty541/dns-bench/releases
 - Tags on Docker Hub: https://hub.docker.com/r/qwerty541/dns-bench/tags
 
+## Preview
+
+### Image
+
+<img src="https://raw.githubusercontent.com/qwerty541/dns-bench/master/docs/assets/dockerhub-preview.png" width="100%" alt="Preview image" />
+
+### Animation
+
+<img src="https://raw.githubusercontent.com/qwerty541/dns-bench/master/docs/assets/dockerhub-preview.gif" width="100%" alt="Preview animation" />
+
 ## Quick start
 
 Pull the image:
