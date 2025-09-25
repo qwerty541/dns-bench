@@ -48,24 +48,24 @@ jobs:
       - name: Test image on linux/amd64
         run: |
           docker pull --platform linux/amd64 ${{ vars.DOCKER_USERNAME }}/dns-bench:latest
-          docker run --rm --platform linux/amd64 ${{ vars.DOCKER_USERNAME }}/dns-bench:latest /bin/bash -c "dns-bench --timeout 1"
+          docker run --rm --platform linux/amd64 ${{ vars.DOCKER_USERNAME }}/dns-bench:latest /bin/sh -c "dns-bench --timeout 1"
       - name: Test image on linux/arm64/v8
         run: |
           docker pull --platform linux/arm64/v8 ${{ vars.DOCKER_USERNAME }}/dns-bench:latest
-          docker run --rm --platform linux/arm64/v8 ${{ vars.DOCKER_USERNAME }}/dns-bench:latest /bin/bash -c "dns-bench --timeout 1"
+          docker run --rm --platform linux/arm64/v8 ${{ vars.DOCKER_USERNAME }}/dns-bench:latest /bin/sh -c "dns-bench --timeout 1"
       - name: Test image on linux/arm/v7
         run: |
           docker pull --platform linux/arm/v7 ${{ vars.DOCKER_USERNAME }}/dns-bench:latest
-          docker run --rm --platform linux/arm/v7 ${{ vars.DOCKER_USERNAME }}/dns-bench:latest /bin/bash -c "dns-bench --timeout 1"
+          docker run --rm --platform linux/arm/v7 ${{ vars.DOCKER_USERNAME }}/dns-bench:latest /bin/sh -c "dns-bench --timeout 1"
       - name: Test image on linux/386
         run: |
           docker pull --platform linux/386 ${{ vars.DOCKER_USERNAME }}/dns-bench:latest
-          docker run --rm --platform linux/386 ${{ vars.DOCKER_USERNAME }}/dns-bench:latest /bin/bash -c "dns-bench --timeout 1"
+          docker run --rm --platform linux/386 ${{ vars.DOCKER_USERNAME }}/dns-bench:latest /bin/sh -c "dns-bench --timeout 1"
       - name: Test image on linux/s390x
         run: |
           docker pull --platform linux/s390x ${{ vars.DOCKER_USERNAME }}/dns-bench:latest
-          docker run --rm --platform linux/s390x ${{ vars.DOCKER_USERNAME }}/dns-bench:latest /bin/bash -c "dns-bench --timeout 1"
+          docker run --rm --platform linux/s390x ${{ vars.DOCKER_USERNAME }}/dns-bench:latest /bin/sh -c "dns-bench --timeout 1"
       - name: Test image on linux/ppc64le
         run: |
           docker pull --platform linux/ppc64le ${{ vars.DOCKER_USERNAME }}/dns-bench:latest
-          docker run --rm --platform linux/ppc64le ${{ vars.DOCKER_USERNAME }}/dns-bench:latest /bin/bash -c "dns-bench --timeout 1"
+          docker run --rm --platform linux/ppc64le ${{ vars.DOCKER_USERNAME }}/dns-bench:latest /bin/sh -c "dns-bench --timeout 1"
