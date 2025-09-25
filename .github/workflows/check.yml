@@ -118,3 +118,23 @@ jobs:
 
       - name: Check msrv
         run: cargo msrv find
+
+  docker_image:
+    name: Docker image build and test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - name: Pull previous image for cache
+        run: docker pull qwerty541/dns-bench:latest || true
+
+      - name: Modify permissions for build and test scripts
+        run: chmod +x ./docker/build.sh ./docker/test-ci.sh
+
+      - name: Build Docker image
+        run: ./docker/build.sh
+
+      - name: Test Docker image
+        run: ./docker/test-ci.sh
