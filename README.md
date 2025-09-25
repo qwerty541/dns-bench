@@ -183,7 +183,7 @@ If you want to pass some options, you can do it like this:
 ```sh
 $ docker run --rm -it --name dns-bench \
   qwerty541/dns-bench:latest \
-  /bin/bash -c "dns-bench --requests 20 --domain microsoft.com --style re-structured-text"
+  /bin/sh -c "dns-bench --requests 20 --domain microsoft.com --style re-structured-text"
 ```
 
 In case you want to use custom servers list, you have to mount the file with custom servers list to the container and pass the path to the file as an argument:
@@ -192,7 +192,7 @@ In case you want to use custom servers list, you have to mount the file with cus
 $ docker run --rm -it --name dns-bench \
   --volume /home/alexandr/projects/dns-bench/examples/ipv4-custom-servers-example.txt:/ipv4-custom-servers-example.txt \
   qwerty541/dns-bench:latest \
-  /bin/bash -c "dns-bench --custom-servers-file /ipv4-custom-servers-example.txt"
+  /bin/sh -c "dns-bench --custom-servers-file /ipv4-custom-servers-example.txt"
 ```
 
 By default, the system servers autodetection feature is disabled in the Docker container. If you want to enable it, you have to run the container with `--network host` option (Linux only):
@@ -201,7 +201,7 @@ By default, the system servers autodetection feature is disabled in the Docker c
 $ docker run --rm -it --name dns-bench \
   --network host \
   qwerty541/dns-bench:latest \
-  /bin/bash -c "dns-bench"
+  /bin/sh -c "dns-bench"
 ```
 
 ### Executable file for Windows
