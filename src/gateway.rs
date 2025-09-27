@@ -23,10 +23,7 @@ fn get_gateway_addr_linux() -> io::Result<IpAddr> {
     {
         Ok(out) if out.status.success() => {
             let text = String::from_utf8_lossy(&out.stdout);
-            match parse_ip_route_default_output(&text) {
-                Ok(ip) => Ok(ip),
-                Err(e) => Err(e),
-            }
+            parse_ip_route_default_output(&text)
         }
         Ok(_) | Err(_) => Err(io::Error::new(io::ErrorKind::NotFound, "Gateway not found")),
     }
