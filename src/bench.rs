@@ -25,6 +25,7 @@ use std::collections;
 use std::net::IpAddr;
 use std::net::Ipv4Addr;
 use std::net::Ipv6Addr;
+use std::net::SocketAddr;
 use std::process;
 use std::sync;
 use std::thread;
@@ -178,7 +179,7 @@ impl BenchmarkRunner {
                             .map(|e| e.socket_addr.ip())
                             .collect::<collections::HashSet<_>>();
                         if !already_present.contains(&gateway_ip) {
-                            let socket_addr = std::net::SocketAddr::new(gateway_ip, 53);
+                            let socket_addr = SocketAddr::new(gateway_ip, 53);
                             let resolver = create_resolver(
                                 socket_addr,
                                 self.config.protocol.into(),
@@ -222,7 +223,7 @@ impl BenchmarkRunner {
                     // Add as "System DNS"
                     let name = "System DNS".to_string();
                     // Use default port 53
-                    let socket_addr = std::net::SocketAddr::new(*sys_ip, 53);
+                    let socket_addr = SocketAddr::new(*sys_ip, 53);
                     entries.push(servers::DnsEntry { name, socket_addr });
                     already_present.insert(*sys_ip);
                 }
