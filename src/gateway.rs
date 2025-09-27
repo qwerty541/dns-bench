@@ -53,7 +53,8 @@ fn parse_proc_net_route_content(content: &str) -> io::Result<IpAddr> {
                 bytes[i] = u8::from_str_radix(&gateway_hex[idx..idx + 2], 16)
                     .map_err(|e| io::Error::new(io::ErrorKind::InvalidData, e.to_string()))?;
             }
-            let ip = Ipv4Addr::new(bytes[3], bytes[2], bytes[1], bytes[0]);
+
+            let ip = Ipv4Addr::from(u32::from_le_bytes(bytes));
 
             return Ok(IpAddr::from(ip));
         }
