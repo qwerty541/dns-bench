@@ -305,6 +305,12 @@ Below is a list of currently supported options.
             <td></td>
             <td></td>
         </tr>
+        <tr>
+            <td><code>--skip-gateway-detection</code></td>
+            <td>Skip auto-detection of default gateway (router) DNS server.</td>
+            <td></td>
+            <td></td>
+        </tr>
     </tbody>
 </table>
 
