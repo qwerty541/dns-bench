@@ -4,7 +4,6 @@ Cloudflare;1.1.1.1:53
 Cloudflare;1.0.0.1:53
 Quad9;9.9.9.9:53
 Quad9;149.112.112.112:53
-Router;192.168.0.1:53
 Control D;76.76.2.0:53
 Control D;76.76.10.0:53
 OpenDNS Home;208.67.222.222:53

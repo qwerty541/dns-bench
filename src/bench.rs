@@ -4,6 +4,8 @@ use crate::args::Style;
 use crate::cli;
 use crate::config;
 use crate::custom;
+use crate::gateway::get_gateway_addr;
+use crate::resolver::create_resolver;
 use crate::result::convert_result_entries_to_csv_string;
 use crate::result::convert_result_entries_to_xml_string;
 use crate::result::CsvResultEntry;
@@ -16,10 +18,8 @@ use crate::result::XmlResultEntry;
 use crate::servers;
 use crate::system::get_system_dns;
 
-use hickory_resolver::config::NameServerConfig;
-use hickory_resolver::config::ResolverConfig;
-use hickory_resolver::config::ResolverOpts;
-use hickory_resolver::Resolver;
+use hickory_resolver::config::LookupIpStrategy;
+use hickory_resolver::config::Protocol;
 use indicatif::MultiProgress;
 use indicatif::ProgressBar;
 use indicatif::ProgressStyle;
@@ -164,14 +164,57 @@ impl BenchmarkRunner {
             },
         };
 
-        // 2. Add system DNS servers if available and not already present
+        // 2. Try to get gateway DNS and add if not already present
+        if !self.config.skip_gateway_detection {
+            match get_gateway_addr() {
+                Ok(gateway_ip) => {
+                    if gateway_ip.is_ipv4() && self.config.name_servers_ip == ArgIpAddr::V4
+                        || gateway_ip.is_ipv6() && self.config.name_servers_ip == ArgIpAddr::V6
+                    {
+                        let already_present = entries
+                            .iter()
+                            .map(|e| e.socket_addr.ip())
+                            .collect::<std::collections::HashSet<_>>();
+                        if !already_present.contains(&gateway_ip) {
+                            let socket_addr = std::net::SocketAddr::new(gateway_ip, 53);
+                            let resolver = create_resolver(
+                                socket_addr,
+                                Protocol::Udp,
+                                200,
+                                LookupIpStrategy::Ipv4Only,
+                            );
+                            // Test if the gateway DNS is responsive by making a simple query
+                            match resolver.lookup_ip("google.com") {
+                                Ok(_) => {
+                                    let name = "Router (Gateway) DNS".to_string();
+                                    entries.push(servers::DnsEntry { name, socket_addr });
+                                }
+                                Err(e) => {
+                                    eprintln!(
+                                        "Gateway DNS at {socket_addr} is not responsive: {e}"
+                                    );
+                                }
+                            }
+                        }
+                    }
+                }
+                Err(e) => {
+                    eprintln!("Failed to detect gateway IP address: {e}");
+                }
+            }
+        }
+
+        // 3. Add system DNS servers if available and not already present
         if let Some(system_ips) = &self.system_dns_ips {
             let mut already_present = entries
                 .iter()
                 .map(|e| e.socket_addr.ip())
                 .collect::<std::collections::HashSet<_>>();
             for sys_ip in system_ips {
-                if !already_present.contains(sys_ip) {
+                if !already_present.contains(sys_ip)
+                    && (sys_ip.is_ipv4() && self.config.name_servers_ip == ArgIpAddr::V4
+                        || sys_ip.is_ipv6() && self.config.name_servers_ip == ArgIpAddr::V6)
+                {
                     // Add as "System DNS"
                     let name = "System DNS".to_string();
                     // Use default port 53
@@ -182,7 +225,7 @@ impl BenchmarkRunner {
             }
         }
 
-        // 3. Store entries
+        // 4. Store entries
         self.dns_entries
             .lock()
             .expect(POISONED_MUTEX_ERR)
@@ -241,19 +284,12 @@ impl BenchmarkRunner {
 
                     for _ in 0..config.requests {
                         // Create a new resolver for each request to avoid caching.
-                        let mut resolver_config = ResolverConfig::new();
-                        resolver_config.add_name_server(NameServerConfig {
-                            socket_addr: dns_entry.socket_addr,
-                            protocol: config.protocol.into(),
-                            tls_dns_name: None,
-                            trust_negative_responses: false,
-                            bind_addr: None,
-                        });
-                        let mut resolver_opts = ResolverOpts::default();
-                        resolver_opts.attempts = 0;
-                        resolver_opts.timeout = Duration::from_secs(config.timeout);
-                        resolver_opts.ip_strategy = config.lookup_ip.into();
-                        let resolver = Resolver::new(resolver_config, resolver_opts).unwrap();
+                        let resolver = create_resolver(
+                            dns_entry.socket_addr,
+                            config.protocol.into(),
+                            config.timeout * 1000_u64,
+                            config.lookup_ip.into(),
+                        );
 
                         // Measure the time it takes to resolve the domain.
                         let start_time = Instant::now();
