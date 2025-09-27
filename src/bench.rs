@@ -18,8 +18,6 @@ use crate::result::XmlResultEntry;
 use crate::servers;
 use crate::system::get_system_dns;
 
-use hickory_resolver::config::LookupIpStrategy;
-use hickory_resolver::config::Protocol;
 use indicatif::MultiProgress;
 use indicatif::ProgressBar;
 use indicatif::ProgressStyle;
@@ -179,9 +177,9 @@ impl BenchmarkRunner {
                             let socket_addr = std::net::SocketAddr::new(gateway_ip, 53);
                             let resolver = create_resolver(
                                 socket_addr,
-                                Protocol::Udp,
+                                self.config.protocol.into(),
                                 200,
-                                LookupIpStrategy::Ipv4Only,
+                                self.config.lookup_ip.into(),
                             );
                             // Test if the gateway DNS is responsive by making a simple query
                             match resolver.lookup_ip("google.com") {
