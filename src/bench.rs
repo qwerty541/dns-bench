@@ -33,6 +33,8 @@ use std::time::Instant;
 use tabled::settings as tabled_settings;
 use tabled::Table;
 
+const PROGRESS_BAR_TICK_INTERVAL_MILLIS: u64 = 50;
+const GATEWAY_RESPONSIVENESS_TEST_TIMEOUT_MILLIS: u64 = 200;
 const POISONED_MUTEX_ERR: &str = "Poisoned mutex error";
 
 /// The main application.
@@ -178,7 +180,7 @@ impl BenchmarkRunner {
                             let resolver = create_resolver(
                                 socket_addr,
                                 self.config.protocol.into(),
-                                200,
+                                GATEWAY_RESPONSIVENESS_TEST_TIMEOUT_MILLIS,
                                 self.config.lookup_ip.into(),
                             );
                             // Test if the gateway DNS is responsive by making a simple query
@@ -271,7 +273,9 @@ impl BenchmarkRunner {
                 if let Some(dns_entry) = dns_entry {
                     let progress_bar =
                         multi_progress.add(Self::init_progress_bar(config.requests as u64));
-                    progress_bar.enable_steady_tick(Duration::from_millis(50));
+                    progress_bar.enable_steady_tick(Duration::from_millis(
+                        PROGRESS_BAR_TICK_INTERVAL_MILLIS,
+                    ));
                     progress_bar.set_message(format!(
                         "{} ({})",
                         dns_entry.name,
