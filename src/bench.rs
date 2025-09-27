@@ -176,7 +176,7 @@ impl BenchmarkRunner {
                         let already_present = entries
                             .iter()
                             .map(|e| e.socket_addr.ip())
-                            .collect::<std::collections::HashSet<_>>();
+                            .collect::<collections::HashSet<_>>();
                         if !already_present.contains(&gateway_ip) {
                             let socket_addr = std::net::SocketAddr::new(gateway_ip, 53);
                             let resolver = create_resolver(
@@ -211,7 +211,7 @@ impl BenchmarkRunner {
             let mut already_present = entries
                 .iter()
                 .map(|e| e.socket_addr.ip())
-                .collect::<std::collections::HashSet<_>>();
+                .collect::<collections::HashSet<_>>();
             for sys_ip in system_ips {
                 let is_ip_version_matching = (sys_ip.is_ipv4()
                     && self.config.name_servers_ip == ArgIpAddr::V4)
