@@ -168,9 +168,11 @@ impl BenchmarkRunner {
         if !self.config.skip_gateway_detection {
             match get_gateway_addr() {
                 Ok(gateway_ip) => {
-                    if (gateway_ip.is_ipv4() && self.config.name_servers_ip == ArgIpAddr::V4)
-                        || (gateway_ip.is_ipv6() && self.config.name_servers_ip == ArgIpAddr::V6)
-                    {
+                    let is_ip_version_matching = (gateway_ip.is_ipv4()
+                        && self.config.name_servers_ip == ArgIpAddr::V4)
+                        || (gateway_ip.is_ipv6() && self.config.name_servers_ip == ArgIpAddr::V6);
+
+                    if is_ip_version_matching {
                         let already_present = entries
                             .iter()
                             .map(|e| e.socket_addr.ip())
@@ -211,10 +213,12 @@ impl BenchmarkRunner {
                 .map(|e| e.socket_addr.ip())
                 .collect::<std::collections::HashSet<_>>();
             for sys_ip in system_ips {
-                if !already_present.contains(sys_ip)
-                    && ((sys_ip.is_ipv4() && self.config.name_servers_ip == ArgIpAddr::V4)
-                        || (sys_ip.is_ipv6() && self.config.name_servers_ip == ArgIpAddr::V6))
-                {
+                let is_ip_version_matching = (sys_ip.is_ipv4()
+                    && self.config.name_servers_ip == ArgIpAddr::V4)
+                    || (sys_ip.is_ipv6() && self.config.name_servers_ip == ArgIpAddr::V6);
+                let is_already_present = already_present.contains(sys_ip);
+
+                if !is_already_present && is_ip_version_matching {
                     // Add as "System DNS"
                     let name = "System DNS".to_string();
                     // Use default port 53
