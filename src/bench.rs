@@ -168,8 +168,8 @@ impl BenchmarkRunner {
         if !self.config.skip_gateway_detection {
             match get_gateway_addr() {
                 Ok(gateway_ip) => {
-                    if gateway_ip.is_ipv4() && self.config.name_servers_ip == ArgIpAddr::V4
-                        || gateway_ip.is_ipv6() && self.config.name_servers_ip == ArgIpAddr::V6
+                    if (gateway_ip.is_ipv4() && self.config.name_servers_ip == ArgIpAddr::V4)
+                        || (gateway_ip.is_ipv6() && self.config.name_servers_ip == ArgIpAddr::V6)
                     {
                         let already_present = entries
                             .iter()
@@ -212,8 +212,8 @@ impl BenchmarkRunner {
                 .collect::<std::collections::HashSet<_>>();
             for sys_ip in system_ips {
                 if !already_present.contains(sys_ip)
-                    && (sys_ip.is_ipv4() && self.config.name_servers_ip == ArgIpAddr::V4
-                        || sys_ip.is_ipv6() && self.config.name_servers_ip == ArgIpAddr::V6)
+                    && ((sys_ip.is_ipv4() && self.config.name_servers_ip == ArgIpAddr::V4)
+                        || (sys_ip.is_ipv6() && self.config.name_servers_ip == ArgIpAddr::V6))
                 {
                     // Add as "System DNS"
                     let name = "System DNS".to_string();
