@@ -49,16 +49,16 @@ fn parse_proc_net_route_content(content: &str) -> io::Result<IpAddr> {
             if gateway_hex.len() != 8 {
                 return Err(io::Error::from(io::ErrorKind::InvalidData));
             }
-            let b0 = u8::from_str_radix(&gateway_hex[0..2], 16)
-                .map_err(|e| io::Error::new(io::ErrorKind::InvalidData, e.to_string()))?;
-            let b1 = u8::from_str_radix(&gateway_hex[2..4], 16)
-                .map_err(|e| io::Error::new(io::ErrorKind::InvalidData, e.to_string()))?;
-            let b2 = u8::from_str_radix(&gateway_hex[4..6], 16)
-                .map_err(|e| io::Error::new(io::ErrorKind::InvalidData, e.to_string()))?;
-            let b3 = u8::from_str_radix(&gateway_hex[6..8], 16)
-                .map_err(|e| io::Error::new(io::ErrorKind::InvalidData, e.to_string()))?;
 
-            return Ok(IpAddr::from(Ipv4Addr::new(b3, b2, b1, b0)));
+            // /proc/net/route stores the gateway in little-endian order.
+            let mut bytes = [0u8; 4];
+            for (i, idx) in (0..8).step_by(2).enumerate() {
+                bytes[i] = u8::from_str_radix(&gateway_hex[idx..idx + 2], 16)
+                    .map_err(|e| io::Error::new(io::ErrorKind::InvalidData, e.to_string()))?;
+            }
+            let ip = Ipv4Addr::new(bytes[3], bytes[2], bytes[1], bytes[0]);
+
+            return Ok(IpAddr::from(ip));
         }
     }
 
