@@ -5,9 +5,13 @@ mod cli;
 mod commands;
 mod config;
 mod custom;
+mod gateway;
+mod resolver;
 mod result;
 mod servers;
 mod system;
+#[cfg(test)]
+mod test_utils;
 
 use app::Application;
 use clap::Parser;

@@ -31,6 +31,8 @@ pub struct DnsBenchConfig {
     pub format: Format,
     #[serde(default)]
     pub skip_system_servers: bool,
+    #[serde(default)]
+    pub skip_gateway_detection: bool,
     // WARNING! Addition of the serde default attribute for all new fields is important to ensure backward compatibility
     // with older configuration files that may not have these fields defined.
 }
@@ -49,6 +51,7 @@ impl Default for DnsBenchConfig {
             custom_servers_file: None,
             format: Format::HumanReadable,
             skip_system_servers: false,
+            skip_gateway_detection: false,
         }
     }
 }
@@ -87,6 +90,9 @@ impl DnsBenchConfig {
         }
         if args.skip_system_servers {
             self.skip_system_servers = true;
+        }
+        if args.skip_gateway_detection {
+            self.skip_gateway_detection = true;
         }
     }
 

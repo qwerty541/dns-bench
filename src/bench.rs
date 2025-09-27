@@ -4,6 +4,8 @@ use crate::args::Style;
 use crate::cli;
 use crate::config;
 use crate::custom;
+use crate::gateway::get_gateway_addr;
+use crate::resolver::create_resolver;
 use crate::result::convert_result_entries_to_csv_string;
 use crate::result::convert_result_entries_to_xml_string;
 use crate::result::CsvResultEntry;
@@ -16,10 +18,6 @@ use crate::result::XmlResultEntry;
 use crate::servers;
 use crate::system::get_system_dns;
 
-use hickory_resolver::config::NameServerConfig;
-use hickory_resolver::config::ResolverConfig;
-use hickory_resolver::config::ResolverOpts;
-use hickory_resolver::Resolver;
 use indicatif::MultiProgress;
 use indicatif::ProgressBar;
 use indicatif::ProgressStyle;
@@ -27,6 +25,7 @@ use std::collections;
 use std::net::IpAddr;
 use std::net::Ipv4Addr;
 use std::net::Ipv6Addr;
+use std::net::SocketAddr;
 use std::process;
 use std::sync;
 use std::thread;
@@ -35,6 +34,8 @@ use std::time::Instant;
 use tabled::settings as tabled_settings;
 use tabled::Table;
 
+const PROGRESS_BAR_TICK_INTERVAL_MILLIS: u64 = 50;
+const GATEWAY_RESPONSIVENESS_TEST_TIMEOUT_MILLIS: u64 = 200;
 const POISONED_MUTEX_ERR: &str = "Poisoned mutex error";
 
 /// The main application.
@@ -164,25 +165,72 @@ impl BenchmarkRunner {
             },
         };
 
-        // 2. Add system DNS servers if available and not already present
+        // 2. Try to get gateway DNS and add if not already present
+        if !self.config.skip_gateway_detection {
+            match get_gateway_addr() {
+                Ok(gateway_ip) => {
+                    let is_ip_version_matching = (gateway_ip.is_ipv4()
+                        && self.config.name_servers_ip == ArgIpAddr::V4)
+                        || (gateway_ip.is_ipv6() && self.config.name_servers_ip == ArgIpAddr::V6);
+
+                    if is_ip_version_matching {
+                        let already_present = entries
+                            .iter()
+                            .map(|e| e.socket_addr.ip())
+                            .collect::<collections::HashSet<_>>();
+                        if !already_present.contains(&gateway_ip) {
+                            let socket_addr = SocketAddr::new(gateway_ip, 53);
+                            let resolver = create_resolver(
+                                socket_addr,
+                                self.config.protocol.into(),
+                                GATEWAY_RESPONSIVENESS_TEST_TIMEOUT_MILLIS,
+                                self.config.lookup_ip.into(),
+                            );
+                            // Test if the gateway DNS is responsive by making a simple query
+                            match resolver.lookup_ip("google.com") {
+                                Ok(_) => {
+                                    let name = "Router (Gateway) DNS".to_string();
+                                    entries.push(servers::DnsEntry { name, socket_addr });
+                                }
+                                Err(e) => {
+                                    eprintln!(
+                                        "Gateway DNS at {socket_addr} is not responsive: {e}"
+                                    );
+                                }
+                            }
+                        }
+                    }
+                }
+                Err(e) => {
+                    eprintln!("Failed to detect gateway IP address: {e}");
+                }
+            }
+        }
+
+        // 3. Add system DNS servers if available and not already present
         if let Some(system_ips) = &self.system_dns_ips {
             let mut already_present = entries
                 .iter()
                 .map(|e| e.socket_addr.ip())
-                .collect::<std::collections::HashSet<_>>();
+                .collect::<collections::HashSet<_>>();
             for sys_ip in system_ips {
-                if !already_present.contains(sys_ip) {
+                let is_ip_version_matching = (sys_ip.is_ipv4()
+                    && self.config.name_servers_ip == ArgIpAddr::V4)
+                    || (sys_ip.is_ipv6() && self.config.name_servers_ip == ArgIpAddr::V6);
+                let is_already_present = already_present.contains(sys_ip);
+
+                if !is_already_present && is_ip_version_matching {
                     // Add as "System DNS"
                     let name = "System DNS".to_string();
                     // Use default port 53
-                    let socket_addr = std::net::SocketAddr::new(*sys_ip, 53);
+                    let socket_addr = SocketAddr::new(*sys_ip, 53);
                     entries.push(servers::DnsEntry { name, socket_addr });
                     already_present.insert(*sys_ip);
                 }
             }
         }
 
-        // 3. Store entries
+        // 4. Store entries
         self.dns_entries
             .lock()
             .expect(POISONED_MUTEX_ERR)
@@ -230,7 +278,9 @@ impl BenchmarkRunner {
                 if let Some(dns_entry) = dns_entry {
                     let progress_bar =
                         multi_progress.add(Self::init_progress_bar(config.requests as u64));
-                    progress_bar.enable_steady_tick(Duration::from_millis(50));
+                    progress_bar.enable_steady_tick(Duration::from_millis(
+                        PROGRESS_BAR_TICK_INTERVAL_MILLIS,
+                    ));
                     progress_bar.set_message(format!(
                         "{} ({})",
                         dns_entry.name,
@@ -241,19 +291,12 @@ impl BenchmarkRunner {
 
                     for _ in 0..config.requests {
                         // Create a new resolver for each request to avoid caching.
-                        let mut resolver_config = ResolverConfig::new();
-                        resolver_config.add_name_server(NameServerConfig {
-                            socket_addr: dns_entry.socket_addr,
-                            protocol: config.protocol.into(),
-                            tls_dns_name: None,
-                            trust_negative_responses: false,
-                            bind_addr: None,
-                        });
-                        let mut resolver_opts = ResolverOpts::default();
-                        resolver_opts.attempts = 0;
-                        resolver_opts.timeout = Duration::from_secs(config.timeout);
-                        resolver_opts.ip_strategy = config.lookup_ip.into();
-                        let resolver = Resolver::new(resolver_config, resolver_opts).unwrap();
+                        let resolver = create_resolver(
+                            dns_entry.socket_addr,
+                            config.protocol.into(),
+                            config.timeout * 1000_u64,
+                            config.lookup_ip.into(),
+                        );
 
                         // Measure the time it takes to resolve the domain.
                         let start_time = Instant::now();

@@ -25,7 +25,7 @@ Pull the image:
 docker pull qwerty541/dns-bench:latest
 ```
 
-Run an interactive benchmark (default command runs `dns-bench --skip-system-servers`):
+Run an interactive benchmark (default command runs `dns-bench --skip-system-servers --skip-gateway-detection`):
 
 ```sh
 docker run --rm -it --name dns-bench qwerty541/dns-bench:latest

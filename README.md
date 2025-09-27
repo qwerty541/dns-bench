@@ -42,7 +42,7 @@
 
 ## Description
 
-This repository provides a DNS benchmarking command-line tool written in Rust. It iterates through a built-in list of public DNS servers as well as automatically detected system DNS servers, measures their response times, and prints a table of sorted results in the console. You can use it to find the fastest DNS server for your location, improving your internet browsing experience. A preview, list of features, and the list of built-in DNS servers are provided below.
+This repository provides a DNS benchmarking command-line tool written in Rust. It iterates through a built-in list of public DNS servers, automatically detected system DNS servers and (when available) your default gateway (router) DNS endpoint, measures their response times, and prints a table of sorted results in the console. You can use it to find the fastest DNS server for your location, improving your internet browsing experience. A preview, list of features, and the list of built-in DNS servers are provided below.
 
 ### Preview
 
@@ -62,6 +62,8 @@ This repository provides a DNS benchmarking command-line tool written in Rust. I
   Includes popular providers like Google, Cloudflare, Quad9, and more.
 - **Automatic detection of system DNS servers**  
   Detects and highlights your system's configured DNS servers (Linux, Windows, macOS).
+- **Automatic detection of default gateway (router) DNS**  
+  Attempts to detect your LAN's default gateway and include it if it responds to DNS queries.
 - **Multi-threaded benchmarking**  
   Runs benchmarks in parallel for faster results.
 
@@ -300,6 +302,12 @@ Below is a list of currently supported options.
         <tr>
             <td><code>--skip-system-servers</code></td>
             <td>Skip auto-detection of system DNS servers.</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><code>--skip-gateway-detection</code></td>
+            <td>Skip auto-detection of default gateway (router) DNS server.</td>
             <td></td>
             <td></td>
         </tr>
