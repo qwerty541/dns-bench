@@ -83,6 +83,9 @@ pub struct SharedArgs {
     /// Skip autodetection of system DNS servers.
     #[arg(long)]
     pub skip_system_servers: bool,
+    /// Skip autodetection of gateway IP address.
+    #[arg(long)]
+    pub skip_gateway_detection: bool,
 }
 
 #[derive(Debug, Clone, Subcommand)]

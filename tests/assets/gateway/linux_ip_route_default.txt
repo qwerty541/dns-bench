@@ -1,0 +1,2 @@
+default via 192.168.0.1 dev enp1s0 proto dhcp metric 100 
+default via 192.168.0.1 dev wlp0s20f3 proto dhcp metric 600
