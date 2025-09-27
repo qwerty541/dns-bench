@@ -16,8 +16,7 @@ include = [
     "Cargo.*",
     "README.md",
     "LICENSE-*",
-    "CHANGELOG.md",
-    "README.md"
+    "CHANGELOG.md"
 ]
 
 [dependencies]
