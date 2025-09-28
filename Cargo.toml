@@ -1,6 +1,6 @@
 [package]
 name = "dns-bench"
-version = "0.11.0"
+version = "0.12.0"
 edition = "2021"
 authors = ["Alexandr Garbuzov <qwerty541zxc@gmail.com>"]
 description = "Find the fastest DNS in your location to improve internet browsing experience."
@@ -11,14 +11,7 @@ repository = "https://github.com/qwerty541/dns-bench"
 homepage = "https://github.com/qwerty541/dns-bench"
 readme = "README.md"
 rust-version = "1.82.0"
-include = [
-    "src/**/*",
-    "Cargo.*",
-    "README.md",
-    "LICENSE-*",
-    "CHANGELOG.md",
-    "README.md"
-]
+include = ["src/**/*", "Cargo.*", "README.md", "LICENSE-*", "CHANGELOG.md"]
 
 [dependencies]
 clap = { version = "4.5.47", features = ["std", "derive", "cargo"] }

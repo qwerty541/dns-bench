@@ -1,0 +1,8 @@
+   route to: default
+destination: default
+       mask: default
+    gateway: 192.168.0.1
+  interface: en0
+      flags: <UP,GATEWAY,DONE,STATIC>
+ recvpipe 0, sendpipe 0, ssthresh 0, rtt 0.000 ms, rttvar 0.000 ms
+     mtu 1500, expire 0

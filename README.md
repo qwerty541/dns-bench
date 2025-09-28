@@ -42,7 +42,7 @@
 
 ## Description
 
-This repository provides a DNS benchmarking command-line tool written in Rust. It iterates through a built-in list of public DNS servers as well as automatically detected system DNS servers, measures their response times, and prints a table of sorted results in the console. You can use it to find the fastest DNS server for your location, improving your internet browsing experience. A preview, list of features, and the list of built-in DNS servers are provided below.
+This repository provides a DNS benchmarking command-line tool written in Rust. It iterates through a built-in list of public DNS servers, automatically detected system DNS servers and (when available) your default gateway (router) DNS endpoint, measures their response times, and prints a table of sorted results in the console. You can use it to find the fastest DNS server for your location, improving your internet browsing experience. A preview, list of features, and the list of built-in DNS servers are provided below.
 
 ### Preview
 
@@ -62,6 +62,8 @@ This repository provides a DNS benchmarking command-line tool written in Rust. I
   Includes popular providers like Google, Cloudflare, Quad9, and more.
 - **Automatic detection of system DNS servers**  
   Detects and highlights your system's configured DNS servers (Linux, Windows, macOS).
+- **Automatic detection of default gateway (router) DNS**  
+  Attempts to detect your LAN's default gateway and include it if it responds to DNS queries.
 - **Multi-threaded benchmarking**  
   Runs benchmarks in parallel for faster results.
 
@@ -97,31 +99,37 @@ This repository provides a DNS benchmarking command-line tool written in Rust. I
 <table>
 <tr><td>
 
-- Google Public DNS
-- Cloudflare
-- Quad9
-- ControlD
-- OpenDNS
-- CleanBrowsing
-- AdGuard DNS
+| |
+| --- |
+| Google Public DNS |
+| Cloudflare |
+| Quad9 |
+| ControlD |
+| OpenDNS |
+| CleanBrowsing |
+| AdGuard DNS |
 
 </td><td>
 
-- Comodo Secure DNS
-- Level3
-- Verisign
-- DNS.WATCH
-- Norton ConnectSafe
-- SafeDNS
-- NextDNS
+| |
+| --- |
+| Comodo Secure DNS |
+| Level3 |
+| Verisign |
+| DNS.WATCH |
+| Norton ConnectSafe |
+| SafeDNS |
+| NextDNS |
 
 </td><td>
 
-- Dyn
-- Hurricane Electric
-- Surfshark DNS
-- SafeServe
-- Vercara UltraDNS Public
+| |
+| --- |
+| Dyn |
+| Hurricane Electric |
+| Surfshark DNS |
+| SafeServe |
+| Vercara UltraDNS Public |
 
 </td></tr>
 </table>
@@ -153,7 +161,7 @@ $ dns-bench [OPTIONS]
 Run the following command and wait until the crate is compiled:
 
 ```sh
-$ cargo install --git https://github.com/qwerty541/dns-bench.git --tag v0.11.0 dns-bench
+$ cargo install --git https://github.com/qwerty541/dns-bench.git --tag v0.12.0 dns-bench
 ```
 
 Also you can remove tag option to install the latest development version.
@@ -181,13 +189,18 @@ $ docker run --rm -it --name dns-bench qwerty541/dns-bench:latest
 If you want to pass some options, you can do it like this:
 
 ```sh
-$ docker run --rm -it --name dns-bench qwerty541/dns-bench:latest /bin/bash -c "dns-bench --requests 20 --domain microsoft.com --style re-structured-text"
+$ docker run --rm -it --name dns-bench \
+  qwerty541/dns-bench:latest \
+  --requests 50 --domain microsoft.com --style re-structured-text
 ```
 
 In case you want to use custom servers list, you have to mount the file with custom servers list to the container and pass the path to the file as an argument:
 
 ```sh
-$ docker run --rm -it --name dns-bench --volume /home/alexandr/projects/dns-bench/examples/ipv4-custom-servers-example.txt:/ipv4-custom-servers-example.txt qwerty541/dns-bench:latest /bin/bash -c "dns-bench --custom-servers-file /ipv4-custom-servers-example.txt"
+$ docker run --rm -it --name dns-bench \
+  --volume /path/to/ipv4-custom-servers.txt:/servers.txt:ro \
+  qwerty541/dns-bench:latest \
+  --custom-servers-file /servers.txt
 ```
 
 ### Executable file for Windows
@@ -289,6 +302,12 @@ Below is a list of currently supported options.
             <td></td>
             <td></td>
         </tr>
+        <tr>
+            <td><code>--skip-gateway-detection</code></td>
+            <td>Skip auto-detection of default gateway (router) DNS server.</td>
+            <td></td>
+            <td></td>
+        </tr>
     </tbody>
 </table>
 
@@ -305,6 +324,10 @@ Below is a list of currently supported subcommands.
         <tr>
             <td><code>dns-bench config init</code></td>
             <td>Create a config file with default values if it does not exist.</td>
+        </tr>
+        <tr>
+            <td><code>dns-bench config list</code></td>
+            <td>List current config values.</td>
         </tr>
         <tr>
             <td><code>dns-bench config set [--key value ...]</code></td>
