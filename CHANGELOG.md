@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Added
+
+- Implemented automatic detection of gateway (router) address on Linux, Windows and macOS platforms. It will be included in the benchmark in case this address is a DNS provider.
+- Added `--skip-gateway-detection` option to skip the auto-detection of gateway (router) address.
+- Implemented `dns-bench config list` subcommand to list the current configurations without necessity to run the benchmark or open the file.
+
+### Changed
+
+- Changed base image of Docker container from [rust](https://hub.docker.com/_/rust) to [alpine](https://hub.docker.com/_/alpine) which results in significant reduction of the image size (~650 MiB => ~15 MiB) by [@February30th](https://github.com/February30th) in https://github.com/qwerty541/dns-bench/pull/301.
+- Docker container now uses a `dns-bench` binary entrypoint, so you can pass arguments directly to `docker run` command without necessity to specify `/bin/sh -c "dns-bench ..."`.
+
+### Documentation
+
+- Completely reworked the Docker Hub overview to match the style and follow the best practices of this platform.
+- Updated documentation according to all the changes and newly added features.
+
+### Dependencies
+
+- Updated `clap` from 4.5.41 to 4.5.47
+- Updated `toml` from 0.9.2 to 0.9.5
+- Updated `quick-xml` from 0.38.0 to 0.38.3
+- Updated `serde` from 1.0.219 to 1.0.223
+- Updated `serde_json` from 1.0.141 to 1.0.145
+- Updated `tokio` from 1.32.0 to 1.47.1
+
 ## v0.11.0 (04.08.2025)
 
 ### Added
