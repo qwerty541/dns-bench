@@ -118,7 +118,7 @@ mod tests {
 
     #[test]
     fn test_parse_resolv_conf_content() {
-        let content = load_test_asset!("/system/resolv.conf");
+        let content = load_test_asset!("/system/linux_resolv.conf");
         let servers = parse_resolv_conf_content(content);
         assert_eq!(servers.len(), 2);
         assert_eq!(servers[0], IpAddr::from_str("8.8.8.8").unwrap());
@@ -127,7 +127,7 @@ mod tests {
 
     #[test]
     fn test_parse_scutil_output() {
-        let text = load_test_asset!("/system/scutil_dns.txt");
+        let text = load_test_asset!("/system/mac_scutil_dns.txt");
         let servers = parse_scutil_output(text);
         assert_eq!(servers.len(), 3);
         assert_eq!(servers[0], IpAddr::from_str("8.8.8.8").unwrap());
@@ -137,7 +137,7 @@ mod tests {
 
     #[test]
     fn test_parse_ipconfig_output() {
-        let text = load_test_asset!("/system/ipconfig_all.txt");
+        let text = load_test_asset!("/system/win_ipconfig_all.txt");
         let servers = parse_ipconfig_output(text);
         assert_eq!(servers.len(), 2);
         assert_eq!(servers[0], IpAddr::from_str("8.8.8.8").unwrap());
@@ -146,7 +146,7 @@ mod tests {
 
     #[test]
     fn test_parse_ipconfig_output_ru() {
-        let text = load_test_asset!("/system/ipconfig_all_ru.txt");
+        let text = load_test_asset!("/system/win_ipconfig_all_ru.txt");
         let servers = parse_ipconfig_output(text);
         assert_eq!(servers.len(), 2);
         assert_eq!(servers[0], IpAddr::from_str("8.8.8.8").unwrap());
