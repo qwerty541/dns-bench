@@ -326,6 +326,10 @@ Below is a list of currently supported subcommands.
             <td>Create a config file with default values if it does not exist.</td>
         </tr>
         <tr>
+            <td><code>dns-bench config list</code></td>
+            <td>List current config values.</td>
+        </tr>
+        <tr>
             <td><code>dns-bench config set [--key value ...]</code></td>
             <td>Set one or more config values. Supports all options listed above.</td>
         </tr>

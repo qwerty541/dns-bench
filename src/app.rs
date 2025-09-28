@@ -10,6 +10,7 @@ impl Application {
     pub fn run(cli: Cli) -> Result<(), Box<dyn std::error::Error>> {
         match cli.command {
             Some(Commands::Config(ConfigCommand::Init(_))) => ConfigInitCommand.run(()),
+            Some(Commands::Config(ConfigCommand::List(_))) => ConfigListCommand.run(()),
             Some(Commands::Config(ConfigCommand::Set(set_args))) => ConfigSetCommand.run(set_args),
             Some(Commands::Config(ConfigCommand::Reset(_))) => ConfigResetCommand.run(()),
             Some(Commands::Config(ConfigCommand::Delete(_))) => ConfigDeleteCommand.run(()),
