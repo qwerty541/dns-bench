@@ -96,7 +96,7 @@ This repository provides a DNS benchmarking command-line tool written in Rust. I
 
 ### List of built-in DNS servers
 
-<table width="100%">
+<table>
 <tr><td>
 
 | |
