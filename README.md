@@ -197,15 +197,6 @@ $ docker run --rm -it --name dns-bench \
   /bin/sh -c "dns-bench --custom-servers-file /servers.txt"
 ```
 
-By default, the system servers autodetection feature is disabled in the Docker container. If you want to enable it, you have to run the container with `--network host` option (Linux only):
-
-```sh
-$ docker run --rm -it --name dns-bench \
-  --network host \
-  qwerty541/dns-bench:latest \
-  /bin/sh -c "dns-bench"
-```
-
 ### Executable file for Windows
 
 You can download the latest Windows executable file from the [releases page](https://github.com/qwerty541/dns-bench/releases/latest).
