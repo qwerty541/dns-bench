@@ -157,65 +157,61 @@ impl DnsBenchConfig {
 
 impl fmt::Display for DnsBenchConfig {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let mut result = String::new();
-
-        result.push_str(&format!("domain: {}\n", self.domain));
-        result.push_str(&format!("threads: {}\n", self.threads));
-        result.push_str(&format!("requests: {}\n", self.requests));
-        result.push_str(&format!("timeout: {}\n", self.timeout));
-        result.push_str(&format!(
-            "protocol: {}\n",
+        writeln!(f, "domain: {}", self.domain)?;
+        writeln!(f, "threads: {}", self.threads)?;
+        writeln!(f, "requests: {}", self.requests)?;
+        writeln!(f, "timeout: {}", self.timeout)?;
+        writeln!(
+            f,
+            "protocol: {}",
             self.protocol
                 .to_possible_value()
                 .expect("Failed to get protocol name")
                 .get_name()
-        ));
-        result.push_str(&format!(
-            "name-servers-ip: {}\n",
+        )?;
+        writeln!(
+            f,
+            "name-servers-ip: {}",
             self.name_servers_ip
                 .to_possible_value()
                 .expect("Failed to get name servers IP")
                 .get_name()
-        ));
-        result.push_str(&format!(
-            "lookup-ip: {}\n",
+        )?;
+        writeln!(
+            f,
+            "lookup-ip: {}",
             self.lookup_ip
                 .to_possible_value()
                 .expect("Failed to get lookup IP")
                 .get_name()
-        ));
-        result.push_str(&format!(
-            "style: {}\n",
+        )?;
+        writeln!(
+            f,
+            "style: {}",
             self.style
                 .to_possible_value()
                 .expect("Failed to get style")
                 .get_name()
-        ));
+        )?;
+
         if let Some(custom_servers_file) = &self.custom_servers_file {
-            result.push_str(&format!(
-                "custom-servers-file: {}\n",
-                custom_servers_file.display()
-            ));
+            writeln!(f, "custom-servers-file: {}", custom_servers_file.display())?;
         } else {
-            result.push_str("custom-servers-file: null\n"); // Explicitly show null if not set
+            writeln!(f, "custom-servers-file: null")?; // Explicitly show null if not set
         }
-        result.push_str(&format!(
-            "format: {}\n",
+
+        writeln!(
+            f,
+            "format: {}",
             self.format
                 .to_possible_value()
                 .expect("Failed to get format")
                 .get_name()
-        ));
-        result.push_str(&format!(
-            "skip-system-servers: {}\n",
-            self.skip_system_servers
-        ));
-        result.push_str(&format!(
-            "skip-gateway-detection: {}\n",
-            self.skip_gateway_detection
-        ));
+        )?;
+        writeln!(f, "skip-system-servers: {}", self.skip_system_servers)?;
+        writeln!(f, "skip-gateway-detection: {}", self.skip_gateway_detection)?;
 
-        write!(f, "{}", result)
+        Ok(())
     }
 }
 
