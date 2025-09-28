@@ -149,7 +149,7 @@ impl DnsBenchConfig {
     pub fn delete_config_file() -> Result<(), Box<dyn Error>> {
         let path = Self::config_file_path()?;
         if path.exists() {
-            std::fs::remove_file(path)?;
+            fs::remove_file(path)?;
         }
         Ok(())
     }
