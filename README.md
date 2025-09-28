@@ -192,9 +192,9 @@ In case you want to use custom servers list, you have to mount the file with cus
 
 ```sh
 $ docker run --rm -it --name dns-bench \
-  --volume /home/alexandr/projects/dns-bench/examples/ipv4-custom-servers-example.txt:/ipv4-custom-servers-example.txt \
+  --volume /path/to/ipv4-custom-servers.txt:/servers.txt:ro \
   qwerty541/dns-bench:latest \
-  /bin/sh -c "dns-bench --custom-servers-file /ipv4-custom-servers-example.txt"
+  /bin/sh -c "dns-bench --custom-servers-file /servers.txt"
 ```
 
 ### Executable file for Windows
