@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Implemented automatic detection of gateway (router) address on Linux, Windows and macOS platforms. It will be include in the benchmark in case this address is a DNS provider.
+- Implemented automatic detection of gateway (router) address on Linux, Windows and macOS platforms. It will be included in the benchmark in case this address is a DNS provider.
 - Added `--skip-gateway-detection` option to skip the auto-detection of gateway (router) address.
 - Implemented `dns-bench config list` subcommand to list the current configurations without necessity to run the benchmark or open the file.
 
