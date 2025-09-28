@@ -83,13 +83,8 @@ docker run --rm -it --name dns-bench \
 - For the most accurate latency measurements on Linux, consider using host networking to minimize NAT overhead:
 
 ```sh
-docker run --rm -it --name dns-bench \
-  --network host \
-  qwerty541/dns-bench:latest \
-  /bin/sh -c "dns-bench"
+docker run --rm -it --name dns-bench --network host qwerty541/dns-bench:latest
 ```
-
-- Inside containers, system DNS autodetection is typically skipped. If you still want to include system DNS servers from the host you can override the default command as shown above.
 
 ## Output formats
 
