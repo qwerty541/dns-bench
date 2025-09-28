@@ -96,34 +96,40 @@ This repository provides a DNS benchmarking command-line tool written in Rust. I
 
 ### List of built-in DNS servers
 
-<table>
+<table width="100%">
 <tr><td>
 
-- Google Public DNS
-- Cloudflare
-- Quad9
-- ControlD
-- OpenDNS
-- CleanBrowsing
-- AdGuard DNS
+| |
+| --- |
+| Google Public DNS |
+| Cloudflare |
+| Quad9 |
+| ControlD |
+| OpenDNS |
+| CleanBrowsing |
+| AdGuard DNS |
 
 </td><td>
 
-- Comodo Secure DNS
-- Level3
-- Verisign
-- DNS.WATCH
-- Norton ConnectSafe
-- SafeDNS
-- NextDNS
+| |
+| --- |
+| Comodo Secure DNS |
+| Level3 |
+| Verisign |
+| DNS.WATCH |
+| Norton ConnectSafe |
+| SafeDNS |
+| NextDNS |
 
 </td><td>
 
-- Dyn
-- Hurricane Electric
-- Surfshark DNS
-- SafeServe
-- Vercara UltraDNS Public
+| |
+| --- |
+| Dyn |
+| Hurricane Electric |
+| Surfshark DNS |
+| SafeServe |
+| Vercara UltraDNS Public |
 
 </td></tr>
 </table>
