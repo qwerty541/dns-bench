@@ -4,6 +4,7 @@ use crate::args::Protocol;
 use crate::args::Style;
 use crate::cli::SharedArgs;
 
+use clap::ValueEnum;
 use directories::UserDirs;
 use std::error::Error;
 use std::fmt;
@@ -151,6 +152,55 @@ impl DnsBenchConfig {
             std::fs::remove_file(path)?;
         }
         Ok(())
+    }
+}
+
+impl fmt::Display for DnsBenchConfig {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let mut result = String::new();
+
+        result.push_str(&format!("domain: {}\n", self.domain));
+        result.push_str(&format!("threads: {}\n", self.threads));
+        result.push_str(&format!("requests: {}\n", self.requests));
+        result.push_str(&format!("timeout: {}\n", self.timeout));
+        result.push_str(&format!(
+            "protocol: {}\n",
+            self.protocol.to_possible_value().unwrap().get_name()
+        ));
+        result.push_str(&format!(
+            "name-servers-ip: {}\n",
+            self.name_servers_ip.to_possible_value().unwrap().get_name()
+        ));
+        result.push_str(&format!(
+            "lookup-ip: {}\n",
+            self.lookup_ip.to_possible_value().unwrap().get_name()
+        ));
+        result.push_str(&format!(
+            "style: {}\n",
+            self.style.to_possible_value().unwrap().get_name()
+        ));
+        if let Some(custom_servers_file) = &self.custom_servers_file {
+            result.push_str(&format!(
+                "custom-servers-file: {}\n",
+                custom_servers_file.display()
+            ));
+        } else {
+            result.push_str("custom-servers-file: null\n"); // Explicitly show null if not set
+        }
+        result.push_str(&format!(
+            "format: {}\n",
+            self.format.to_possible_value().unwrap().get_name()
+        ));
+        result.push_str(&format!(
+            "skip-system-servers: {}\n",
+            self.skip_system_servers
+        ));
+        result.push_str(&format!(
+            "skip-gateway-detection: {}\n",
+            self.skip_gateway_detection
+        ));
+
+        write!(f, "{}", result)
     }
 }
 

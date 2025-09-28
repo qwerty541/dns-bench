@@ -106,6 +106,8 @@ pub enum Commands {
 pub enum ConfigCommand {
     /// Create a config file with default values if it does not exist.
     Init(ConfigInitArgs),
+    /// List current config values.
+    List(ConfigListArgs),
     /// Set one or more config values.
     Set(ConfigSetArgs),
     /// Reset config file to default values.
@@ -130,6 +132,7 @@ macro_rules! empty_command_struct {
 }
 
 empty_command_struct!(ConfigInitArgs);
+empty_command_struct!(ConfigListArgs);
 
 #[derive(Debug, Clone, Args)]
 #[command(
