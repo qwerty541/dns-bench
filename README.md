@@ -191,7 +191,7 @@ If you want to pass some options, you can do it like this:
 ```sh
 $ docker run --rm -it --name dns-bench \
   qwerty541/dns-bench:latest \
-  /bin/sh -c "dns-bench --requests 20 --domain microsoft.com --style re-structured-text"
+  --requests 50 --domain microsoft.com --style re-structured-text
 ```
 
 In case you want to use custom servers list, you have to mount the file with custom servers list to the container and pass the path to the file as an argument:
@@ -200,7 +200,7 @@ In case you want to use custom servers list, you have to mount the file with cus
 $ docker run --rm -it --name dns-bench \
   --volume /path/to/ipv4-custom-servers.txt:/servers.txt:ro \
   qwerty541/dns-bench:latest \
-  /bin/sh -c "dns-bench --custom-servers-file /servers.txt"
+  --custom-servers-file /servers.txt
 ```
 
 ### Executable file for Windows
