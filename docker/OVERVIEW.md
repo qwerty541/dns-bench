@@ -52,8 +52,8 @@ docker run --rm -it --name dns-bench \
 - Custom DNS server list
   - Mount your file into the container and pass its path to `--custom-servers-file`.
   - File format examples:
-    - IPv4: https://github.com/qwerty541/dns-bench/blob/master/examples/ipv4-custom-servers-example.txt
-    - IPv6: https://github.com/qwerty541/dns-bench/blob/master/examples/ipv6-custom-servers-example.txt
+    - [IPv4](https://github.com/qwerty541/dns-bench/blob/master/examples/ipv4-custom-servers-example.txt)
+    - [IPv6](https://github.com/qwerty541/dns-bench/blob/master/examples/ipv6-custom-servers-example.txt)
 
 Example (read-only mount):
 
