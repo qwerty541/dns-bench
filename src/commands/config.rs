@@ -20,6 +20,22 @@ impl Command<()> for ConfigInitCommand {
 }
 
 #[derive(Debug, Clone)]
+pub struct ConfigListCommand;
+
+impl Command<()> for ConfigListCommand {
+    fn run(&self, _args: ()) -> Result<(), Box<dyn std::error::Error>> {
+        if !DnsBenchConfig::config_file_exists()? {
+            println!("Config file does not exist. Run `dns-bench config init` to create one.");
+        } else {
+            let config = DnsBenchConfig::try_load_from_file().unwrap_or_default();
+            println!("{}", config);
+        }
+
+        Ok(())
+    }
+}
+
+#[derive(Debug, Clone)]
 pub struct ConfigSetCommand;
 
 impl Command<ConfigSetArgs> for ConfigSetCommand {

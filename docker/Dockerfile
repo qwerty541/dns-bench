@@ -17,4 +17,5 @@ FROM alpine:3.22.1
 COPY --from=build /usr/local/cargo/bin/dns-bench /usr/bin/dns-bench
 
 # Set the default command
-CMD ["dns-bench", "--skip-system-servers"]
+ENTRYPOINT [ "dns-bench" ]
+CMD ["--skip-system-servers", "--skip-gateway-detection"]

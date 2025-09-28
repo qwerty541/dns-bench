@@ -4,6 +4,7 @@ use crate::args::Protocol;
 use crate::args::Style;
 use crate::cli::SharedArgs;
 
+use clap::ValueEnum;
 use directories::UserDirs;
 use std::error::Error;
 use std::fmt;
@@ -31,6 +32,8 @@ pub struct DnsBenchConfig {
     pub format: Format,
     #[serde(default)]
     pub skip_system_servers: bool,
+    #[serde(default)]
+    pub skip_gateway_detection: bool,
     // WARNING! Addition of the serde default attribute for all new fields is important to ensure backward compatibility
     // with older configuration files that may not have these fields defined.
 }
@@ -49,6 +52,7 @@ impl Default for DnsBenchConfig {
             custom_servers_file: None,
             format: Format::HumanReadable,
             skip_system_servers: false,
+            skip_gateway_detection: false,
         }
     }
 }
@@ -87,6 +91,9 @@ impl DnsBenchConfig {
         }
         if args.skip_system_servers {
             self.skip_system_servers = true;
+        }
+        if args.skip_gateway_detection {
+            self.skip_gateway_detection = true;
         }
     }
 
@@ -142,8 +149,68 @@ impl DnsBenchConfig {
     pub fn delete_config_file() -> Result<(), Box<dyn Error>> {
         let path = Self::config_file_path()?;
         if path.exists() {
-            std::fs::remove_file(path)?;
+            fs::remove_file(path)?;
         }
+        Ok(())
+    }
+}
+
+impl fmt::Display for DnsBenchConfig {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        writeln!(f, "domain: {}", self.domain)?;
+        writeln!(f, "threads: {}", self.threads)?;
+        writeln!(f, "requests: {}", self.requests)?;
+        writeln!(f, "timeout: {}", self.timeout)?;
+        writeln!(
+            f,
+            "protocol: {}",
+            self.protocol
+                .to_possible_value()
+                .expect("Failed to get protocol name")
+                .get_name()
+        )?;
+        writeln!(
+            f,
+            "name-servers-ip: {}",
+            self.name_servers_ip
+                .to_possible_value()
+                .expect("Failed to get name servers IP")
+                .get_name()
+        )?;
+        writeln!(
+            f,
+            "lookup-ip: {}",
+            self.lookup_ip
+                .to_possible_value()
+                .expect("Failed to get lookup IP")
+                .get_name()
+        )?;
+        writeln!(
+            f,
+            "style: {}",
+            self.style
+                .to_possible_value()
+                .expect("Failed to get style")
+                .get_name()
+        )?;
+
+        if let Some(custom_servers_file) = &self.custom_servers_file {
+            writeln!(f, "custom-servers-file: {}", custom_servers_file.display())?;
+        } else {
+            writeln!(f, "custom-servers-file: null")?; // Explicitly show null if not set
+        }
+
+        writeln!(
+            f,
+            "format: {}",
+            self.format
+                .to_possible_value()
+                .expect("Failed to get format")
+                .get_name()
+        )?;
+        writeln!(f, "skip-system-servers: {}", self.skip_system_servers)?;
+        writeln!(f, "skip-gateway-detection: {}", self.skip_gateway_detection)?;
+
         Ok(())
     }
 }
