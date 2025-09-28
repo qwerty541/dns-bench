@@ -34,9 +34,7 @@ docker run --rm -it --name dns-bench qwerty541/dns-bench:latest
 Show help:
 
 ```sh
-docker run --rm -it --name dns-bench \
-  qwerty541/dns-bench:latest \
-  /bin/sh -c "dns-bench --help"
+docker run --rm -it --name dns-bench qwerty541/dns-bench:latest --help
 ```
 
 Run with options (example):
@@ -44,7 +42,7 @@ Run with options (example):
 ```sh
 docker run --rm -it --name dns-bench \
   qwerty541/dns-bench:latest \
-  /bin/sh -c "dns-bench --requests 20 --domain microsoft.com --style re-structured-text"
+  --requests 50 --domain microsoft.com --style re-structured-text
 ```
 
 ## Volumes and configuration
@@ -61,7 +59,7 @@ Example (read-only mount):
 docker run --rm -it --name dns-bench \
   --volume /path/to/ipv4-custom-servers.txt:/servers.txt:ro \
   qwerty541/dns-bench:latest \
-  /bin/sh -c "dns-bench --custom-servers-file /servers.txt"
+  --custom-servers-file /servers.txt
 ```
 
 - Persisting configuration across runs
@@ -75,7 +73,7 @@ mkdir -p "$PWD/.dns-bench"
 docker run --rm -it --name dns-bench \
   --volume "$PWD/.dns-bench:/root/.dns-bench" \
   qwerty541/dns-bench:latest \
-  /bin/sh -c "dns-bench --save-config"
+  --save-config
 ```
 
 ## Networking notes
@@ -96,17 +94,17 @@ Examples:
 # JSON
 docker run --rm -it --name dns-bench \
   qwerty541/dns-bench:latest \
-  /bin/sh -c "dns-bench --format json"
+  --format json
 
 # XML
 docker run --rm -it --name dns-bench \
   qwerty541/dns-bench:latest \
-  /bin/sh -c "dns-bench --format xml"
+  --format xml
 
 # CSV (save to a file on the host)
 docker run --rm --name dns-bench \
   qwerty541/dns-bench:latest \
-  /bin/sh -c "dns-bench --format csv" \
+  --format csv \
   > results.csv
 ```
 
@@ -120,7 +118,7 @@ docker run --rm -it --name dns-bench \
   --volume "$PWD/.dns-bench:/root/.dns-bench" \
   --volume /path/to/servers.txt:/servers.txt:ro \
   qwerty541/dns-bench:latest \
-  /bin/sh -c "dns-bench --custom-servers-file /servers.txt"
+  --custom-servers-file /servers.txt
 ```
 
 Note: ensure mounted directories are readable/writable by the chosen UID/GID as needed.
@@ -138,7 +136,7 @@ docker run --rm -it --name dns-bench qwerty541/dns-bench:latest
 ```sh
 docker run --rm -it --name dns-bench \
   qwerty541/dns-bench:latest \
-  /bin/sh -c "dns-bench --threads 16 --requests 50"
+  --threads 16 --requests 50
 ```
 
 - Use IPv6 for both lookup and server connection:
@@ -146,7 +144,7 @@ docker run --rm -it --name dns-bench \
 ```sh
 docker run --rm -it --name dns-bench \
   qwerty541/dns-bench:latest \
-  /bin/sh -c "dns-bench --lookup-ip v6 --name-servers-ip v6"
+  --lookup-ip v6 --name-servers-ip v6
 ```
 
 - Persist config and reuse it:
@@ -158,7 +156,7 @@ mkdir -p "$PWD/.dns-bench"
 docker run --rm -it --name dns-bench \
   --volume "$PWD/.dns-bench:/root/.dns-bench" \
   qwerty541/dns-bench:latest \
-  /bin/sh -c "dns-bench --save-config"
+  --save-config
 
 # Next run uses saved config by default
 docker run --rm -it --name dns-bench \
