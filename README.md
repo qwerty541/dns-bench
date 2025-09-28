@@ -99,31 +99,37 @@ This repository provides a DNS benchmarking command-line tool written in Rust. I
 <table>
 <tr><td>
 
-- Google Public DNS
-- Cloudflare
-- Quad9
-- ControlD
-- OpenDNS
-- CleanBrowsing
-- AdGuard DNS
+| |
+| --- |
+| Google Public DNS |
+| Cloudflare |
+| Quad9 |
+| ControlD |
+| OpenDNS |
+| CleanBrowsing |
+| AdGuard DNS |
 
 </td><td>
 
-- Comodo Secure DNS
-- Level3
-- Verisign
-- DNS.WATCH
-- Norton ConnectSafe
-- SafeDNS
-- NextDNS
+| |
+| --- |
+| Comodo Secure DNS |
+| Level3 |
+| Verisign |
+| DNS.WATCH |
+| Norton ConnectSafe |
+| SafeDNS |
+| NextDNS |
 
 </td><td>
 
-- Dyn
-- Hurricane Electric
-- Surfshark DNS
-- SafeServe
-- Vercara UltraDNS Public
+| |
+| --- |
+| Dyn |
+| Hurricane Electric |
+| Surfshark DNS |
+| SafeServe |
+| Vercara UltraDNS Public |
 
 </td></tr>
 </table>
@@ -192,18 +198,9 @@ In case you want to use custom servers list, you have to mount the file with cus
 
 ```sh
 $ docker run --rm -it --name dns-bench \
-  --volume /home/alexandr/projects/dns-bench/examples/ipv4-custom-servers-example.txt:/ipv4-custom-servers-example.txt \
+  --volume /path/to/ipv4-custom-servers.txt:/servers.txt:ro \
   qwerty541/dns-bench:latest \
-  /bin/sh -c "dns-bench --custom-servers-file /ipv4-custom-servers-example.txt"
-```
-
-By default, the system servers autodetection feature is disabled in the Docker container. If you want to enable it, you have to run the container with `--network host` option (Linux only):
-
-```sh
-$ docker run --rm -it --name dns-bench \
-  --network host \
-  qwerty541/dns-bench:latest \
-  /bin/sh -c "dns-bench"
+  /bin/sh -c "dns-bench --custom-servers-file /servers.txt"
 ```
 
 ### Executable file for Windows

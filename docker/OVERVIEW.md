@@ -83,13 +83,8 @@ docker run --rm -it --name dns-bench \
 - For the most accurate latency measurements on Linux, consider using host networking to minimize NAT overhead:
 
 ```sh
-docker run --rm -it --name dns-bench \
-  --network host \
-  qwerty541/dns-bench:latest \
-  /bin/sh -c "dns-bench"
+docker run --rm -it --name dns-bench --network host qwerty541/dns-bench:latest
 ```
-
-- Inside containers, system DNS autodetection is typically skipped. If you still want to include system DNS servers from the host you can override the default command as shown above.
 
 ## Output formats
 
@@ -194,9 +189,7 @@ All CLI options and subcommands are documented in the project README:
 
 Licensed under either of
 
-- Apache License, Version 2.0: https://www.apache.org/licenses/LICENSE-2.0
-- MIT license: https://opensource.org/licenses/MIT
+-   Apache License, Version 2.0, ([LICENSE-APACHE](https://github.com/qwerty541/dns-bench/blob/master/LICENSE-APACHE) or https://www.apache.org/licenses/LICENSE-2.0)
+-   MIT license ([LICENSE-MIT](https://github.com/qwerty541/dns-bench/blob/master/LICENSE-MIT) or https://opensource.org/licenses/MIT)
 
-Project license files:
-- https://github.com/qwerty541/dns-bench/blob/master/LICENSE-APACHE
-- https://github.com/qwerty541/dns-bench/blob/master/LICENSE-MIT
+at your option.
