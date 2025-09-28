@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Documentation
 
 - Completely reworked the Docker Hub overview to match the style and follow the best practices of this platform.
-- Updated documentation according to the all changes and newly added features.
+- Updated documentation according to all the changes and newly added features.
 
 ### Dependencies
 
