@@ -165,19 +165,31 @@ impl fmt::Display for DnsBenchConfig {
         result.push_str(&format!("timeout: {}\n", self.timeout));
         result.push_str(&format!(
             "protocol: {}\n",
-            self.protocol.to_possible_value().unwrap().get_name()
+            self.protocol
+                .to_possible_value()
+                .expect("Failed to get protocol name")
+                .get_name()
         ));
         result.push_str(&format!(
             "name-servers-ip: {}\n",
-            self.name_servers_ip.to_possible_value().unwrap().get_name()
+            self.name_servers_ip
+                .to_possible_value()
+                .expect("Failed to get name servers IP")
+                .get_name()
         ));
         result.push_str(&format!(
             "lookup-ip: {}\n",
-            self.lookup_ip.to_possible_value().unwrap().get_name()
+            self.lookup_ip
+                .to_possible_value()
+                .expect("Failed to get lookup IP")
+                .get_name()
         ));
         result.push_str(&format!(
             "style: {}\n",
-            self.style.to_possible_value().unwrap().get_name()
+            self.style
+                .to_possible_value()
+                .expect("Failed to get style")
+                .get_name()
         ));
         if let Some(custom_servers_file) = &self.custom_servers_file {
             result.push_str(&format!(
@@ -189,7 +201,10 @@ impl fmt::Display for DnsBenchConfig {
         }
         result.push_str(&format!(
             "format: {}\n",
-            self.format.to_possible_value().unwrap().get_name()
+            self.format
+                .to_possible_value()
+                .expect("Failed to get format")
+                .get_name()
         ));
         result.push_str(&format!(
             "skip-system-servers: {}\n",
