@@ -12,7 +12,7 @@ COPY src ./src
 # Install the binary
 RUN cargo install --path .
 
-FROM alpine:3.22.1
+FROM alpine:3.22.2
 
 COPY --from=build /usr/local/cargo/bin/dns-bench /usr/bin/dns-bench
 
