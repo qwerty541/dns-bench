@@ -6,6 +6,7 @@
 ![License][license-badge]
 [![Workflow Status][workflow-badge]][actions-url]
 ![Lines count][sloc-badge]
+![Cocomo][cocomo-badge]
 
 [crates-version-badge]: https://img.shields.io/crates/v/dns-bench.svg
 [crates-downloads-badge]: https://img.shields.io/crates/d/dns-bench.svg
@@ -15,6 +16,7 @@
 [actions-url]: https://github.com/qwerty541/dns-bench/actions
 [rust-version]: https://img.shields.io/badge/rust-1.82.0%2B-lightgrey.svg?logo=rust
 [sloc-badge]: https://sloc.xyz/github/qwerty541/dns-bench/?badge-bg-color=2081C2
+[cocomo-badge]: https://sloc.xyz/github/qwerty541/dns-bench/?badge-bg-color=2081C2&category=cocomo
 
 <details>
 <summary>Table of contents</summary>
