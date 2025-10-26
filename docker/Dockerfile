@@ -1,16 +1,17 @@
-FROM rust:1.89.0-alpine3.22 AS build
-
-RUN apk add musl-dev
+FROM rust:1.89.0 AS build
 
 # Set the working directory
 WORKDIR /app
+
+# Add the MUSL target for static linking
+RUN rustup target add x86_64-unknown-linux-musl
 
 # Copy only the necessary files for building the application
 COPY Cargo.toml Cargo.lock ./
 COPY src ./src
 
 # Install the binary
-RUN cargo install --path .
+RUN cargo install --target x86_64-unknown-linux-musl --path .
 
 FROM alpine:3.22.1
 
