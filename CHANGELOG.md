@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Changed base image of Docker container from [rust](https://hub.docker.com/_/rust) to [alpine](https://hub.docker.com/_/alpine) which results in significant reduction of the image size (~650 MiB => ~15 MiB) by [@February30th](https://github.com/February30th) in https://github.com/qwerty541/dns-bench/pull/301.
 - Docker container now uses a `dns-bench` binary entrypoint, so you can pass arguments directly to `docker run` command without necessity to specify `/bin/sh -c "dns-bench ..."`.
+- Dropped the support of several architectures in the Docker image including `linux/arm/v7`, `linux/386`, `linux/s390x` due to migration on the alpine.
 
 ### Documentation
 
