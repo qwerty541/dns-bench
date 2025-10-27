@@ -7,7 +7,7 @@ WORKDIR /app
 COPY Cargo.toml Cargo.lock ./
 COPY src ./src
 
-# Build and install the binary for the native (gnu) target of the current platform
+# Build and install the binary
 RUN cargo install --locked --path .
 
 FROM debian:13.1-slim
