@@ -1,20 +1,15 @@
 use crate::args::Format;
 use crate::args::IpAddr as ArgIpAddr;
-use crate::args::Style;
 use crate::cli;
 use crate::config;
 use crate::custom;
 use crate::gateway::get_gateway_addr;
+use crate::output::get_output_formatter;
+use crate::output::OutputFormatterContext;
 use crate::resolver::create_resolver;
-use crate::result::convert_result_entries_to_csv_string;
-use crate::result::convert_result_entries_to_xml_string;
-use crate::result::CsvResultEntry;
-use crate::result::JsonResultEntry;
 use crate::result::MeasureResult;
 use crate::result::RawResultEntry;
-use crate::result::TabledResultEntry;
 use crate::result::TimeResult;
-use crate::result::XmlResultEntry;
 use crate::servers;
 use crate::system::get_system_dns;
 
@@ -22,6 +17,7 @@ use indicatif::MultiProgress;
 use indicatif::ProgressBar;
 use indicatif::ProgressStyle;
 use std::collections;
+use std::io;
 use std::net::IpAddr;
 use std::net::Ipv4Addr;
 use std::net::Ipv6Addr;
@@ -31,8 +27,6 @@ use std::sync;
 use std::thread;
 use std::time::Duration;
 use std::time::Instant;
-use tabled::settings as tabled_settings;
-use tabled::Table;
 
 const PROGRESS_BAR_TICK_INTERVAL_MILLIS: u64 = 50;
 const GATEWAY_RESPONSIVENESS_TEST_TIMEOUT_MILLIS: u64 = 200;
@@ -365,104 +359,15 @@ impl BenchmarkRunner {
 
     /// Print the result.
     fn print_result(&self) {
-        match self.config.format {
-            Format::HumanReadable => self.print_result_human_readable(),
-            Format::Json => self.print_result_json(),
-            Format::Xml => self.print_result_xml(),
-            Format::Csv => self.print_result_csv(),
-        }
-    }
-
-    /// Print the result in human-readable format.
-    fn print_result_human_readable(&self) {
-        let result_entries = self.result_entries.lock().expect(POISONED_MUTEX_ERR);
-        let system_ips = self.system_dns_ips.clone().unwrap_or_default();
-        let tabled_result_entries = result_entries
-            .iter()
-            .cloned()
-            .map(|entry| {
-                let mut tre = TabledResultEntry::from(entry);
-                if system_ips.contains(&tre.ip) {
-                    tre.name = format!("> {}", tre.name);
-                }
-                tre
-            })
-            .collect::<Vec<TabledResultEntry>>();
-        let mut table = Table::new(tabled_result_entries.clone());
-
-        match self.config.style {
-            Style::Empty => table.with(tabled_settings::Style::empty()),
-            Style::Blank => table.with(tabled_settings::Style::blank()),
-            Style::Ascii => table.with(tabled_settings::Style::ascii()),
-            Style::Psql => table.with(tabled_settings::Style::psql()),
-            Style::Markdown => table.with(tabled_settings::Style::markdown()),
-            Style::Modern => table.with(tabled_settings::Style::modern()),
-            Style::Sharp => table.with(tabled_settings::Style::sharp()),
-            Style::Rounded => table.with(tabled_settings::Style::rounded()),
-            Style::ModernRounded => table.with(tabled_settings::Style::modern_rounded()),
-            Style::Extended => table.with(tabled_settings::Style::extended()),
-            Style::Dots => table.with(tabled_settings::Style::dots()),
-            Style::ReStructuredText => table.with(tabled_settings::Style::re_structured_text()),
-            Style::AsciiRounded => table.with(tabled_settings::Style::ascii_rounded()),
+        let results = self.result_entries.lock().expect(POISONED_MUTEX_ERR);
+        let formatter = get_output_formatter(&self.config.format);
+        let ctx = OutputFormatterContext {
+            system_dns_ips: self.system_dns_ips.clone(),
+            config: self.config.clone(),
         };
-
-        for (i, entry) in tabled_result_entries.iter().enumerate() {
-            table.with(
-                tabled_settings::Modify::new(tabled_settings::object::Cell::new(i + 1, 3))
-                    .with(entry.successful_requests_color.clone()),
-            );
-            table.with(
-                tabled_settings::Modify::new(tabled_settings::object::Cell::new(i + 1, 4))
-                    .with(entry.first_duration_color.clone()),
-            );
-            table.with(
-                tabled_settings::Modify::new(tabled_settings::object::Cell::new(i + 1, 5))
-                    .with(entry.average_duration_color.clone()),
-            );
-        }
-
-        println!("{table}");
-    }
-
-    /// Print the result in JSON format.
-    fn print_result_json(&self) {
-        let result_entries = self.result_entries.lock().expect(POISONED_MUTEX_ERR);
-        let json_result_entries = result_entries
-            .iter()
-            .cloned()
-            .map(JsonResultEntry::from)
-            .collect::<Vec<JsonResultEntry>>();
-        match serde_json::to_string_pretty(&json_result_entries) {
-            Ok(json) => println!("{json}"),
-            Err(e) => eprintln!("Failed to serialize results to JSON: {e:?}"),
-        }
-    }
-
-    /// Print the result in XML format.
-    fn print_result_xml(&self) {
-        let result_entries = self.result_entries.lock().expect(POISONED_MUTEX_ERR);
-        let xml_result_entries = result_entries
-            .iter()
-            .cloned()
-            .map(XmlResultEntry::from)
-            .collect::<Vec<XmlResultEntry>>();
-        match convert_result_entries_to_xml_string(xml_result_entries) {
-            Ok(xml) => println!("{xml}"),
-            Err(e) => eprintln!("Failed to serialize results to XML: {e:?}"),
-        }
-    }
-
-    /// Print the result in CSV format.
-    fn print_result_csv(&self) {
-        let result_entries = self.result_entries.lock().expect(POISONED_MUTEX_ERR);
-        let csv_result_entries = result_entries
-            .iter()
-            .cloned()
-            .map(CsvResultEntry::from)
-            .collect::<Vec<CsvResultEntry>>();
-        match convert_result_entries_to_csv_string(csv_result_entries) {
-            Ok(csv) => println!("{csv}"),
-            Err(e) => eprintln!("Failed to serialize results to CSV: {e:?}"),
+        match formatter.write(&results, ctx, &mut io::stdout()) {
+            Ok(()) => {}
+            Err(e) => eprintln!("Error writing output: {}", e),
         }
     }
 
