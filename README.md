@@ -134,6 +134,7 @@ This repository provides a DNS benchmarking command-line tool written in Rust. I
 | Surfshark DNS |
 | SafeServe |
 | Vercara UltraDNS Public |
+| FlashStart |
 
 </td></tr>
 </table>
