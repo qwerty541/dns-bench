@@ -3,6 +3,7 @@
 [![Crates.io version][crates-version-badge]][crates-url]
 [![Crates.io downloads][crates-downloads-badge]][crates-url]
 ![Rust version][rust-version]
+[![DockerHub Pulls][dockerhub-pulls-badge]][dockerhub-url]
 ![License][license-badge]
 [![Workflow Status][workflow-badge]][actions-url]
 ![Lines count][sloc-badge]
@@ -17,6 +18,8 @@
 [rust-version]: https://img.shields.io/badge/rust-1.82.0%2B-lightgrey.svg?logo=rust
 [sloc-badge]: https://sloc.xyz/github/qwerty541/dns-bench/?badge-bg-color=2081C2
 [cocomo-badge]: https://sloc.xyz/github/qwerty541/dns-bench/?badge-bg-color=2081C2&category=cocomo
+[dockerhub-pulls-badge]: https://img.shields.io/docker/pulls/qwerty541/dns-bench?label=DockerHub%20pulls&logo=docker&logoColor=white
+[dockerhub-url]: https://hub.docker.com/r/qwerty541/dns-bench
 
 <details>
 <summary>Table of contents</summary>
