@@ -38,7 +38,7 @@ jobs:
         with:
           context: .
           file: ./docker/Dockerfile
-          platforms: linux/amd64,linux/arm64/v8,linux/ppc64le
+          platforms: linux/amd64,linux/arm64/v8,linux/arm/v7,linux/386,linux/s390x,linux/ppc64le
           push: true
           tags: |
             ${{ vars.DOCKER_USERNAME }}/dns-bench:0.12.0
@@ -53,6 +53,18 @@ jobs:
         run: |
           docker pull --platform linux/arm64/v8 ${{ vars.DOCKER_USERNAME }}/dns-bench:latest
           docker run --rm --platform linux/arm64/v8 ${{ vars.DOCKER_USERNAME }}/dns-bench:latest --timeout 1
+      - name: Test image on linux/arm/v7
+        run: |
+          docker pull --platform linux/arm/v7 ${{ vars.DOCKER_USERNAME }}/dns-bench:latest
+          docker run --rm --platform linux/arm/v7 ${{ vars.DOCKER_USERNAME }}/dns-bench:latest --timeout 1
+      - name: Test image on linux/386
+        run: |
+          docker pull --platform linux/386 ${{ vars.DOCKER_USERNAME }}/dns-bench:latest
+          docker run --rm --platform linux/386 ${{ vars.DOCKER_USERNAME }}/dns-bench:latest --timeout 1
+      - name: Test image on linux/s390x
+        run: |
+          docker pull --platform linux/s390x ${{ vars.DOCKER_USERNAME }}/dns-bench:latest
+          docker run --rm --platform linux/s390x ${{ vars.DOCKER_USERNAME }}/dns-bench:latest --timeout 1
       - name: Test image on linux/ppc64le
         run: |
           docker pull --platform linux/ppc64le ${{ vars.DOCKER_USERNAME }}/dns-bench:latest
