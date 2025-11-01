@@ -66,6 +66,8 @@ impl From<CsvConversionError> for OutputFormatterError {
     }
 }
 
+impl std::error::Error for OutputFormatterError {}
+
 pub trait OutputFormatter {
     fn write(
         &self,
