@@ -173,7 +173,7 @@ mod tests {
     use std::time::Duration;
 
     #[test]
-    fn test_convertion() {
+    fn test_conversion() {
         let result_entries = vec![
             XmlResultEntry {
                 name: String::from("Google"),
