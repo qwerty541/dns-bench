@@ -1,6 +1,4 @@
-FROM rust:1.90.0-alpine3.22 AS build
-
-RUN apk add musl-dev
+FROM rust:1.90.0 AS build
 
 # Set the working directory
 WORKDIR /app
@@ -9,11 +7,12 @@ WORKDIR /app
 COPY Cargo.toml Cargo.lock ./
 COPY src ./src
 
-# Install the binary
-RUN cargo install --path .
+# Build and install the binary
+RUN cargo install --locked --path .
 
-FROM alpine:3.22.2
+FROM debian:13.1-slim
 
+# Copy the binary from the builder image
 COPY --from=build /usr/local/cargo/bin/dns-bench /usr/bin/dns-bench
 
 # Set the default command
