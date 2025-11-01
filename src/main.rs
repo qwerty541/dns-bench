@@ -6,6 +6,7 @@ mod commands;
 mod config;
 mod custom;
 mod gateway;
+mod output;
 mod resolver;
 mod result;
 mod servers;
