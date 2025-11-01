@@ -127,7 +127,7 @@ mod tests {
     use std::time::Duration;
 
     #[test]
-    fn test_convert_result_entries_to_csv_string() {
+    fn test_conversion() {
         let result_entries = vec![
             RawResultEntry::from(vec![
                 MeasureResult {
