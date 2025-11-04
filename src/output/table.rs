@@ -23,14 +23,18 @@ struct TabledResultEntry {
     successful_requests: String,
     #[tabled(skip)]
     successful_requests_color: tabled_settings::Color,
-    #[tabled(rename = "First duration")]
-    first_duration: TimeResult,
+    #[tabled(rename = "Min.")]
+    min_duration: TimeResult,
     #[tabled(skip)]
-    first_duration_color: tabled_settings::Color,
-    #[tabled(rename = "Average duration")]
-    average_duration: TimeResult,
+    min_duration_color: tabled_settings::Color,
+    #[tabled(rename = "Max.")]
+    max_duration: TimeResult,
     #[tabled(skip)]
-    average_duration_color: tabled_settings::Color,
+    max_duration_color: tabled_settings::Color,
+    #[tabled(rename = "Avg.")]
+    avg_duration: TimeResult,
+    #[tabled(skip)]
+    avg_duration_color: tabled_settings::Color,
 }
 
 impl From<RawResultEntry> for TabledResultEntry {
@@ -46,10 +50,12 @@ impl From<RawResultEntry> for TabledResultEntry {
                 value.successful_requests_percentage
             ),
             successful_requests_color: value.successful_requests_color,
-            first_duration: value.first_duration,
-            first_duration_color: value.first_duration_color,
-            average_duration: value.average_duration,
-            average_duration_color: value.average_duration_color,
+            min_duration: value.min_duration,
+            min_duration_color: value.min_duration_color,
+            max_duration: value.max_duration,
+            max_duration_color: value.max_duration_color,
+            avg_duration: value.avg_duration,
+            avg_duration_color: value.avg_duration_color,
         }
     }
 }
@@ -101,11 +107,15 @@ impl OutputFormatter for TableOutputFormatter {
             );
             table.with(
                 tabled_settings::Modify::new(tabled_settings::object::Cell::new(i + 1, 4))
-                    .with(entry.first_duration_color.clone()),
+                    .with(entry.min_duration_color.clone()),
             );
             table.with(
                 tabled_settings::Modify::new(tabled_settings::object::Cell::new(i + 1, 5))
-                    .with(entry.average_duration_color.clone()),
+                    .with(entry.avg_duration_color.clone()),
+            );
+            table.with(
+                tabled_settings::Modify::new(tabled_settings::object::Cell::new(i + 1, 6))
+                    .with(entry.max_duration_color.clone()),
             );
         }
 
@@ -131,10 +141,12 @@ mod tests {
             successful_requests: 2,
             successful_requests_percentage: 66.66667,
             successful_requests_color: tabled_settings::Color::FG_BRIGHT_YELLOW,
-            first_duration: TimeResult::Succeeded(Duration::new(0, 100)),
-            first_duration_color: tabled_settings::Color::FG_BRIGHT_GREEN,
-            average_duration: TimeResult::Succeeded(Duration::new(0, 150)),
-            average_duration_color: tabled_settings::Color::FG_BRIGHT_GREEN,
+            avg_duration: TimeResult::Succeeded(Duration::new(0, 150)),
+            avg_duration_color: tabled_settings::Color::FG_BRIGHT_GREEN,
+            min_duration: TimeResult::Succeeded(Duration::new(0, 100)),
+            min_duration_color: tabled_settings::Color::FG_BRIGHT_GREEN,
+            max_duration: TimeResult::Succeeded(Duration::new(0, 200)),
+            max_duration_color: tabled_settings::Color::FG_BRIGHT_GREEN,
         };
 
         let tabled_result_entry = TabledResultEntry::from(raw_result_entry);
@@ -154,19 +166,27 @@ mod tests {
             tabled_settings::Color::FG_BRIGHT_YELLOW
         );
         assert_eq!(
-            tabled_result_entry.first_duration,
+            tabled_result_entry.min_duration,
             TimeResult::Succeeded(Duration::new(0, 100))
         );
         assert_eq!(
-            tabled_result_entry.first_duration_color,
+            tabled_result_entry.min_duration_color,
             tabled_settings::Color::FG_BRIGHT_GREEN
         );
         assert_eq!(
-            tabled_result_entry.average_duration,
+            tabled_result_entry.avg_duration,
             TimeResult::Succeeded(Duration::new(0, 150))
         );
         assert_eq!(
-            tabled_result_entry.average_duration_color,
+            tabled_result_entry.avg_duration_color,
+            tabled_settings::Color::FG_BRIGHT_GREEN
+        );
+        assert_eq!(
+            tabled_result_entry.max_duration,
+            TimeResult::Succeeded(Duration::new(0, 200))
+        );
+        assert_eq!(
+            tabled_result_entry.max_duration_color,
             tabled_settings::Color::FG_BRIGHT_GREEN
         );
     }
