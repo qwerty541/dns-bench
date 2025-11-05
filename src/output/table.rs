@@ -111,11 +111,11 @@ impl OutputFormatter for TableOutputFormatter {
             );
             table.with(
                 tabled_settings::Modify::new(tabled_settings::object::Cell::new(i + 1, 5))
-                    .with(entry.avg_duration_color.clone()),
+                    .with(entry.max_duration_color.clone()),
             );
             table.with(
                 tabled_settings::Modify::new(tabled_settings::object::Cell::new(i + 1, 6))
-                    .with(entry.max_duration_color.clone()),
+                    .with(entry.avg_duration_color.clone()),
             );
         }
 
