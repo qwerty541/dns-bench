@@ -17,7 +17,9 @@ include = ["src/**/*", "Cargo.*", "README.md", "LICENSE-*", "CHANGELOG.md"]
 clap = { version = "4.5.50", features = ["std", "derive", "cargo"] }
 csv = "1.4.0"
 derive_more = { version = "2.0.1", features = [
-    "is_variant", "error", "from"
+    "error",
+    "from",
+    "is_variant"
 ], default-features = false }
 directories = "6.0.0"
 hickory-resolver = "0.24.4"
