@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Documentation
 
 - Made the license badge clickable.
+- Added total lines count badge into the readme file.
 - Added COCOMO estimation badge into the readme file.
 - Added Docker Hub pulls badge into the readme file.
 
