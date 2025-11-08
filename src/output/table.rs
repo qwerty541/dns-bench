@@ -100,6 +100,12 @@ impl OutputFormatter for TableOutputFormatter {
             Style::AsciiRounded => table.with(tabled_settings::Style::ascii_rounded()),
         };
 
+        // Center the content of column titles
+        table.with(
+            tabled_settings::Modify::new(tabled_settings::object::Rows::first())
+                .with(tabled_settings::Alignment::center()),
+        );
+
         for (i, entry) in tabled_result_entries.iter().enumerate() {
             table.with(
                 tabled_settings::Modify::new(tabled_settings::object::Cell::new(i + 1, 3))
