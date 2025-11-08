@@ -4,7 +4,7 @@
 [![Crates.io downloads][crates-downloads-badge]][crates-url]
 ![Rust version][rust-version]
 [![DockerHub Pulls][dockerhub-pulls-badge]][dockerhub-url]
-![License][license-badge]
+[![License][license-badge]][license-url]
 [![Workflow Status][workflow-badge]][actions-url]
 ![Lines count][sloc-badge]
 ![Cocomo][cocomo-badge]
@@ -13,6 +13,7 @@
 [crates-downloads-badge]: https://img.shields.io/crates/d/dns-bench.svg
 [crates-url]: https://crates.io/crates/dns-bench
 [license-badge]: https://img.shields.io/crates/l/dns-bench.svg
+[license-url]: https://github.com/qwerty541/dns-bench/blob/master/LICENSE-MIT
 [workflow-badge]: https://github.com/qwerty541/dns-bench/workflows/check/badge.svg
 [actions-url]: https://github.com/qwerty541/dns-bench/actions
 [rust-version]: https://img.shields.io/badge/rust-1.82.0%2B-lightgrey.svg?logo=rust
