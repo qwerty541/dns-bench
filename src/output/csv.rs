@@ -15,10 +15,12 @@ struct CsvResultEntry {
     total_requests: i32,
     successful_requests: i32,
     successful_requests_percentage: f32,
-    first_duration_value_ms: Option<String>,
-    first_duration_error: Option<String>,
-    average_duration_value_ms: Option<String>,
-    average_duration_error: Option<String>,
+    min_duration_value_ms: Option<String>,
+    min_duration_error: Option<String>,
+    max_duration_value_ms: Option<String>,
+    max_duration_error: Option<String>,
+    avg_duration_value_ms: Option<String>,
+    avg_duration_error: Option<String>,
 }
 
 impl From<RawResultEntry> for CsvResultEntry {
@@ -30,13 +32,12 @@ impl From<RawResultEntry> for CsvResultEntry {
             total_requests: value.total_requests,
             successful_requests: value.successful_requests,
             successful_requests_percentage: value.successful_requests_percentage,
-            first_duration_value_ms: value.first_duration.get_duration_millis(),
-            first_duration_error: value.first_duration.get_error_str().map(|v| v.to_string()),
-            average_duration_value_ms: value.average_duration.get_duration_millis(),
-            average_duration_error: value
-                .average_duration
-                .get_error_str()
-                .map(|v| v.to_string()),
+            min_duration_value_ms: value.min_duration.get_duration_millis(),
+            min_duration_error: value.min_duration.get_error_str().map(|v| v.to_string()),
+            max_duration_value_ms: value.max_duration.get_duration_millis(),
+            max_duration_error: value.max_duration.get_error_str().map(|v| v.to_string()),
+            avg_duration_value_ms: value.avg_duration.get_duration_millis(),
+            avg_duration_error: value.avg_duration.get_error_str().map(|v| v.to_string()),
         }
     }
 }
@@ -113,19 +114,19 @@ mod tests {
                 MeasureResult {
                     name: String::from("Google"),
                     ip: IpAddr::V4(Ipv4Addr::new(8, 8, 8, 8)),
-                    resolved_ip: IpAddr::V4(Ipv4Addr::new(8, 8, 8, 8)),
+                    resolved_ip: IpAddr::V4(Ipv4Addr::new(144, 144, 144, 144)),
                     time: TimeResult::Succeeded(Duration::new(0, 100)),
                 },
                 MeasureResult {
                     name: String::from("Google"),
                     ip: IpAddr::V4(Ipv4Addr::new(8, 8, 8, 8)),
-                    resolved_ip: IpAddr::V4(Ipv4Addr::new(8, 8, 8, 8)),
+                    resolved_ip: IpAddr::V4(Ipv4Addr::new(144, 144, 144, 144)),
                     time: TimeResult::Succeeded(Duration::new(0, 200)),
                 },
                 MeasureResult {
                     name: String::from("Google"),
                     ip: IpAddr::V4(Ipv4Addr::new(8, 8, 8, 8)),
-                    resolved_ip: IpAddr::V4(Ipv4Addr::new(8, 8, 8, 8)),
+                    resolved_ip: IpAddr::V4(Ipv4Addr::new(144, 144, 144, 144)),
                     time: TimeResult::Failed(String::from("Timeout")),
                 },
             ]),
@@ -133,19 +134,19 @@ mod tests {
                 MeasureResult {
                     name: String::from("Cloudflare"),
                     ip: IpAddr::V4(Ipv4Addr::new(1, 1, 1, 1)),
-                    resolved_ip: IpAddr::V4(Ipv4Addr::new(1, 1, 1, 1)),
+                    resolved_ip: IpAddr::V4(Ipv4Addr::new(145, 145, 145, 145)),
                     time: TimeResult::Succeeded(Duration::new(0, 50)),
                 },
                 MeasureResult {
                     name: String::from("Cloudflare"),
                     ip: IpAddr::V4(Ipv4Addr::new(1, 1, 1, 1)),
-                    resolved_ip: IpAddr::V4(Ipv4Addr::new(1, 1, 1, 1)),
+                    resolved_ip: IpAddr::V4(Ipv4Addr::new(145, 145, 145, 145)),
                     time: TimeResult::Succeeded(Duration::new(0, 60)),
                 },
                 MeasureResult {
                     name: String::from("Cloudflare"),
                     ip: IpAddr::V4(Ipv4Addr::new(1, 1, 1, 1)),
-                    resolved_ip: IpAddr::V4(Ipv4Addr::new(1, 1, 1, 1)),
+                    resolved_ip: IpAddr::V4(Ipv4Addr::new(145, 145, 145, 145)),
                     time: TimeResult::Succeeded(Duration::new(0, 70)),
                 },
             ]),
@@ -158,7 +159,10 @@ mod tests {
                 .collect(),
         )
         .unwrap();
-        let expected_csv = "name,ip,last_resolved_ip,total_requests,successful_requests,successful_requests_percentage,first_duration_value_ms,first_duration_error,average_duration_value_ms,average_duration_error\nGoogle,8.8.8.8,8.8.8.8,3,2,66.66667,0.000100,,0.000150,\nCloudflare,1.1.1.1,1.1.1.1,3,3,100.0,0.000050,,0.000060,\n";
+        let expected_csv = "\
+            name,ip,last_resolved_ip,total_requests,successful_requests,successful_requests_percentage,min_duration_value_ms,min_duration_error,max_duration_value_ms,max_duration_error,avg_duration_value_ms,avg_duration_error\n\
+            Google,8.8.8.8,144.144.144.144,3,2,66.66667,0.000100,,0.000200,,0.000150,\n\
+            Cloudflare,1.1.1.1,145.145.145.145,3,3,100.0,0.000050,,0.000070,,0.000060,\n";
         assert_eq!(csv_string, expected_csv);
     }
 }
