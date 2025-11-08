@@ -16,8 +16,9 @@ struct XmlResultEntry {
     total_requests: i32,
     successful_requests: i32,
     successful_requests_percentage: f32,
-    first_duration: TimeResult,
-    average_duration: TimeResult,
+    min_duration: TimeResult,
+    max_duration: TimeResult,
+    avg_duration: TimeResult,
 }
 
 impl XmlResultEntry {
@@ -60,16 +61,22 @@ impl XmlResultEntry {
                         Ok(())
                     })?;
                 entry_writer
-                    .create_element("FirstDuration")
-                    .with_attribute(("type", self.first_duration.get_xml_type_str()))
+                    .create_element("MinDuration")
+                    .with_attribute(("type", self.min_duration.get_xml_type_str()))
                     .write_text_content(quick_xml::events::BytesText::new(
-                        self.first_duration.to_string().as_str(),
+                        self.min_duration.to_string().as_str(),
                     ))?;
                 entry_writer
-                    .create_element("AverageDuration")
-                    .with_attribute(("type", self.average_duration.get_xml_type_str()))
+                    .create_element("MaxDuration")
+                    .with_attribute(("type", self.max_duration.get_xml_type_str()))
                     .write_text_content(quick_xml::events::BytesText::new(
-                        self.average_duration.to_string().as_str(),
+                        self.max_duration.to_string().as_str(),
+                    ))?;
+                entry_writer
+                    .create_element("AvgDuration")
+                    .with_attribute(("type", self.avg_duration.get_xml_type_str()))
+                    .write_text_content(quick_xml::events::BytesText::new(
+                        self.avg_duration.to_string().as_str(),
                     ))?;
 
                 Ok(())
@@ -88,13 +95,14 @@ impl From<RawResultEntry> for XmlResultEntry {
             total_requests: value.total_requests,
             successful_requests: value.successful_requests,
             successful_requests_percentage: value.successful_requests_percentage,
-            first_duration: value.first_duration,
-            average_duration: value.average_duration,
+            min_duration: value.min_duration,
+            max_duration: value.max_duration,
+            avg_duration: value.avg_duration,
         }
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, derive_more::Error, derive_more::From)]
 pub enum XmlConversionError {
     Io(io::Error),
     FromUtf8(FromUtf8Error),
@@ -108,20 +116,6 @@ impl fmt::Display for XmlConversionError {
         }
     }
 }
-
-impl From<io::Error> for XmlConversionError {
-    fn from(e: io::Error) -> Self {
-        XmlConversionError::Io(e)
-    }
-}
-
-impl From<FromUtf8Error> for XmlConversionError {
-    fn from(e: FromUtf8Error) -> Self {
-        XmlConversionError::FromUtf8(e)
-    }
-}
-
-impl std::error::Error for XmlConversionError {}
 
 fn convert_result_entries_to_xml_string(
     result_entries: Vec<XmlResultEntry>,
@@ -182,8 +176,9 @@ mod tests {
                 total_requests: 3,
                 successful_requests: 2,
                 successful_requests_percentage: 66.66667,
-                first_duration: TimeResult::Succeeded(Duration::new(0, 100)),
-                average_duration: TimeResult::Succeeded(Duration::new(0, 150)),
+                min_duration: TimeResult::Succeeded(Duration::new(0, 100)),
+                max_duration: TimeResult::Succeeded(Duration::new(0, 200)),
+                avg_duration: TimeResult::Succeeded(Duration::new(0, 150)),
             },
             XmlResultEntry {
                 name: String::from("Cloudflare"),
@@ -192,12 +187,41 @@ mod tests {
                 total_requests: 3,
                 successful_requests: 3,
                 successful_requests_percentage: 100.0,
-                first_duration: TimeResult::Succeeded(Duration::new(0, 50)),
-                average_duration: TimeResult::Succeeded(Duration::new(0, 60)),
+                min_duration: TimeResult::Succeeded(Duration::new(0, 50)),
+                max_duration: TimeResult::Succeeded(Duration::new(0, 70)),
+                avg_duration: TimeResult::Succeeded(Duration::new(0, 60)),
             },
         ];
         let xml_string = convert_result_entries_to_xml_string(result_entries).unwrap();
-        let expected_string = "<DnsBenchResultEntries><ResultEntry><Name>Google</Name><Ip>8.8.8.8</Ip><LastResolvedIp>8.8.8.8</LastResolvedIp><SuccessfulRequests><TotalRequests>3</TotalRequests><SuccessfulRequests>2</SuccessfulRequests><SuccessfulRequestsPercentage>66.66667</SuccessfulRequestsPercentage></SuccessfulRequests><FirstDuration type=\"succeeded\">100ns</FirstDuration><AverageDuration type=\"succeeded\">150ns</AverageDuration></ResultEntry><ResultEntry><Name>Cloudflare</Name><Ip>1.1.1.1</Ip><LastResolvedIp>1.1.1.1</LastResolvedIp><SuccessfulRequests><TotalRequests>3</TotalRequests><SuccessfulRequests>3</SuccessfulRequests><SuccessfulRequestsPercentage>100</SuccessfulRequestsPercentage></SuccessfulRequests><FirstDuration type=\"succeeded\">50ns</FirstDuration><AverageDuration type=\"succeeded\">60ns</AverageDuration></ResultEntry></DnsBenchResultEntries>";
+        let expected_string = "\
+            <DnsBenchResultEntries>\
+                <ResultEntry>\
+                    <Name>Google</Name>\
+                    <Ip>8.8.8.8</Ip>\
+                    <LastResolvedIp>8.8.8.8</LastResolvedIp>\
+                    <SuccessfulRequests>\
+                        <TotalRequests>3</TotalRequests>\
+                        <SuccessfulRequests>2</SuccessfulRequests>\
+                        <SuccessfulRequestsPercentage>66.66667</SuccessfulRequestsPercentage>\
+                    </SuccessfulRequests>\
+                    <MinDuration type=\"succeeded\">100ns</MinDuration>\
+                    <MaxDuration type=\"succeeded\">200ns</MaxDuration>\
+                    <AvgDuration type=\"succeeded\">150ns</AvgDuration>\
+                </ResultEntry>\
+                <ResultEntry>\
+                    <Name>Cloudflare</Name>\
+                    <Ip>1.1.1.1</Ip>\
+                    <LastResolvedIp>1.1.1.1</LastResolvedIp>\
+                    <SuccessfulRequests>\
+                        <TotalRequests>3</TotalRequests>\
+                        <SuccessfulRequests>3</SuccessfulRequests>\
+                        <SuccessfulRequestsPercentage>100</SuccessfulRequestsPercentage>\
+                    </SuccessfulRequests>\
+                    <MinDuration type=\"succeeded\">50ns</MinDuration>\
+                    <MaxDuration type=\"succeeded\">70ns</MaxDuration>\
+                    <AvgDuration type=\"succeeded\">60ns</AvgDuration>\
+                </ResultEntry>\
+            </DnsBenchResultEntries>";
         assert_eq!(xml_string, expected_string);
     }
 }
