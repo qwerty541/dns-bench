@@ -106,10 +106,12 @@ pub struct RawResultEntry {
     pub successful_requests: i32,
     pub successful_requests_percentage: f32,
     pub successful_requests_color: tabled_settings::Color,
-    pub first_duration: TimeResult,
-    pub first_duration_color: tabled_settings::Color,
-    pub average_duration: TimeResult,
-    pub average_duration_color: tabled_settings::Color,
+    pub min_duration: TimeResult,
+    pub min_duration_color: tabled_settings::Color,
+    pub max_duration: TimeResult,
+    pub max_duration_color: tabled_settings::Color,
+    pub avg_duration: TimeResult,
+    pub avg_duration_color: tabled_settings::Color,
 }
 
 impl From<Vec<MeasureResult>> for RawResultEntry {
@@ -118,21 +120,46 @@ impl From<Vec<MeasureResult>> for RawResultEntry {
         let mut total_time = Duration::new(0, 0);
         let mut last_resolved_ip = IpAddr::V4(Ipv4Addr::new(0, 0, 0, 0));
 
+        // Compute min/max on successful requests
+        let mut min_dur: Option<Duration> = None;
+        let mut max_dur: Option<Duration> = None;
+
         for measure_result in &value {
             match measure_result.time {
                 TimeResult::Succeeded(duration) => {
                     successful_requests += 1;
                     total_time += duration;
                     last_resolved_ip = measure_result.resolved_ip;
+
+                    min_dur = Some(match min_dur {
+                        Some(current_min) => current_min.min(duration),
+                        None => duration,
+                    });
+                    max_dur = Some(match max_dur {
+                        Some(current_max) => current_max.max(duration),
+                        None => duration,
+                    });
                 }
                 TimeResult::Failed(_) => {}
             }
         }
 
-        let average_duration = if successful_requests > 0 {
+        let avg_duration = if successful_requests > 0 {
             TimeResult::Succeeded(total_time / successful_requests as u32)
         } else {
-            TimeResult::Failed(String::from("No successful requests"))
+            TimeResult::Failed(String::from("No responses"))
+        };
+
+        let min_duration = if let Some(d) = min_dur {
+            TimeResult::Succeeded(d)
+        } else {
+            TimeResult::Failed(String::from("No responses"))
+        };
+
+        let max_duration = if let Some(d) = max_dur {
+            TimeResult::Succeeded(d)
+        } else {
+            TimeResult::Failed(String::from("No responses"))
         };
 
         let successful_requests_percentage =
@@ -155,10 +182,12 @@ impl From<Vec<MeasureResult>> for RawResultEntry {
             successful_requests,
             successful_requests_percentage,
             successful_requests_color,
-            first_duration: value[0].time.clone(),
-            first_duration_color: value[0].time.clone().into(),
-            average_duration: average_duration.clone(),
-            average_duration_color: average_duration.into(),
+            min_duration: min_duration.clone(),
+            min_duration_color: min_duration.clone().into(),
+            max_duration: max_duration.clone(),
+            max_duration_color: max_duration.into(),
+            avg_duration: avg_duration.clone(),
+            avg_duration_color: avg_duration.clone().into(),
         }
     }
 }
@@ -209,20 +238,31 @@ mod tests {
             result_entry.successful_requests_color,
             tabled_settings::Color::FG_BRIGHT_YELLOW
         );
+        // Min
         assert_eq!(
-            result_entry.first_duration,
+            result_entry.min_duration,
             TimeResult::Succeeded(Duration::new(0, 100))
         );
         assert_eq!(
-            result_entry.first_duration_color,
+            result_entry.min_duration_color,
             tabled_settings::Color::FG_BRIGHT_GREEN
         );
+        // Max
         assert_eq!(
-            result_entry.average_duration,
+            result_entry.max_duration,
+            TimeResult::Succeeded(Duration::new(0, 200))
+        );
+        assert_eq!(
+            result_entry.max_duration_color,
+            tabled_settings::Color::FG_BRIGHT_GREEN
+        );
+        // Avg
+        assert_eq!(
+            result_entry.avg_duration,
             TimeResult::Succeeded(Duration::new(0, 150))
         );
         assert_eq!(
-            result_entry.average_duration_color,
+            result_entry.avg_duration_color,
             tabled_settings::Color::FG_BRIGHT_GREEN
         );
     }
