@@ -31,7 +31,7 @@ struct TabledResultEntry {
     max_duration: TimeResult,
     #[tabled(skip)]
     max_duration_color: tabled_settings::Color,
-    #[tabled(rename = "Avg.")]
+    #[tabled(rename = "Avg.↑")]
     avg_duration: TimeResult,
     #[tabled(skip)]
     avg_duration_color: tabled_settings::Color,
