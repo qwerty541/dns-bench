@@ -102,7 +102,7 @@ impl From<RawResultEntry> for XmlResultEntry {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, derive_more::Error, derive_more::From)]
 pub enum XmlConversionError {
     Io(io::Error),
     FromUtf8(FromUtf8Error),
@@ -116,20 +116,6 @@ impl fmt::Display for XmlConversionError {
         }
     }
 }
-
-impl From<io::Error> for XmlConversionError {
-    fn from(e: io::Error) -> Self {
-        XmlConversionError::Io(e)
-    }
-}
-
-impl From<FromUtf8Error> for XmlConversionError {
-    fn from(e: FromUtf8Error) -> Self {
-        XmlConversionError::FromUtf8(e)
-    }
-}
-
-impl std::error::Error for XmlConversionError {}
 
 fn convert_result_entries_to_xml_string(
     result_entries: Vec<XmlResultEntry>,

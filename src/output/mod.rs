@@ -23,7 +23,7 @@ pub struct OutputFormatterContext {
     pub system_dns_ips: Option<Vec<IpAddr>>,
 }
 
-#[derive(Debug)]
+#[derive(Debug, derive_more::Error, derive_more::From)]
 pub enum OutputFormatterError {
     Io(io::Error),
     Json(serde_json::Error),
@@ -41,32 +41,6 @@ impl fmt::Display for OutputFormatterError {
         }
     }
 }
-
-impl From<io::Error> for OutputFormatterError {
-    fn from(value: io::Error) -> Self {
-        OutputFormatterError::Io(value)
-    }
-}
-
-impl From<serde_json::Error> for OutputFormatterError {
-    fn from(value: serde_json::Error) -> Self {
-        OutputFormatterError::Json(value)
-    }
-}
-
-impl From<XmlConversionError> for OutputFormatterError {
-    fn from(value: XmlConversionError) -> Self {
-        OutputFormatterError::Xml(value)
-    }
-}
-
-impl From<CsvConversionError> for OutputFormatterError {
-    fn from(value: CsvConversionError) -> Self {
-        OutputFormatterError::Csv(value)
-    }
-}
-
-impl std::error::Error for OutputFormatterError {}
 
 pub trait OutputFormatter {
     fn write(

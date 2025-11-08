@@ -42,7 +42,7 @@ impl From<RawResultEntry> for CsvResultEntry {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, derive_more::Error, derive_more::From)]
 pub enum CsvConversionError {
     Io(io::Error),
     FromUtf8(FromUtf8Error),
@@ -58,26 +58,6 @@ impl fmt::Display for CsvConversionError {
         }
     }
 }
-
-impl From<io::Error> for CsvConversionError {
-    fn from(e: io::Error) -> Self {
-        CsvConversionError::Io(e)
-    }
-}
-
-impl From<FromUtf8Error> for CsvConversionError {
-    fn from(e: FromUtf8Error) -> Self {
-        CsvConversionError::FromUtf8(e)
-    }
-}
-
-impl From<csv::Error> for CsvConversionError {
-    fn from(e: csv::Error) -> Self {
-        CsvConversionError::Csv(e)
-    }
-}
-
-impl std::error::Error for CsvConversionError {}
 
 fn convert_result_entries_to_csv_string(
     result_entries: Vec<CsvResultEntry>,

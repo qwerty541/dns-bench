@@ -8,7 +8,7 @@ use tabled::settings as tabled_settings;
 // TimeResult
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize, derive_more::IsVariant)]
 #[cfg_attr(test, derive(Eq, PartialEq))]
 pub enum TimeResult {
     #[serde(rename = "succeeded")]
@@ -18,14 +18,6 @@ pub enum TimeResult {
 }
 
 impl TimeResult {
-    pub fn is_succeeded(&self) -> bool {
-        matches!(self, TimeResult::Succeeded(_))
-    }
-
-    pub fn is_failed(&self) -> bool {
-        matches!(self, TimeResult::Failed(_))
-    }
-
     pub fn get_xml_type_str(&self) -> &str {
         match self {
             TimeResult::Succeeded(_) => "succeeded",
