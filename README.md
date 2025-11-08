@@ -170,7 +170,7 @@ $ dns-bench [OPTIONS]
 Run the following command and wait until the crate is compiled:
 
 ```sh
-$ cargo install --git https://github.com/qwerty541/dns-bench.git --tag v0.12.0 dns-bench
+$ cargo install --git https://github.com/qwerty541/dns-bench.git --tag v0.13.0 dns-bench
 ```
 
 Also you can remove tag option to install the latest development version.
