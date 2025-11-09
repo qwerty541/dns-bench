@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Centered the contents of the column titles for better appearance and readability.
 - Changed base image of Docker container from [alpine](https://hub.docker.com/_/alpine) to [debian slim](https://hub.docker.com/_/debian) which improves compatibility with various systems and architectures, and also results in a slightly larger image size (~15 MiB => ~25 MiB).
 - Restored the support of `linux/arm/v7`, `linux/386`, `linux/s390x` architectures in the Docker image. The docker image of previous version was republished to include these architectures.
+- Added support for the `linux/riscv64` architecture in the Docker image.
 - Significant internal refactoring of output formatting related code to improve its readability and maintainability.
 - Integrated `derive_more` library to reduce some boilerplate code with derived implementations.
 
