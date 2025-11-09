@@ -14,8 +14,9 @@ struct JsonResultEntry {
     total_requests: i32,
     successful_requests: i32,
     successful_requests_percentage: f32,
-    first_duration: TimeResult,
-    average_duration: TimeResult,
+    min_duration: TimeResult,
+    max_duration: TimeResult,
+    avg_duration: TimeResult,
 }
 
 impl From<RawResultEntry> for JsonResultEntry {
@@ -27,8 +28,9 @@ impl From<RawResultEntry> for JsonResultEntry {
             total_requests: value.total_requests,
             successful_requests: value.successful_requests,
             successful_requests_percentage: value.successful_requests_percentage,
-            first_duration: value.first_duration,
-            average_duration: value.average_duration,
+            min_duration: value.min_duration,
+            max_duration: value.max_duration,
+            avg_duration: value.avg_duration,
         }
     }
 }

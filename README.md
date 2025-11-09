@@ -4,7 +4,7 @@
 [![Crates.io downloads][crates-downloads-badge]][crates-url]
 ![Rust version][rust-version]
 [![DockerHub Pulls][dockerhub-pulls-badge]][dockerhub-url]
-![License][license-badge]
+[![License][license-badge]][license-url]
 [![Workflow Status][workflow-badge]][actions-url]
 ![Lines count][sloc-badge]
 ![Cocomo][cocomo-badge]
@@ -13,6 +13,7 @@
 [crates-downloads-badge]: https://img.shields.io/crates/d/dns-bench.svg
 [crates-url]: https://crates.io/crates/dns-bench
 [license-badge]: https://img.shields.io/crates/l/dns-bench.svg
+[license-url]: https://github.com/qwerty541/dns-bench/blob/master/LICENSE-MIT
 [workflow-badge]: https://github.com/qwerty541/dns-bench/workflows/check/badge.svg
 [actions-url]: https://github.com/qwerty541/dns-bench/actions
 [rust-version]: https://img.shields.io/badge/rust-1.82.0%2B-lightgrey.svg?logo=rust
@@ -97,7 +98,7 @@ This repository provides a DNS benchmarking command-line tool written in Rust. I
 #### 🐳 Platform & Integration
 
 - **Docker support**  
-  Run easily in a containerized environment (system DNS detection is skipped in Docker).
+  Run easily in a containerized environment (system DNS and gateway detection is skipped in Docker).
 - **Cross-platform**  
   Works on Linux, Windows, and macOS.
 
@@ -169,7 +170,7 @@ $ dns-bench [OPTIONS]
 Run the following command and wait until the crate is compiled:
 
 ```sh
-$ cargo install --git https://github.com/qwerty541/dns-bench.git --tag v0.12.0 dns-bench
+$ cargo install --git https://github.com/qwerty541/dns-bench.git --tag v0.13.0 dns-bench
 ```
 
 Also you can remove tag option to install the latest development version.

@@ -38,10 +38,10 @@ jobs:
         with:
           context: .
           file: ./docker/Dockerfile
-          platforms: linux/amd64,linux/arm64/v8,linux/arm/v7,linux/386,linux/s390x,linux/ppc64le
+          platforms: linux/amd64,linux/arm64/v8,linux/arm/v7,linux/386,linux/s390x,linux/ppc64le,linux/riscv64
           push: true
           tags: |
-            ${{ vars.DOCKER_USERNAME }}/dns-bench:0.12.0
+            ${{ vars.DOCKER_USERNAME }}/dns-bench:0.13.0
             ${{ vars.DOCKER_USERNAME }}/dns-bench:latest
 
       # Step 6: Test the image on different architectures using QEMU
@@ -69,3 +69,7 @@ jobs:
         run: |
           docker pull --platform linux/ppc64le ${{ vars.DOCKER_USERNAME }}/dns-bench:latest
           docker run --rm --platform linux/ppc64le ${{ vars.DOCKER_USERNAME }}/dns-bench:latest --timeout 1
+      - name: Test image on linux/riscv64
+        run: |
+          docker pull --platform linux/riscv64 ${{ vars.DOCKER_USERNAME }}/dns-bench:latest
+          docker run --rm --platform linux/riscv64 ${{ vars.DOCKER_USERNAME }}/dns-bench:latest --timeout 1

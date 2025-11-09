@@ -345,11 +345,11 @@ impl BenchmarkRunner {
     fn sort_result_entries(&self) {
         let mut result_entries = self.result_entries.lock().expect(POISONED_MUTEX_ERR);
         result_entries.sort_by(|a, b| {
-            let a = match a.average_duration {
+            let a = match a.avg_duration {
                 TimeResult::Succeeded(duration) => duration,
                 TimeResult::Failed(_) => Duration::new(u64::MAX, 0),
             };
-            let b = match b.average_duration {
+            let b = match b.avg_duration {
                 TimeResult::Succeeded(duration) => duration,
                 TimeResult::Failed(_) => Duration::new(u64::MAX, 0),
             };

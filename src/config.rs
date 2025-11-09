@@ -238,7 +238,7 @@ impl LoadConfigResult {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, derive_more::Error, derive_more::From)]
 pub enum LoadConfigError {
     UserDirs,
     Io(io::Error),
@@ -251,28 +251,6 @@ impl fmt::Display for LoadConfigError {
             LoadConfigError::UserDirs => write!(f, "UserDirs: {USER_DIRS_ERROR}"),
             LoadConfigError::Io(e) => write!(f, "Io: {e}"),
             LoadConfigError::Toml(e) => write!(f, "Toml: {e}"),
-        }
-    }
-}
-
-impl From<io::Error> for LoadConfigError {
-    fn from(e: io::Error) -> Self {
-        LoadConfigError::Io(e)
-    }
-}
-
-impl From<toml::de::Error> for LoadConfigError {
-    fn from(e: toml::de::Error) -> Self {
-        LoadConfigError::Toml(e)
-    }
-}
-
-impl Error for LoadConfigError {
-    fn source(&self) -> Option<&(dyn Error + 'static)> {
-        match self {
-            LoadConfigError::UserDirs => None,
-            LoadConfigError::Io(e) => Some(e),
-            LoadConfigError::Toml(e) => Some(e),
         }
     }
 }
