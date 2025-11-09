@@ -98,7 +98,7 @@ This repository provides a DNS benchmarking command-line tool written in Rust. I
 #### 🐳 Platform & Integration
 
 - **Docker support**  
-  Run easily in a containerized environment (system DNS detection is skipped in Docker).
+  Run easily in a containerized environment (system DNS and gateway detection is skipped in Docker).
 - **Cross-platform**  
   Works on Linux, Windows, and macOS.
 
@@ -170,7 +170,7 @@ $ dns-bench [OPTIONS]
 Run the following command and wait until the crate is compiled:
 
 ```sh
-$ cargo install --git https://github.com/qwerty541/dns-bench.git --tag v0.12.0 dns-bench
+$ cargo install --git https://github.com/qwerty541/dns-bench.git --tag v0.13.0 dns-bench
 ```
 
 Also you can remove tag option to install the latest development version.

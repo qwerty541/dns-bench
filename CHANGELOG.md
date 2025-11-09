@@ -5,6 +5,41 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v0.13.0 (09.11.2025)
+
+### Added
+
+- Added FlashStart DNS to the built-in servers list.
+- Added arrow symbol which indicates sorting column in the output table header.
+
+### Changed
+
+- Replaced previous results table columns `First duration`/`Average duration` with `Min.`/`Max.`/`Avg.` columns to provide more comprehensive statistics about DNS servers performance and better matching benchmarking best practices.
+- Updated other output formats (JSON, XML and CSV) to reflect the changes in the results table structure.
+- Centered the contents of the column titles for better appearance and readability.
+- Changed base image of Docker container from [alpine](https://hub.docker.com/_/alpine) to [debian slim](https://hub.docker.com/_/debian) which improves compatibility with various systems and architectures, and also results in a slightly larger image size (~15 MiB => ~25 MiB).
+- Restored the support of `linux/arm/v7`, `linux/386`, `linux/s390x` architectures in the Docker image. The docker image of previous version was republished to include these architectures.
+- Added support for the `linux/riscv64` architecture in the Docker image.
+- Significant internal refactoring of output formatting related code to improve its readability and maintainability.
+- Integrated `derive_more` library to reduce some boilerplate code with derived implementations.
+
+### Documentation
+
+- Updated preview GIFs and PNGs to reflect the latest changes.
+- Added clarification about skipped features (system DNS and gateway detection) when using Docker container.
+- Made the license badge clickable.
+- Added total lines count badge into the readme file.
+- Added COCOMO estimation badge into the readme file.
+- Added Docker Hub pulls badge into the readme file.
+
+### Dependencies
+
+- Updated `clap` from 4.5.47 to 4.5.50
+- Updated `serde` from 1.0.223 to 1.0.228
+- Updated `toml` from 0.9.5 to 0.9.8
+- Updated `csv` from 1.3.1 to 1.4.0
+- Updated `indicatif` from 0.18.0 to 0.18.1
+
 ## v0.12.0 (28.09.2025)
 
 ### Added
