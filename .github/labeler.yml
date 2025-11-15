@@ -23,6 +23,7 @@ documentation:
           - CHANGELOG.md
           - CODE_OF_CONDUCT.md
           - docker/OVERVIEW.md
+          - SECURITY.md‎
 
 github_actions:
   - changed-files:
