@@ -32,6 +32,11 @@ const PROGRESS_BAR_TICK_INTERVAL_MILLIS: u64 = 50;
 const GATEWAY_RESPONSIVENESS_TEST_TIMEOUT_MILLIS: u64 = 200;
 const POISONED_MUTEX_ERR: &str = "Poisoned mutex error";
 
+const REDUCE_TIMEOUT_AFTER_CONSECUTIVE_FAILURES: u32 = 10;
+const REDUCED_TIMEOUT_MS: u64 = 500;
+const ABORT_AFTER_CONSECUTIVE_FAILURES: u32 = 15;
+const MINIMAL_TIMEOUT_MS: u64 = 100;
+
 /// The main application.
 pub struct BenchmarkRunner {
     /// The arguments.
@@ -283,12 +288,17 @@ impl BenchmarkRunner {
 
                     let mut measure_results = Vec::new();
 
+                    // Adaptive timeout state
+                    let base_timeout_ms = config.timeout * 1000_u64;
+                    let mut current_timeout_ms = base_timeout_ms;
+                    let mut consecutive_timeout_failures: u32 = 0;
+
                     for _ in 0..config.requests {
-                        // Create a new resolver for each request to avoid caching.
+                        // Create a new resolver for each request with current adaptive timeout.
                         let resolver = create_resolver(
                             dns_entry.socket_addr,
                             config.protocol.into(),
-                            config.timeout * 1000_u64,
+                            current_timeout_ms,
                             config.lookup_ip.into(),
                         );
 
@@ -315,6 +325,39 @@ impl BenchmarkRunner {
                                     time: TimeResult::Failed(e.to_string()),
                                 },
                             };
+
+                        // Adaptive logic: inspect the result and potentially adjust timeout / abort.
+                        match &result_entry.time {
+                            TimeResult::Succeeded(_) => {
+                                // Reset failure streak on any success.
+                                consecutive_timeout_failures = 0;
+                            }
+                            err @ TimeResult::Failed(_) => {
+                                if err.is_timeout() {
+                                    consecutive_timeout_failures += 1;
+
+                                    // Reduce timeout after 10 consecutive timeouts (if not already reduced).
+                                    if consecutive_timeout_failures
+                                        >= REDUCE_TIMEOUT_AFTER_CONSECUTIVE_FAILURES
+                                        && current_timeout_ms > REDUCED_TIMEOUT_MS
+                                    {
+                                        current_timeout_ms = REDUCED_TIMEOUT_MS;
+                                    }
+
+                                    // Abort after 15 consecutive timeouts.
+                                    if consecutive_timeout_failures
+                                        >= ABORT_AFTER_CONSECUTIVE_FAILURES
+                                    {
+                                        // Minimal timeout to speed up remaining requests.
+                                        current_timeout_ms = MINIMAL_TIMEOUT_MS;
+                                    }
+                                } else {
+                                    // Non-timeout failure does not advance timeout streak (and resets it to avoid accidental decay).
+                                    consecutive_timeout_failures = 0;
+                                }
+                            }
+                        }
+
                         measure_results.push(result_entry);
                         progress_bar.inc(1);
                     }

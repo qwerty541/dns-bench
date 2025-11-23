@@ -45,6 +45,16 @@ impl TimeResult {
             TimeResult::Failed(error) => Some(error),
         }
     }
+
+    pub fn is_timeout(&self) -> bool {
+        match self {
+            TimeResult::Succeeded(_) => false,
+            TimeResult::Failed(error) => {
+                let lower = error.to_ascii_lowercase();
+                lower.contains("timeout") || lower.contains("timed out")
+            }
+        }
+    }
 }
 
 impl fmt::Display for TimeResult {
