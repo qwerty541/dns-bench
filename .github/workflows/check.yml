@@ -67,6 +67,7 @@ jobs:
           toolchain: ${{ matrix.rust }}
 
       - name: Cache
+        if: runner.os != 'macOS' # TODO: restore after https://github.com/actions/runner/issues/449 is fixed
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: |
