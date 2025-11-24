@@ -23,7 +23,7 @@ derive_more = { version = "2.0.1", features = [
 ], default-features = false }
 directories = "6.0.0"
 hickory-resolver = "0.24.4"
-indicatif = "0.18.2"
+indicatif = "0.18.3"
 lazy_static = "1.5.0"
 quick-xml = "0.38.3"
 serde = { version = "1.0.228", features = ["derive"], default-features = false }
