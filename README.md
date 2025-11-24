@@ -260,7 +260,7 @@ Below is a list of currently supported options.
         <tr>
             <td><code>--timeout</code></td>
             <td>Timeout in seconds.</td>
-            <td>3</td>
+            <td>1</td>
             <td>1..60</td>
         </tr>
         <tr>
