@@ -248,7 +248,7 @@ Below is a list of currently supported options.
          <tr>
             <td><code>--threads</code></td>
             <td>Number of threads to use.</td>
-            <td>8</td>
+            <td>16</td>
             <td>1..256</td>
         </tr>
         <tr>
