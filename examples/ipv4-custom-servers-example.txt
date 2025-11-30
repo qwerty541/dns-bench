@@ -37,3 +37,5 @@ Vercara UltraDNS Public;156.154.70.2:53
 Vercara UltraDNS Public;156.154.71.2:53
 FlashStart;185.236.104.104:53
 FlashStart;185.236.105.105:53
+Gcore Public DNS;95.85.95.85:53
+Gcore Public DNS;2.56.220.2:53

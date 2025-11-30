@@ -139,6 +139,7 @@ This repository provides a DNS benchmarking command-line tool written in Rust. I
 | SafeServe |
 | Vercara UltraDNS Public |
 | FlashStart |
+| Gcore Public DNS |
 
 </td></tr>
 </table>
