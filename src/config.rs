@@ -44,7 +44,7 @@ impl Default for DnsBenchConfig {
             domain: String::from("google.com"),
             threads: 8,
             requests: 25,
-            timeout: 3,
+            timeout: 1,
             protocol: Protocol::Udp,
             name_servers_ip: IpAddr::V4,
             lookup_ip: IpAddr::V4,
