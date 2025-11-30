@@ -34,6 +34,8 @@ pub struct DnsBenchConfig {
     pub skip_system_servers: bool,
     #[serde(default)]
     pub skip_gateway_detection: bool,
+    #[serde(default)]
+    pub disable_adaptive_timeout: bool,
     // WARNING! Addition of the serde default attribute for all new fields is important to ensure backward compatibility
     // with older configuration files that may not have these fields defined.
 }
@@ -42,9 +44,9 @@ impl Default for DnsBenchConfig {
     fn default() -> Self {
         DnsBenchConfig {
             domain: String::from("google.com"),
-            threads: 8,
+            threads: 16,
             requests: 50,
-            timeout: 3,
+            timeout: 1,
             protocol: Protocol::Udp,
             name_servers_ip: IpAddr::V4,
             lookup_ip: IpAddr::V4,
@@ -53,6 +55,7 @@ impl Default for DnsBenchConfig {
             format: Format::HumanReadable,
             skip_system_servers: false,
             skip_gateway_detection: false,
+            disable_adaptive_timeout: false,
         }
     }
 }
@@ -94,6 +97,9 @@ impl DnsBenchConfig {
         }
         if args.skip_gateway_detection {
             self.skip_gateway_detection = true;
+        }
+        if args.disable_adaptive_timeout {
+            self.disable_adaptive_timeout = true;
         }
     }
 
@@ -210,6 +216,11 @@ impl fmt::Display for DnsBenchConfig {
         )?;
         writeln!(f, "skip-system-servers: {}", self.skip_system_servers)?;
         writeln!(f, "skip-gateway-detection: {}", self.skip_gateway_detection)?;
+        writeln!(
+            f,
+            "disable-adaptive-timeout: {}",
+            self.disable_adaptive_timeout
+        )?;
 
         Ok(())
     }
