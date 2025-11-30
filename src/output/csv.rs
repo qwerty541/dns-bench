@@ -109,7 +109,7 @@ mod tests {
 
     #[test]
     fn test_conversion() {
-        let result_entries = vec![
+        let result_entries = &[
             RawResultEntry::from(vec![
                 MeasureResult {
                     name: String::from("Google"),
