@@ -352,7 +352,7 @@ impl BenchmarkRunner {
                                         current_timeout_ms = MINIMAL_TIMEOUT_MS;
                                     }
                                 } else {
-                                    // Non-timeout failure does not advance timeout streak (and resets it to avoid accidental decay).
+                                    // Non-timeout failure resets the timeout streak to ensure only consecutive timeouts trigger adaptive behavior.
                                     consecutive_timeout_failures = 0;
                                 }
                             }
