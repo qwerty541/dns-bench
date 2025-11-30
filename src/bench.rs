@@ -34,7 +34,7 @@ const POISONED_MUTEX_ERR: &str = "Poisoned mutex error";
 
 const REDUCE_TIMEOUT_AFTER_CONSECUTIVE_FAILURES: u32 = 8;
 const REDUCED_TIMEOUT_MS: u64 = 500;
-const ABORT_AFTER_CONSECUTIVE_FAILURES: u32 = 16;
+const MINIMIZE_TIMEOUT_AFTER_CONSECUTIVE_FAILURES: u32 = 16;
 const MINIMAL_TIMEOUT_MS: u64 = 100;
 
 /// The main application.
@@ -345,11 +345,10 @@ impl BenchmarkRunner {
                                             current_timeout_ms = REDUCED_TIMEOUT_MS;
                                         }
 
-                                        // Abort after 16 consecutive timeouts.
+                                        // Use minimal timeout after 16 consecutive timeouts to speed up remaining requests.
                                         if consecutive_timeout_failures
-                                            >= ABORT_AFTER_CONSECUTIVE_FAILURES
+                                            >= MINIMIZE_TIMEOUT_AFTER_CONSECUTIVE_FAILURES
                                         {
-                                            // Minimal timeout to speed up remaining requests.
                                             current_timeout_ms = MINIMAL_TIMEOUT_MS;
                                         }
                                     } else {
