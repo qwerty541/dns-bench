@@ -201,6 +201,31 @@ impl From<Vec<MeasureResult>> for RawResultEntry {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use hickory_resolver::error::ResolveError;
+    use hickory_resolver::error::ResolveErrorKind;
+    use hickory_resolver::proto::error::ProtoError;
+    use hickory_resolver::proto::error::ProtoErrorKind;
+    use std::io;
+
+    #[test]
+    fn test_time_result_is_timeout_error() {
+        assert!(
+            TimeResult::Failed(ResolveError::from(ResolveErrorKind::Timeout).to_string())
+                .is_timeout()
+        );
+        assert!(TimeResult::Failed(
+            ResolveError::from(io::Error::from(io::ErrorKind::TimedOut)).to_string()
+        )
+        .is_timeout());
+        assert!(
+            TimeResult::Failed(ResolveError::from("operation timed out").to_string()).is_timeout()
+        );
+        assert!(
+            TimeResult::Failed(ProtoError::from(ProtoErrorKind::Timeout).to_string()).is_timeout()
+        );
+        assert!(!TimeResult::Failed(String::from("Some other error")).is_timeout());
+        assert!(!TimeResult::Succeeded(Duration::new(0, 100)).is_timeout());
+    }
 
     #[test]
     fn test_raw_result_entry_from() {
