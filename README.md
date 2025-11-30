@@ -317,6 +317,12 @@ Below is a list of currently supported options.
             <td></td>
             <td></td>
         </tr>
+        <tr>
+          <td><code>--disable-adaptive-timeout</code></td>
+          <td>Disable adaptive timeout logic (always use full configured timeout for every request even on repeated failures).</td>
+          <td></td>
+          <td></td>
+        </tr>
     </tbody>
 </table>
 
