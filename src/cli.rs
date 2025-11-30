@@ -86,6 +86,9 @@ pub struct SharedArgs {
     /// Skip autodetection of gateway IP address.
     #[arg(long)]
     pub skip_gateway_detection: bool,
+    /// Disable adaptive timeout logic (always use the full configured timeout for every request).
+    #[arg(long)]
+    pub disable_adaptive_timeout: bool,
 }
 
 #[derive(Debug, Clone, Subcommand)]
