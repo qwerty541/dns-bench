@@ -85,11 +85,11 @@ jobs:
         run: cargo test
 
       - name: Perform test application run (IPv4)
-        run: cargo run -- --name-servers-ip v4 --lookup-ip v4 --timeout 1
+        run: cargo run -- --name-servers-ip v4 --lookup-ip v4 --timeout 1 --requests 25
 
       # Disabled due to GitHub Actions not supporting IPv6 yet.
       # - name: Perform test application run (IPv6)
-      #   run: cargo run -- --name-servers-ip v6 --lookup-ip v6 --timeout 1
+      #   run: cargo run -- --name-servers-ip v6 --lookup-ip v6 --timeout 1 --requests 25
 
   msrv:
     name: Check minimal supported rust version (MSRV).
