@@ -32,9 +32,9 @@ const PROGRESS_BAR_TICK_INTERVAL_MILLIS: u64 = 50;
 const GATEWAY_RESPONSIVENESS_TEST_TIMEOUT_MILLIS: u64 = 200;
 const POISONED_MUTEX_ERR: &str = "Poisoned mutex error";
 
-const REDUCE_TIMEOUT_AFTER_CONSECUTIVE_FAILURES: u32 = 10;
+const REDUCE_TIMEOUT_AFTER_CONSECUTIVE_FAILURES: u32 = 8;
 const REDUCED_TIMEOUT_MS: u64 = 500;
-const ABORT_AFTER_CONSECUTIVE_FAILURES: u32 = 15;
+const ABORT_AFTER_CONSECUTIVE_FAILURES: u32 = 16;
 const MINIMAL_TIMEOUT_MS: u64 = 100;
 
 /// The main application.
@@ -337,7 +337,7 @@ impl BenchmarkRunner {
                                     if err.is_timeout() {
                                         consecutive_timeout_failures += 1;
 
-                                        // Reduce timeout after 10 consecutive timeouts (if not already reduced).
+                                        // Reduce timeout after 8 consecutive timeouts (if not already reduced).
                                         if consecutive_timeout_failures
                                             >= REDUCE_TIMEOUT_AFTER_CONSECUTIVE_FAILURES
                                             && current_timeout_ms > REDUCED_TIMEOUT_MS
@@ -345,7 +345,7 @@ impl BenchmarkRunner {
                                             current_timeout_ms = REDUCED_TIMEOUT_MS;
                                         }
 
-                                        // Abort after 15 consecutive timeouts.
+                                        // Abort after 16 consecutive timeouts.
                                         if consecutive_timeout_failures
                                             >= ABORT_AFTER_CONSECUTIVE_FAILURES
                                         {
