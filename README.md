@@ -260,7 +260,7 @@ Below is a list of currently supported options.
         <tr>
             <td><code>--timeout</code></td>
             <td>Timeout in seconds.</td>
-            <td>3</td>
+            <td>1</td>
             <td>1..60</td>
         </tr>
         <tr>
@@ -316,6 +316,12 @@ Below is a list of currently supported options.
             <td>Skip auto-detection of default gateway (router) DNS server.</td>
             <td></td>
             <td></td>
+        </tr>
+        <tr>
+          <td><code>--disable-adaptive-timeout</code></td>
+          <td>Disable adaptive timeout logic (always use full configured timeout for every request even on repeated failures).</td>
+          <td></td>
+          <td></td>
         </tr>
     </tbody>
 </table>
