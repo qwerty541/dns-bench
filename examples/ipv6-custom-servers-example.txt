@@ -23,3 +23,5 @@ Vercara UltraDNS Public;[2610:00a1:1018:0:0:0:0:0002]:53
 Vercara UltraDNS Public;[2610:00a1:1019:0:0:0:0:0002]:53
 FlashStart;[2a12:7bc0:0104:0104:0:0:0:0]:53
 FlashStart;[2a12:7bc0:0105:0105:0:0:0:0]:53
+Gcore Public DNS;[2a03:90c0:999d:0:0:0:0:0001]:53
+Gcore Public DNS;[2a03:90c0:9992:0:0:0:0:0001]:53
