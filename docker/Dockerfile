@@ -1,4 +1,4 @@
-FROM rust:1.91.0 AS build
+FROM rust:1.91.1 AS build
 
 # Set the working directory
 WORKDIR /app
@@ -10,7 +10,7 @@ COPY src ./src
 # Build and install the binary
 RUN cargo install --locked --path .
 
-FROM debian:13.1-slim
+FROM debian:13.2-slim
 
 # Copy the binary from the builder image
 COPY --from=build /usr/local/cargo/bin/dns-bench /usr/bin/dns-bench

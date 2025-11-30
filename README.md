@@ -249,19 +249,19 @@ Below is a list of currently supported options.
          <tr>
             <td><code>--threads</code></td>
             <td>Number of threads to use.</td>
-            <td>8</td>
+            <td>16</td>
             <td>1..256</td>
         </tr>
         <tr>
             <td><code>--requests</code></td>
             <td>Number of requests to each DNS server.</td>
-            <td>25</td>
+            <td>50</td>
             <td>1..1000</td>
         </tr>
         <tr>
             <td><code>--timeout</code></td>
             <td>Timeout in seconds.</td>
-            <td>3</td>
+            <td>1</td>
             <td>1..60</td>
         </tr>
         <tr>
@@ -317,6 +317,12 @@ Below is a list of currently supported options.
             <td>Skip auto-detection of default gateway (router) DNS server.</td>
             <td></td>
             <td></td>
+        </tr>
+        <tr>
+          <td><code>--disable-adaptive-timeout</code></td>
+          <td>Disable adaptive timeout logic (always use full configured timeout for every request even on repeated failures).</td>
+          <td></td>
+          <td></td>
         </tr>
     </tbody>
 </table>
