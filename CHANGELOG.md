@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Added Gcore Public DNS to the built-in servers list.
-- Implemented adaptive timeout behavior for clearly unresponsive servers to reduce total benchmark time.
+- Implemented adaptive timeout behavior for clearly unresponsive servers to reduce total benchmark time. After 8 consecutive timeouts for a server, its timeout is reduced to `500 ms`; after 16 consecutive timeouts, it is reduced to `100 ms`.
 - Introduced a new CLI flag `--disable-adaptive-timeout` to force a fixed timeout for every request when desired.
 
 ### Changed
