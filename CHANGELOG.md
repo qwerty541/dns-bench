@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Added
+
+- Added Gcore Public DNS to the built-in servers list.
+- Implemented adaptive timeout behavior for clearly unresponsive servers to reduce total benchmark time.
+- Introduced a new CLI flag `--disable-adaptive-timeout` to force a fixed timeout for every request when desired.
+
+### Changed
+
+- Updated base image of Docker container from `debian:13.1-slim` to `debian:13.2-slim`.
+- Updated build image of Docker container from `rust:1.90.0` to `rust:1.91.1`.
+- Increased default threads count from `8` to `16` to better utilize modern CPUs.
+- Increased default requests count from `25` to `50` for more statistically robust results.
+- Decreased default timeout from `3` seconds to `1` second, improving responsiveness while keeping reliability.
+
+### Documentation
+
+- Updated README to reflect new defaults (threads `16`, requests `50`, timeout `1s`).
+- Added a security protocol document describing how to report vulnerabilities.
+
+### Dependencies
+
+- Updated `clap` from 4.5.51 to 4.5.53.
+- Updated `quick-xml` from 0.38.3 to 0.38.4.
+- Updated `indicatif` from 0.18.2 to 0.18.3.
+
 ## v0.13.0 (09.11.2025)
 
 ### Added
