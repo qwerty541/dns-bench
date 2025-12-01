@@ -28,9 +28,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Dependencies
 
-- Updated `clap` from 4.5.51 to 4.5.53.
-- Updated `quick-xml` from 0.38.3 to 0.38.4.
-- Updated `indicatif` from 0.18.2 to 0.18.3.
+- Updated `clap` from 4.5.51 to 4.5.53
+- Updated `quick-xml` from 0.38.3 to 0.38.4
+- Updated `indicatif` from 0.18.2 to 0.18.3
 
 ## v0.13.0 (09.11.2025)
 
