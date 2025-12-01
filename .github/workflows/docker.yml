@@ -26,6 +26,8 @@ jobs:
           remove-haskell: "true"
           remove-codeql: "true"
           remove-docker-images: "true"
+      - name: Restart docker
+        run: sudo service docker restart
 
       # Step 1: Checkout the repository
       - name: Checkout repository
