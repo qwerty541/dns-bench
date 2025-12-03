@@ -40,6 +40,7 @@
   - [From crates.io using Cargo](#from-cratesio-using-cargo)
   - [From git repository using Cargo](#from-git-repository-using-cargo)
   - [From Docker Hub](#from-docker-hub)
+  - [From GitHub Container Registry (GHCR)](#from-github-container-registry-ghcr)
   - [Executable file for Windows](#executable-file-for-windows)
 - [Command-Line Reference](#command-line-reference)
   - [Options](#options)
@@ -148,7 +149,7 @@ This repository provides a DNS benchmarking command-line tool written in Rust. I
 
 ### Which method to choose?
 
-- If you don't have Rust programming language environment installed on your machine, then you can choose between [installation from Docker Hub](#from-docker-hub) or [download the latest Windows executable file](#executable-file-for-windows).
+- If you don't have Rust programming language environment installed on your machine, then you can choose between [installation from Docker Hub](#from-docker-hub), [installation from GitHub Container Registry (GHCR)](#from-github-container-registry-ghcr) or [download the latest Windows executable file](#executable-file-for-windows).
 - If you have Rust programming language environment installed on your machine, then you can choose between [installation from crates.io](#from-cratesio-using-cargo) or [installation from git repository](#from-git-repository-using-cargo).
 - Installation from git repository is suitable only when you want to use the development version instead of the stable one or the crates.io service is unavailable.
 
@@ -212,6 +213,16 @@ $ docker run --rm -it --name dns-bench \
   qwerty541/dns-bench:latest \
   --custom-servers-file /servers.txt
 ```
+
+### From GitHub Container Registry (GHCR)
+
+If you prefer GHCR, pull the image like this:
+
+```sh
+$ docker pull ghcr.io/qwerty541/dns-bench:latest
+```
+
+You can run the same commands as in the Docker Hub section above by replacing the image reference with `ghcr.io/qwerty541/dns-bench:latest`.
 
 ### Executable file for Windows
 
