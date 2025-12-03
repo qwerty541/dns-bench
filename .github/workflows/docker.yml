@@ -50,7 +50,15 @@ jobs:
           username: ${{ vars.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # Step 7: Build and push multi-arch Docker image
+      # Step 7: Log in to GitHub Container Registry (GHCR)
+      - name: Log in to GHCR
+        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Step 8: Build and push multi-arch Docker image
       - name: Build and push multi-arch Docker image
         uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
         with:
@@ -61,8 +69,10 @@ jobs:
           tags: |
             ${{ vars.DOCKER_USERNAME }}/dns-bench:0.14.0
             ${{ vars.DOCKER_USERNAME }}/dns-bench:latest
+            ghcr.io/${{ github.repository_owner }}/dns-bench:0.14.0
+            ghcr.io/${{ github.repository_owner }}/dns-bench:latest
 
-      # Step 8: Test the image on different architectures using QEMU
+      # Step 9: Test the image on different architectures using QEMU
       - name: Test image on linux/amd64
         run: |
           docker pull --platform linux/amd64 ${{ vars.DOCKER_USERNAME }}/dns-bench:latest
