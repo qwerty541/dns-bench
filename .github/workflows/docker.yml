@@ -44,11 +44,11 @@ jobs:
         uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3.7.0
 
       # Step 6: Log in to Docker Hub
-      # - name: Log in to Docker Hub
-      #   uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
-      #   with:
-      #     username: ${{ vars.DOCKER_USERNAME }}
-      #     password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Log in to Docker Hub
+        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
+        with:
+          username: ${{ vars.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
       # Step 6.1: Log in to GitHub Container Registry (GHCR)
       - name: Log in to GHCR
@@ -67,6 +67,8 @@ jobs:
           platforms: linux/amd64,linux/arm64/v8,linux/arm/v7,linux/386,linux/s390x,linux/ppc64le,linux/riscv64
           push: true
           tags: |
+            ${{ vars.DOCKER_USERNAME }}/dns-bench:0.14.0
+            ${{ vars.DOCKER_USERNAME }}/dns-bench:latest
             ghcr.io/${{ github.repository_owner }}/dns-bench:0.14.0
             ghcr.io/${{ github.repository_owner }}/dns-bench:latest
 
