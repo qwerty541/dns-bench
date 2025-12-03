@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added Gcore Public DNS to the built-in servers list.
 - Implemented adaptive timeout behavior for clearly unresponsive servers to reduce total benchmark time. After 8 consecutive timeouts for a server, its timeout is reduced to `500 ms`; after 16 consecutive timeouts, it is reduced to `100 ms`.
 - Introduced a new CLI flag `--disable-adaptive-timeout` to force a fixed timeout for every request when desired.
+- Docker image published to GitHub Container Registry (GHCR) alongside Docker Hub.
 
 ### Changed
 
@@ -25,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Updated README to reflect new defaults (threads `16`, requests `50`, timeout `1s`).
 - Added a security protocol document describing how to report vulnerabilities.
+- Updated README installation instructions to include GHCR as an alternative Docker image source.
 
 ### Dependencies
 
