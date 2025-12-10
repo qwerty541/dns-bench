@@ -72,12 +72,14 @@ CI runs `cargo build`, `cargo test`, `cargo fmt --check`, and `cargo clippy -D w
 ## Project Structure
 
 - `src/` — application source code
-  - `commands/` — config subcommands
+  - `commands/` — subcommands handling
   - `output/` — formatters (table, json, xml, csv)
 - `tests/` — test assets
 - `docker/` — Dockerfiles and CI scripts for image builds
+- `examples/` — example server lists and usage samples
 - `README.md` — usage, installation, and reference docs
 - `CHANGELOG.md` — release notes
+- `SECURITY.md` — how to report security issues
 
 ## Feature Guidelines
 
