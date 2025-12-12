@@ -86,6 +86,7 @@ CI runs `cargo build`, `cargo test`, `cargo fmt --check`, and `cargo clippy -D w
 - Keep default behavior sane. See `DnsBenchConfig` defaults and CLI.
 - Add flags for opt-in changes (e.g., `--disable-adaptive-timeout`).
 - Ensure output formats (table/JSON/XML/CSV) remain consistent.
+- Maintain cross-platform support (Linux, Windows, macOS). Features such as automatic gateway address detection and automatic system DNS servers detection must work reliably across all three OS families; include platform notes and tests where feasible.
 - Prefer small, incremental PRs.
 
 ## Performance & Reliability
