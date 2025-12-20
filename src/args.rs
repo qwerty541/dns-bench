@@ -103,3 +103,23 @@ pub enum Format {
 
 argument_impl_from_str!(Format);
 argument_impl_display!(Format);
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, ValueEnum, serde::Serialize, serde::Deserialize)]
+pub enum SortField {
+    Name,
+    Ip,
+    ResolvedIp,
+    Time,
+}
+
+argument_impl_from_str!(SortField);
+argument_impl_display!(SortField);
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq, ValueEnum, serde::Serialize, serde::Deserialize)]
+pub enum SortOrder {
+    Asc,
+    Desc,
+}
+
+argument_impl_from_str!(SortOrder);
+argument_impl_display!(SortOrder);

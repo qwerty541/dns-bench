@@ -1,5 +1,6 @@
 use crate::args::Format;
 use crate::args::IpAddr as ArgIpAddr;
+use crate::args::{SortField as ArgSortField, SortOrder as ArgSortOrder};
 use crate::cli;
 use crate::config;
 use crate::custom;
@@ -10,6 +11,8 @@ use crate::resolver::create_resolver;
 use crate::result::MeasureResult;
 use crate::result::RawResultEntry;
 use crate::result::TimeResult;
+use crate::result::sort_raw_results;
+use crate::result::{SortField, SortOrder};
 use crate::servers;
 use crate::system::get_system_dns;
 
@@ -27,6 +30,7 @@ use std::sync;
 use std::thread;
 use std::time::Duration;
 use std::time::Instant;
+
 
 const PROGRESS_BAR_TICK_INTERVAL_MILLIS: u64 = 50;
 const GATEWAY_RESPONSIVENESS_TEST_TIMEOUT_MILLIS: u64 = 200;
@@ -385,21 +389,71 @@ impl BenchmarkRunner {
         }
     }
 
-    /// Sort result entries by average duration, failed entries are at the end.
+    /// Sort result entries by average duration by default, failed entries are at the end.
+    /// User-controlled sorting applied, failed entries are still at the end.
     fn sort_result_entries(&self) {
-        let mut result_entries = self.result_entries.lock().expect(POISONED_MUTEX_ERR);
-        result_entries.sort_by(|a, b| {
+    let mut results = self.result_entries.lock().expect(POISONED_MUTEX_ERR);
+
+    
+    let mut successful: Vec<RawResultEntry> = Vec::new();
+    let mut failed: Vec<RawResultEntry> = Vec::new();
+
+    for entry in results.drain(..) {
+        match entry.avg_duration {
+            TimeResult::Succeeded(_) => successful.push(entry),
+            TimeResult::Failed(_) => failed.push(entry),
+        }
+    }
+
+    let fields = &self.arguments.args.sort;
+
+    
+    if fields.is_empty() {
+        successful.sort_by(|a, b| {
             let a = match a.avg_duration {
-                TimeResult::Succeeded(duration) => duration,
-                TimeResult::Failed(_) => Duration::new(u64::MAX, 0),
+                TimeResult::Succeeded(d) => d,
+                TimeResult::Failed(_) => unreachable!(),
             };
             let b = match b.avg_duration {
-                TimeResult::Succeeded(duration) => duration,
-                TimeResult::Failed(_) => Duration::new(u64::MAX, 0),
+                TimeResult::Succeeded(d) => d,
+                TimeResult::Failed(_) => unreachable!(),
             };
             a.cmp(&b)
         });
+    } else {
+        
+        let orders = &self.arguments.args.order;
+
+        let sort_keys: Vec<(SortField, SortOrder)> = fields
+            .iter()
+            .enumerate()
+            .map(|(i, f)| {
+                let order = orders.get(i).copied().unwrap_or(ArgSortOrder::Asc);
+
+                let sf = match f {
+                    ArgSortField::Name => SortField::Name,
+                    ArgSortField::Ip => SortField::Ip,
+                    ArgSortField::ResolvedIp => SortField::ResolvedIp,
+                    ArgSortField::Time => SortField::Time,
+                };
+
+                let so = match order {
+                    ArgSortOrder::Asc => SortOrder::Asc,
+                    ArgSortOrder::Desc => SortOrder::Desc,
+                };
+
+                (sf, so)
+            })
+            .collect();
+
+        sort_raw_results(&mut successful, &sort_keys);
     }
+
+    
+    results.extend(successful);
+    results.extend(failed);
+}
+
 
     /// Print the result.
     fn print_result(&self) {

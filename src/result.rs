@@ -3,6 +3,7 @@ use std::net::IpAddr;
 use std::net::Ipv4Addr;
 use std::time::Duration;
 use tabled::settings as tabled_settings;
+use std::cmp::Ordering;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // TimeResult
@@ -53,6 +54,15 @@ impl TimeResult {
                 let lower = error.to_ascii_lowercase();
                 lower.contains("timeout") || lower.contains("timed out")
             }
+        }
+    }
+
+    pub fn cmp(&self, other: &Self) -> Ordering {
+        match (self, other) {
+            (TimeResult::Succeeded(a), TimeResult::Succeeded(b)) => a.cmp(b),
+            (TimeResult::Succeeded(_), TimeResult::Failed(_)) => Ordering::Less,
+            (TimeResult::Failed(_), TimeResult::Succeeded(_)) => Ordering::Greater,
+            (TimeResult::Failed(_), TimeResult::Failed(_)) => Ordering::Equal,
         }
     }
 }
@@ -115,6 +125,64 @@ pub struct RawResultEntry {
     pub avg_duration: TimeResult,
     pub avg_duration_color: tabled_settings::Color,
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Sorting support
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#[derive(Debug, Clone)]
+pub enum SortField {
+    Name,
+    Ip,
+    ResolvedIp,
+    Time, // Uses avg_duration
+}
+
+#[derive(Debug, Clone)]
+pub enum SortOrder {
+    Asc,
+    Desc,
+}
+
+impl RawResultEntry {
+    pub fn cmp_by(
+        &self,
+        other: &Self,
+        field: &SortField,
+        order: &SortOrder,
+    ) -> Ordering {
+        let ord = match field {
+            SortField::Name => self.name.cmp(&other.name),
+            SortField::Ip => self.ip.cmp(&other.ip),
+            SortField::ResolvedIp => self.last_resolved_ip.cmp(&other.last_resolved_ip),
+            SortField::Time => self.avg_duration.cmp(&other.avg_duration),
+        };
+
+        match order {
+            SortOrder::Asc => ord,
+            SortOrder::Desc => ord.reverse(),
+        }
+    }
+}
+
+pub fn sort_raw_results(
+    results: &mut Vec<RawResultEntry>,
+    keys: &[(SortField, SortOrder)],
+) {
+    results.sort_by(|a, b| {
+        for (field, order) in keys {
+            let cmp = a.cmp_by(b, field, order);
+            if cmp != Ordering::Equal {
+                return cmp;
+            }
+        }
+        Ordering::Equal
+    });
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// RawResultEntry construction
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 impl From<Vec<MeasureResult>> for RawResultEntry {
     fn from(value: Vec<MeasureResult>) -> Self {
