@@ -6,8 +6,8 @@
 [![DockerHub Pulls][dockerhub-pulls-badge]][dockerhub-url]
 [![License][license-badge]][license-url]
 [![Workflow Status][workflow-badge]][actions-url]
-![Lines count][sloc-badge]
-![Cocomo][cocomo-badge]
+[![Lines count][sloc-badge]][scc-repo-url]
+[![Cocomo][cocomo-badge]][scc-repo-url]
 
 [crates-version-badge]: https://img.shields.io/crates/v/dns-bench.svg
 [crates-downloads-badge]: https://img.shields.io/crates/d/dns-bench.svg
@@ -21,6 +21,7 @@
 [cocomo-badge]: https://sloc.xyz/github/qwerty541/dns-bench/?badge-bg-color=2081C2&category=cocomo
 [dockerhub-pulls-badge]: https://img.shields.io/docker/pulls/qwerty541/dns-bench?label=DockerHub%20pulls&logo=docker&logoColor=white
 [dockerhub-url]: https://hub.docker.com/r/qwerty541/dns-bench
+[scc-repo-url]: https://github.com/boyter/scc
 
 <details>
 <summary>Table of contents</summary>
