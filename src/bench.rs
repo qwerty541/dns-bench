@@ -260,6 +260,141 @@ impl BenchmarkRunner {
         self.bench_start_time = Some(Instant::now());
     }
 
+    fn update_adaptive_timeout(
+        result: &MeasureResult,
+        consecutive_failures: &mut u32,
+        current_timeout_ms: &mut u64,
+        disable_adaptive_timeout: bool,
+    ) {
+        if disable_adaptive_timeout {
+            return;
+        }
+
+        match &result.time {
+            TimeResult::Succeeded(_) => {
+                *consecutive_failures = 0;
+            }
+            err @ TimeResult::Failed(_) => {
+                if err.is_timeout() {
+                    *consecutive_failures += 1;
+
+                    if *consecutive_failures >= REDUCE_TIMEOUT_AFTER_CONSECUTIVE_FAILURES
+                        && *current_timeout_ms > REDUCED_TIMEOUT_MS
+                    {
+                        *current_timeout_ms = REDUCED_TIMEOUT_MS;
+                    }
+
+                    if *consecutive_failures >= MINIMIZE_TIMEOUT_AFTER_CONSECUTIVE_FAILURES {
+                        *current_timeout_ms = MINIMAL_TIMEOUT_MS;
+                    }
+                } else {
+                    *consecutive_failures = 0;
+                }
+            }
+        }
+    }
+
+    fn perform_dns_lookup(
+        dns_entry: &servers::DnsEntry,
+        config: &config::DnsBenchConfig,
+        current_timeout_ms: u64,
+    ) -> MeasureResult {
+        let resolver = create_resolver(
+            dns_entry.socket_addr,
+            config.protocol.into(),
+            current_timeout_ms,
+            config.lookup_ip.into(),
+        );
+
+        let start_time = Instant::now();
+        match resolver.lookup_ip(config.domain.clone()) {
+            Ok(response) => {
+                let elapsed_time = start_time.elapsed();
+                MeasureResult {
+                    name: dns_entry.name.clone(),
+                    ip: dns_entry.socket_addr.ip(),
+                    resolved_ip: response.iter().next().unwrap(),
+                    time: TimeResult::Succeeded(elapsed_time),
+                }
+            }
+            Err(e) => MeasureResult {
+                name: dns_entry.name.clone(),
+                ip: dns_entry.socket_addr.ip(),
+                resolved_ip: match config.lookup_ip {
+                    ArgIpAddr::V4 => IpAddr::V4(Ipv4Addr::UNSPECIFIED),
+                    ArgIpAddr::V6 => IpAddr::V6(Ipv6Addr::UNSPECIFIED),
+                },
+                time: TimeResult::Failed(e.to_string()),
+            },
+        }
+    }
+
+    fn benchmark_dns_server(
+        dns_entry: servers::DnsEntry,
+        config: &config::DnsBenchConfig,
+        multi_progress: &MultiProgress,
+    ) -> RawResultEntry {
+        let progress_bar =
+            multi_progress.add(BenchmarkRunner::init_progress_bar(config.requests as u64));
+        progress_bar.enable_steady_tick(Duration::from_millis(PROGRESS_BAR_TICK_INTERVAL_MILLIS));
+        progress_bar.set_message(format!(
+            "{} ({})",
+            dns_entry.name,
+            dns_entry.socket_addr.ip()
+        ));
+
+        let mut measure_results = Vec::new();
+
+        let base_timeout_ms = config.timeout * 1000_u64;
+        let mut current_timeout_ms = base_timeout_ms;
+        let mut consecutive_timeout_failures: u32 = 0;
+
+        for _ in 0..config.requests {
+            let result_entry = Self::perform_dns_lookup(&dns_entry, config, current_timeout_ms);
+
+            Self::update_adaptive_timeout(
+                &result_entry,
+                &mut consecutive_timeout_failures,
+                &mut current_timeout_ms,
+                config.disable_adaptive_timeout,
+            );
+
+            measure_results.push(result_entry);
+            progress_bar.inc(1);
+        }
+
+        let result_entry: RawResultEntry = measure_results.into();
+
+        progress_bar.finish_and_clear();
+        multi_progress.remove(&progress_bar);
+
+        result_entry
+    }
+
+    fn dns_benchmark_worker(
+        dns_entries: sync::Arc<sync::Mutex<collections::VecDeque<servers::DnsEntry>>>,
+        result_entries: sync::Arc<sync::Mutex<Vec<RawResultEntry>>>,
+        config: config::DnsBenchConfig,
+        multi_progress: MultiProgress,
+    ) {
+        loop {
+            let dns_entry = {
+                let mut dns_entries = dns_entries.lock().expect(POISONED_MUTEX_ERR);
+                dns_entries.pop_front()
+            };
+
+            if let Some(dns_entry) = dns_entry {
+                let result_entry = Self::benchmark_dns_server(dns_entry, &config, &multi_progress);
+                result_entries
+                    .lock()
+                    .expect(POISONED_MUTEX_ERR)
+                    .push(result_entry);
+            } else {
+                break;
+            }
+        }
+    }
+
     /// Spawn the threads.
     fn spawn_threads(&mut self) {
         for _ in 0..self.config.threads {
@@ -268,112 +403,8 @@ impl BenchmarkRunner {
             let config = self.config.clone();
             let multi_progress = self.multi_progress.as_ref().unwrap().clone();
 
-            self.threads.push(thread::spawn(move || loop {
-                let dns_entry = {
-                    let mut dns_entries = dns_entries.lock().expect(POISONED_MUTEX_ERR);
-                    dns_entries.pop_front()
-                };
-
-                if let Some(dns_entry) = dns_entry {
-                    let progress_bar =
-                        multi_progress.add(Self::init_progress_bar(config.requests as u64));
-                    progress_bar.enable_steady_tick(Duration::from_millis(
-                        PROGRESS_BAR_TICK_INTERVAL_MILLIS,
-                    ));
-                    progress_bar.set_message(format!(
-                        "{} ({})",
-                        dns_entry.name,
-                        dns_entry.socket_addr.ip()
-                    ));
-
-                    let mut measure_results = Vec::new();
-
-                    // Adaptive timeout state
-                    let base_timeout_ms = config.timeout * 1000_u64;
-                    let mut current_timeout_ms = base_timeout_ms;
-                    let mut consecutive_timeout_failures: u32 = 0;
-
-                    for _ in 0..config.requests {
-                        // Create a new resolver for each request with current adaptive timeout.
-                        let resolver = create_resolver(
-                            dns_entry.socket_addr,
-                            config.protocol.into(),
-                            current_timeout_ms,
-                            config.lookup_ip.into(),
-                        );
-
-                        // Measure the time it takes to resolve the domain.
-                        let start_time = Instant::now();
-                        let result_entry: MeasureResult =
-                            match resolver.lookup_ip(config.domain.clone()) {
-                                Ok(response) => {
-                                    let elapsed_time = start_time.elapsed();
-                                    MeasureResult {
-                                        name: dns_entry.name.clone(),
-                                        ip: dns_entry.socket_addr.ip(),
-                                        resolved_ip: response.iter().next().unwrap(),
-                                        time: TimeResult::Succeeded(elapsed_time),
-                                    }
-                                }
-                                Err(e) => MeasureResult {
-                                    name: dns_entry.name.clone(),
-                                    ip: dns_entry.socket_addr.ip(),
-                                    resolved_ip: match config.lookup_ip {
-                                        ArgIpAddr::V4 => IpAddr::V4(Ipv4Addr::UNSPECIFIED),
-                                        ArgIpAddr::V6 => IpAddr::V6(Ipv6Addr::UNSPECIFIED),
-                                    },
-                                    time: TimeResult::Failed(e.to_string()),
-                                },
-                            };
-
-                        if !config.disable_adaptive_timeout {
-                            // Adaptive logic: inspect the result and potentially adjust timeout / abort.
-                            match &result_entry.time {
-                                TimeResult::Succeeded(_) => {
-                                    // Reset failure streak on any success.
-                                    consecutive_timeout_failures = 0;
-                                }
-                                err @ TimeResult::Failed(_) => {
-                                    if err.is_timeout() {
-                                        consecutive_timeout_failures += 1;
-
-                                        // Reduce timeout after 8 consecutive timeouts (if not already reduced).
-                                        if consecutive_timeout_failures
-                                            >= REDUCE_TIMEOUT_AFTER_CONSECUTIVE_FAILURES
-                                            && current_timeout_ms > REDUCED_TIMEOUT_MS
-                                        {
-                                            current_timeout_ms = REDUCED_TIMEOUT_MS;
-                                        }
-
-                                        // Use minimal timeout after 16 consecutive timeouts to speed up remaining requests.
-                                        if consecutive_timeout_failures
-                                            >= MINIMIZE_TIMEOUT_AFTER_CONSECUTIVE_FAILURES
-                                        {
-                                            current_timeout_ms = MINIMAL_TIMEOUT_MS;
-                                        }
-                                    } else {
-                                        // Non-timeout failure does not advance timeout streak (and resets it to avoid accidental decay).
-                                        consecutive_timeout_failures = 0;
-                                    }
-                                }
-                            }
-                        }
-
-                        measure_results.push(result_entry);
-                        progress_bar.inc(1);
-                    }
-
-                    let result_entry: RawResultEntry = measure_results.into();
-                    result_entries
-                        .lock()
-                        .expect(POISONED_MUTEX_ERR)
-                        .push(result_entry);
-
-                    progress_bar.finish_and_clear();
-                    multi_progress.remove(&progress_bar);
-                } else {
-                    break;
-                }
+            self.threads.push(thread::spawn(move || {
+                Self::dns_benchmark_worker(dns_entries, result_entries, config, multi_progress)
             }));
         }
     }
