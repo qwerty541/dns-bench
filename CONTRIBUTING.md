@@ -108,6 +108,7 @@ CI runs `cargo build`, `cargo test`, `cargo fmt --check`, and `cargo clippy -D w
 - `README.md` — usage, installation, and reference docs
 - `RELEASE.md` — release process checklist
 - `CHANGELOG.md` — release notes
+- `CODE_OF_CONDUCT.md` — community guidelines
 - `SECURITY.md` — how to report security issues
 
 ## Feature Guidelines
