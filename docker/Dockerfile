@@ -1,4 +1,4 @@
-FROM rust:1.92.0 AS build
+FROM rust:1.93.1 AS build
 
 # Set the working directory
 WORKDIR /app
