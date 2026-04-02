@@ -16,7 +16,7 @@
 [license-url]: https://github.com/qwerty541/dns-bench/blob/master/LICENSE-MIT
 [workflow-badge]: https://github.com/qwerty541/dns-bench/workflows/check/badge.svg
 [actions-url]: https://github.com/qwerty541/dns-bench/actions
-[rust-version]: https://img.shields.io/badge/rust-1.82.0%2B-lightgrey.svg?logo=rust
+[rust-version]: https://img.shields.io/badge/rust-1.85.1%2B-lightgrey.svg?logo=rust
 [sloc-badge]: https://sloc.xyz/github/qwerty541/dns-bench/?badge-bg-color=2081C2
 [cocomo-badge]: https://sloc.xyz/github/qwerty541/dns-bench/?badge-bg-color=2081C2&category=cocomo
 [dockerhub-pulls-badge]: https://img.shields.io/docker/pulls/qwerty541/dns-bench?label=DockerHub%20pulls&logo=docker&logoColor=white
