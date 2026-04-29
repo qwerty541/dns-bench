@@ -5,11 +5,15 @@ on:
 
 permissions:
   actions: read
+  artifact-metadata: read
+  attestations: read
   checks: read
   contents: read
   deployments: read
-  issues: read
   discussions: read
+  id-token: write
+  issues: read
+  models: read
   packages: read
   pages: read
   pull-requests: write
