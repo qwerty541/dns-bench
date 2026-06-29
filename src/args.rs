@@ -11,7 +11,11 @@ macro_rules! argument_impl_from_str {
 
             fn from_str(s: &str) -> Result<Self, Self::Err> {
                 for variant in Self::value_variants() {
-                    if variant.to_possible_value().unwrap().matches(s, false) {
+                    if variant
+                        .to_possible_value()
+                        .expect("no values are skipped")
+                        .matches(s, false)
+                    {
                         return Ok(*variant);
                     }
                 }
